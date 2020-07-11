@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
+using HY.Application.Base;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
 using HY_Main.Common.CoreLib;
+using HY_Main.Common.Unity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +32,11 @@ namespace HY_Main.ViewModel.Sign
         public string SkinName
         {
             get { return _SkinName; }
+            set
+            {
+                _SkinName = value;
+
+            }
         }
 
 
@@ -98,7 +105,7 @@ namespace HY_Main.ViewModel.Sign
             {
                 if (_signCommand == null)
                 {
-                    _signCommand = new RelayCommand(() => Login());
+                    _signCommand = new RelayCommand(() => LoginAsync());
                 }
                 return _signCommand;
             }
@@ -125,7 +132,7 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 登陆系统
         /// </summary>
-        public   void Login()
+        public async  void LoginAsync()
         {
             try
             {
@@ -134,6 +141,13 @@ namespace HY_Main.ViewModel.Sign
                     this.IsCancel = false;
                     MessageBox.Show("登录成功");
                 }
+
+                MainViewModel model = new MainViewModel();
+                model.InitDefaultView();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("MainViewDlg");
+                dialog.BindViewModel(model);
+                Messenger.Default.Send(string.Empty, "ApplicationHiding");
+                bool taskResult = await dialog.ShowDialog();
             }
             catch (Exception ex)
             {

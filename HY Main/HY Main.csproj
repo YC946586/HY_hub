@@ -49,6 +49,15 @@
     <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.2.5.0.2\lib\net45\HandyControl.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -73,10 +82,58 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\CoreLib\BaseOperation.cs" />
+    <Compile Include="Common\CoreLib\Modules\GetEnumAttrbute.cs" />
+    <Compile Include="Common\CoreLib\Modules\ModuleAttribute.cs" />
+    <Compile Include="Common\CoreLib\Modules\ModuleComponent.cs" />
+    <Compile Include="Common\CoreLib\Modules\ModuleManager.cs" />
+    <Compile Include="Common\Unity\BootStrapper.cs" />
+    <Compile Include="Common\Unity\IUnityLocator.cs" />
+    <Compile Include="Common\Unity\ServiceProvider.cs" />
+    <Compile Include="Common\Unity\UnityServiceLocator.cs" />
+    <Compile Include="Common\UserControls\MainHanderMenu.xaml.cs">
+      <DependentUpon>MainHanderMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControls\MainNotice.xaml.cs">
+      <DependentUpon>MainNotice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CoreLib\HanderMenuModel.cs" />
+    <Compile Include="Model\CoreLib\ModuleGroup.cs" />
+    <Compile Include="Model\HomePage\HomePageModel.cs" />
+    <Compile Include="Model\Mine\MineModel.cs" />
+    <Compile Include="Model\ShopMall\ShopMallModel.cs" />
+    <Compile Include="ViewDialog\BaseView.cs" />
+    <Compile Include="ViewDialog\BaseViewDialog.cs" />
+    <Compile Include="ViewDialog\HomePage\HomePageView.cs" />
+    <Compile Include="ViewDialog\MainViewDlg.cs" />
+    <Compile Include="ViewDialog\Mine\MineView.cs" />
+    <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
+    <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
+    <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Mine\MineViewModel.cs" />
+    <Compile Include="ViewModel\ShopMall\ShopMallViewModel.cs" />
     <Compile Include="ViewModel\Sign\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
+    <Compile Include="View\HomePage\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Mine\MaineView.xaml.cs">
+      <DependentUpon>MaineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShopMall\ShopMallView.xaml.cs">
+      <DependentUpon>ShopMallView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sign\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Page Include="Common\UserControls\MainHanderMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\MainNotice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -89,6 +146,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\HomePage\HomePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Mine\MaineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ShopMall\ShopMallView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Sign\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,9 +190,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\HY.Application\HY.Application.csproj">
       <Project>{ACD02646-034D-470C-BCF2-0787D0039955}</Project>

@@ -4,9 +4,57 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HY_Main"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:UserControls="clr-namespace:HY_Main.Common.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="黑鹰 Hub" Height="768" Width="1366"  
+      WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border Padding="1" Background="Transparent">
+                <Border CornerRadius="0" Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" />
+                    </Border.Effect>
+                    <ContentPresenter Margin="1" ClipToBounds="True" />
+                </Border>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <UniformGrid Columns="3" Background="#555555">
+            <StackPanel Orientation="Horizontal">
+                <hc:Gravatar  Source="{Binding UserAvatar}" Margin="10"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding UserName}"/>
+                    <Border Background="White" Height="30">
+                        <TextBlock Text="{Binding UserBalance}" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+            <UserControls:MainHanderMenu/>
+            <Grid HorizontalAlignment="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="游戏工具" Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
+                    <Button Content="修改密码"  Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
+                    <UserControls:MainNotice/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" >
+                    <Button Content="充      值" Style="{DynamicResource ButtonBinlpStyle}"/>
+                    <Button Content="使用激活码" Margin="10 0"  Style="{DynamicResource ButtonBinlpStyle}"/>
+                </StackPanel>
+            </Grid>
+        </UniformGrid>
+        <Grid Grid.Row="1">
+            <ContentControl FocusVisualStyle="{x:Null}" Content="{Binding CurrentPage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
     </Grid>
 </Window>
