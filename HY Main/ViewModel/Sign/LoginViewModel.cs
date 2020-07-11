@@ -141,6 +141,10 @@ namespace HY_Main.ViewModel.Sign
                     this.IsCancel = false;
                     MessageBox.Show("登录成功");
                 }
+                else
+                {
+                    MessageBox.Show("请输入用户名和密码");
+                }
 
                 MainViewModel model = new MainViewModel();
                 model.InitDefaultView();
