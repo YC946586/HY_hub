@@ -4,12 +4,12 @@
              xmlns:local="clr-namespace:HY_Main"
             >
     <!--StartupUri="View/Sign/Login.xaml"-->
-    <Application.Resources>
+    <!--<Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Themes/SkinDefault.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
-    </Application.Resources>
+    </Application.Resources>-->
 </Application>

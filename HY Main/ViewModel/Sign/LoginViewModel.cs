@@ -4,110 +4,179 @@ using HandyControl.Controls;
 using HY.Application.Base;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
+using HY.RequestConver;
+using HY.RequestConver.Bridge;
+using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.Unity;
+using HY_Main.Model.Sign;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace HY_Main.ViewModel.Sign
 {
-     public class LoginViewModel: BaseDialogOperation
+    public class LoginViewModel : BaseDialogOperation
     {
-        #region 用户名/密码
 
-        private string _Report;
-        private string userName = string.Empty;
-        private string passWord = string.Empty;
-        private bool _IsCancel = true;
-        private string _SkinName;
-        private string _Title;
+        #region 验证码定时器
 
+        /// <summary>
+        /// 验证码计时器
+        /// </summary>
+        public DispatcherTimer _timerWtLogin;
+
+        /// <summary>
+        /// 计数器
+        /// </summary>
+        public int count;
+
+        /// <summary>
+        /// 初始化定时器
+        /// </summary>
+        public void TimerLoad()
+        {
+            _timerWtLogin = new DispatcherTimer();
+            _timerWtLogin.Stop();
+            count = 60;
+            _timerWtLogin.Interval = new TimeSpan(0, 0, 1);
+            _timerWtLogin.Tick += (s, e1) =>
+            {
+
+                //设置获取验证码倒计时
+                count--;
+                RestCollection.VerificationContent = "(" + count + ")";
+                RestCollection.VerificationEnbled = false;
+                if (count <= 0)
+                {
+                    RestCollection.VerificationContent = "重新获取验证码";
+                    RestCollection.VerificationEnbled = true;
+                    _timerWtLogin.IsEnabled = false;
+                    _timerWtLogin.Stop();
+                    count = 60;
+                }
+            };
+        }
+
+        #endregion
+
+
+        #region  属性
+        private string _Title = "登录";
+        public string _TemplateType = "RegisteredDataTemplate";
+        private loginModel _loginCollection = new loginModel();
+        private loginModel _restCollection = new loginModel();
+
+        public string TemplateType
+        {
+            get { return _TemplateType; }
+            set { _TemplateType = value; RaisePropertyChanged(); }
+        }
         /// <summary>
         /// 背景图片
         /// </summary>
-        public string SkinName
-        {
-            get { return _SkinName; }
-            set
-            {
-                _SkinName = value;
-
-            }
-        }
+        public string SkinName { get; set; }
 
 
         /// <summary>
         /// 标题
         /// </summary>
-        public string Title
+        public string Hander
         {
             get { return _Title; }
+            set { _Title = value; RaisePropertyChanged(); }
         }
-        
-        /// <summary>
-        /// 进度报告
-        /// </summary>
-        public string Report
+
+        public loginModel LoginCollection
         {
-            get { return _Report; }
-            set { _Report = value; RaisePropertyChanged(); }
+            get { return _loginCollection; }
+            set
+            {
+                _loginCollection = value;
+                RaisePropertyChanged();
+            }
         }
-
         /// <summary>
-        /// 用户名
+        /// 注册对象
         /// </summary>
-        public string UserName
+        public loginModel RestCollection
         {
-            get { return userName; }
-            set { userName = value; RaisePropertyChanged(); }
+            get { return _restCollection; }
+            set
+            {
+                _restCollection = value;
+                RaisePropertyChanged();
+            }
         }
-
-        ///// <summary>
-        ///// 记住密码
-        ///// </summary>
-        //public bool UserChecked
-        //{
-        //    get { return _UserChecked; }
-        //    set { _UserChecked = value; RaisePropertyChanged(); }
-        //}
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password
-        {
-            get { return passWord; }
-            set { passWord = value; RaisePropertyChanged(); }
-        }
-
-        /// <summary>
-        /// 禁用按钮
-        /// </summary>
-        public bool IsCancel
-        {
-            get { return _IsCancel; }
-            set { _IsCancel = value; RaisePropertyChanged(); }
-        }
-
         #endregion
 
         #region 命令(Binding Command)
 
-        private RelayCommand _signCommand;
+        private RelayCommand<string> _signCommand;
 
-        public RelayCommand SignCommand
+        public RelayCommand<string> SignCommand
         {
             get
             {
                 if (_signCommand == null)
                 {
-                    _signCommand = new RelayCommand(() => LoginAsync());
+                    _signCommand = new RelayCommand<string>(t => LoginAsync(t));
                 }
                 return _signCommand;
+            }
+        }
+        private RelayCommand<string> _RegistereCommand;
+
+        public RelayCommand<string> RegistereCommand
+        {
+            get
+            {
+                if (_RegistereCommand == null)
+                {
+                    _RegistereCommand = new RelayCommand<string>(t => Registere(t));
+                }
+                return _RegistereCommand;
+            }
+        }
+        private RelayCommand<string> _GetcaptchaCommand;
+        /// <summary>
+        /// 获取验证码 
+        /// </summary>
+        public RelayCommand<string> GetcaptchaCommand
+        {
+            get
+            {
+                if (_GetcaptchaCommand == null)
+                {
+                    _GetcaptchaCommand = new RelayCommand<string>(t => GetcaptchaAsync(t));
+                }
+                return _GetcaptchaCommand;
+            }
+        }
+
+
+        private RelayCommand _BackCommand;
+        /// <summary>
+        /// 返回登录
+        /// </summary>
+        public RelayCommand BackCommand
+        {
+            get
+            {
+                if (_BackCommand == null)
+                {
+                    _BackCommand = new RelayCommand(() =>
+                    {
+                        Hander = "登录";
+                        LoginCollection = new loginModel();
+                        RestCollection = new loginModel();
+                    });
+                }
+                return _BackCommand;
             }
         }
 
@@ -132,20 +201,44 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 登陆系统
         /// </summary>
-        public async  void LoginAsync()
+        public async void LoginAsync(string hander)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password))
+                string phone = string.Empty;
+                string pwd = string.Empty;
+                switch (hander)
                 {
-                    this.IsCancel = false;
-                    MessageBox.Show("登录成功");
+                    case "登录":
+                        {
+                            phone = LoginCollection.UserName;
+                            pwd = LoginCollection.Password;
+                            break;
+                        }
+                    case "注册":
+                        {
+                            phone = RestCollection.UserName;
+                            pwd = RestCollection.Password;
+                            IUser user = BridgeFactory.BridgeManager.GetUserManager();
+                            var genrator =await user.Register(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
+                            break;
+                        }
+                    default:
+                        break;
+                }
+                if (!string.IsNullOrWhiteSpace(phone) && !string.IsNullOrWhiteSpace(pwd))
+                {
+                    this.LoginCollection.IsCancel = false;
+                    IUser user = BridgeFactory.BridgeManager.GetUserManager();
+                    var genrator = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
+                    MessageBox.Show(genrator.Message);
                 }
                 else
                 {
                     MessageBox.Show("请输入用户名和密码");
+                    return;
                 }
-
+                SaveLoginInfo();
                 MainViewModel model = new MainViewModel();
                 model.InitDefaultView();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("MainViewDlg");
@@ -155,13 +248,15 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                this.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
+                this.LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
             }
             finally
             {
-                this.IsCancel = true;
+                this.LoginCollection.IsCancel = true;
             }
         }
+
+
 
         /// <summary>
         /// 关闭系统
@@ -180,13 +275,15 @@ namespace HY_Main.ViewModel.Sign
         /// </summary>
         public void ReadConfigInfo()
         {
+            TimerLoad();
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
             if (File.Exists(cfgINI))
             {
                 IniFile ini = new IniFile(cfgINI);
-                UserName = ini.IniReadValue("Login", "User");
-                Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
-                _SkinName = ini.IniReadValue("Skin", "Skin");
+                LoginCollection.UserName = ini.IniReadValue("Login", "User");
+                LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
+                Messenger.Default.Send<string>(LoginCollection.Password, "ShowPassword");
+                SkinName = ini.IniReadValue("Skin", "Skin");
             }
         }
 
@@ -195,12 +292,54 @@ namespace HY_Main.ViewModel.Sign
         /// </summary>
         private void SaveLoginInfo()
         {
+            string strPath = AppDomain.CurrentDomain.BaseDirectory + "config\\";
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
+            if (!Directory.Exists(strPath))
+            {
+                Directory.CreateDirectory(strPath);
+            }
             IniFile ini = new IniFile(cfgINI);
-            ini.IniWriteValue("Login", "User", UserName);
-            ini.IniWriteValue("Login", "Password", CEncoder.Encode(Password));
+            ini.IniWriteValue("Login", "User", LoginCollection.UserName);
+            ini.IniWriteValue("Login", "Password", CEncoder.Encode(LoginCollection.Password));
         }
 
         #endregion
+
+        #region  注册 重置
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <param name="t"></param>
+        private async void GetcaptchaAsync(string t)
+        {
+            try
+            {
+                IUser user =BridgeFactory.BridgeManager.GetUserManager();
+                var genrator =await user.SendSmsCode(RestCollection.Verification,t);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// 点击注册
+        /// </summary>
+        private void Registere(string Content)
+        {
+            try
+            {
+                Hander = Content;
+                //LoginCollection = new loginModel();
+                RestCollection = new loginModel();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        #endregion
+
     }
 }

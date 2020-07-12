@@ -1,6 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using HandyControl.Controls;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.CoreLib.Modules;
+using HY_Main.Model.CoreLib;
 using HY_Main.ViewModel.Step;
 using System;
 using System.Collections.Generic;
@@ -55,7 +58,24 @@ namespace HY_Main.ViewModel
             get { return _CurrentPage; }
             set { _CurrentPage = value; RaisePropertyChanged(); }
         }
+        private RelayCommand<HanderMenuModel> _ExcuteCommand;
+        /// <summary>
+        /// 打开页
+        /// </summary>
+        public RelayCommand<HanderMenuModel> ExcuteCommand
+        {
+            get
+            {
+                if (_ExcuteCommand == null)
+                {
+                    _ExcuteCommand = new RelayCommand<HanderMenuModel>(t => Excute(t));
+                }
+                return _ExcuteCommand;
+            }
+            set { _ExcuteCommand = value; RaisePropertyChanged(); }
+        }
 
+        
         #endregion
 
         #region 初始化/页面相关
@@ -71,9 +91,25 @@ namespace HY_Main.ViewModel
             _ModuleManager = new ModuleManager();
             CurrentPage = await _ModuleManager.LoadModulesAsync();
         }
-
-
-
+        /// <summary>
+        /// 切换页面
+        /// </summary>
+        /// <param name="t"></param>
+        private void Excute(HanderMenuModel module)
+        {
+            try
+            {
+                CurrentPage = module.Body;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
         #endregion
 
     }

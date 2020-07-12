@@ -16,5 +16,6 @@ namespace HY_Main.ViewDialog.HomePage
     [Module(ModuleType.Hander,  "主页", "HY_Main.ViewDialog.HomePage.HomePageView", "\xe637",1)]
     public class HomePageView : BaseView<View.HomePage.HomePageView, HomePageViewModel, HomePageModel>, IModel
     {
+
     }
 }

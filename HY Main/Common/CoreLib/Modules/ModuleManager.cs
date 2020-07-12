@@ -47,6 +47,7 @@ namespace HY_Main.Common.CoreLib.Modules
                     var ass = Assembly.GetExecutingAssembly();
                     if (ass.CreateInstance(m.ModuleNameSpace) is IModel dialog)
                     {
+                        dialog.BindDefaultModel(m.Sort);
                         if (currentPage==null)
                         {
                             currentPage= dialog.GetView();

@@ -101,6 +101,7 @@
     <Compile Include="Model\HomePage\HomePageModel.cs" />
     <Compile Include="Model\Mine\MineModel.cs" />
     <Compile Include="Model\ShopMall\ShopMallModel.cs" />
+    <Compile Include="Model\Sign\loginModel.cs" />
     <Compile Include="ViewDialog\BaseView.cs" />
     <Compile Include="ViewDialog\BaseViewDialog.cs" />
     <Compile Include="ViewDialog\HomePage\HomePageView.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
     <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
+    <Compile Include="ViewModel\HomePage\UserControls\Download.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Mine\MineViewModel.cs" />
     <Compile Include="ViewModel\ShopMall\ShopMallViewModel.cs" />
@@ -116,6 +118,12 @@
     <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
     <Compile Include="View\HomePage\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\HomePage\UserControls\BottomContent.xaml.cs">
+      <DependentUpon>BottomContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\HomePage\UserControls\Recommended.xaml.cs">
+      <DependentUpon>Recommended.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Mine\MaineView.xaml.cs">
       <DependentUpon>MaineView.xaml</DependentUpon>
@@ -147,6 +155,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\HomePage\HomePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HomePage\UserControls\BottomContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HomePage\UserControls\Recommended.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,9 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,32 +8,21 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HY_Main.View.Sign
+namespace HY_Main.View.HomePage.UserControls
 {
     /// <summary>
-    /// Login.xaml 的交互逻辑
+    /// Recommended.xaml 的交互逻辑
     /// </summary>
-    public partial class Login : Window
+    public partial class Recommended : UserControl
     {
-        public Login()
+        public Recommended()
         {
             InitializeComponent();
-            Messenger.Default.Register<string>(this, "ShowPassword", ShowPassword);
-
         }
-
-        private void ShowPassword(string obj)
-        {
-            //pass.Password = obj;
-        }
-
-       
     }
-
-
 }

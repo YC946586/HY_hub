@@ -3,10 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HY_Main.View.HomePage"
+             xmlns:local="clr-namespace:HY_Main.View.HomePage" xmlns:usercontrols="clr-namespace:HY_Main.View.HomePage.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="My name is HomePage"/>
+        <!--<TextBlock Text="My name is HomePage"/>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Background="#333333"  VerticalAlignment="Center">
+                <TextBlock Text="常用游戏" Foreground="#767F7F" Margin="5 0"/>
+                <TextBlock Text="&#xe602;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="18" Foreground="#767F7F"  />
+            </StackPanel>
+            <TextBlock Text="双击启动游戏" Grid.Row="1" Foreground="#767F7F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ListBox Background="#AAAAAA" Grid.Row="2"></ListBox>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Background="#333333"  >
+                <TextBlock  Foreground="#767F7F" Text="添加" Margin="15 0" VerticalAlignment="Center"/>
+                <TextBlock  Foreground="#767F7F" Text="管理" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <!--热门推荐-->
+            <usercontrols:Recommended/>
+            <usercontrols:BottomContent Grid.Row="1"/>
+        </Grid>
     </Grid>
 </UserControl>

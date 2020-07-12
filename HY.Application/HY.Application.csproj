@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModel\GameModel.cs" />
     <Compile Include="Base\IDataOperation.cs" />
     <Compile Include="Base\IDataPager.cs" />
     <Compile Include="Base\IModelDialog.cs" />

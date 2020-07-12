@@ -19,7 +19,6 @@ namespace HY.Application.Base
         /// <param name="viewModel"></param>
         void BindViewModel<TViewModel>(TViewModel viewModel);
 
-        /// <summary>
         /// 关联默认视图
         /// </summary>
         void BindDefaultModel(int? authValue);
