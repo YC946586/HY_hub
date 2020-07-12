@@ -8,7 +8,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
         xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Name="mainLogin"
          Title="黑鹰hub登录"  Height="420" Width="330" 
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
     <Window.Template>
@@ -24,7 +24,7 @@
         </ControlTemplate>
     </Window.Template>
     <Window.Resources>
-        <converters1:ToObjectConverter x:Key="Convrter"/>
+        <converters:NameToObjectConverter x:Key="Convrter"/>
         <converters:FlagConverter  x:Key="Flag"/>
      
     </Window.Resources>
@@ -72,9 +72,9 @@
             </ContentControl.ContentTemplateSelector>
         </UserControl>-->
        
-        <!--<UserControl  Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
-                      ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>-->
-        <loca:Registere Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" Grid.Row="2"/>
+        <UserControl   Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
+                      ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>
+        <!--<loca:Registere Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" Grid.Row="2"/>-->
         <hc:LoadingCircle  Visibility="Collapsed"  />
     </Grid>
 </Window>

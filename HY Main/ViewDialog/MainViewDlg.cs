@@ -34,7 +34,7 @@ namespace HY_Main.ViewDialog
         public override void RegisterDefaultEvent()
         {
             GetDialogWindow().MouseDown += (sender, e) => { if (e.LeftButton == MouseButtonState.Pressed) { GetDialogWindow().DragMove(); } };
-            Messenger.Default.Register<string>(GetDialogWindow(), "MainExit", new Action<string>(async (msg) =>
+            Messenger.Default.Register<string>(GetDialogWindow(), "MainExit", new Action<string>((msg) =>
             {
                 this.Close();
             }));
