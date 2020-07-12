@@ -24,13 +24,13 @@ namespace HY_Main
         protected override void OnStartup(StartupEventArgs e)
         {
             ////加载主题文件
-            System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
-            System.Windows.Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary()
-            {
-                Source = new Uri(
-                    "pack://application:,,,/HY.CustomControl;component/Themes/SkinDefault.xaml",
-                    UriKind.RelativeOrAbsolute)
-            });
+            //System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
+            //System.Windows.Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary()
+            //{
+            //    Source = new Uri(
+            //        "pack://application:,,,/HY.CustomControl;component/Themes/SkinDefault.xaml",
+            //        UriKind.RelativeOrAbsolute)
+            //});
             var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
             if (!string.IsNullOrEmpty(MacAddress))
             {

@@ -217,14 +217,37 @@ namespace HY_Main.ViewModel.Sign
                         }
                     case "注册":
                         {
+                            if (string.IsNullOrEmpty(RestCollection.Verification))
+                            {
+                                MessageBox.Show("请输入验证码");
+                                return;
+                            }
+                            if (!RestCollection.Password.Equals(RestCollection.ConfirmPassword))
+                            {
+                                MessageBox.Show("密码不一致,请重新输入");
+                                return;
+                            }
                             phone = RestCollection.UserName;
                             pwd = RestCollection.Password;
                             IUser user = BridgeFactory.BridgeManager.GetUserManager();
                             var genrator =await user.Register(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
+                            //{ "code":"000","result":"13666142357","message":"注册成功"}
+                            if (genrator.code!="000")
+                            {
+                                MessageBox.Show(genrator.Message);
+                                return;
+                            }
                             break;
                         }
+
                     default:
-                        break;
+                        {
+                            phone = RestCollection.UserName;
+                            pwd = RestCollection.Password;
+                            IUser user = BridgeFactory.BridgeManager.GetUserManager();
+                            var genrator = await user.ResetPwdByCode(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
+                            break;
+                        }
                 }
                 if (!string.IsNullOrWhiteSpace(phone) && !string.IsNullOrWhiteSpace(pwd))
                 {
@@ -282,7 +305,7 @@ namespace HY_Main.ViewModel.Sign
                 IniFile ini = new IniFile(cfgINI);
                 LoginCollection.UserName = ini.IniReadValue("Login", "User");
                 LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
-                Messenger.Default.Send<string>(LoginCollection.Password, "ShowPassword");
+                Messenger.Default.Send<object>(this, "ShowPassword");
                 SkinName = ini.IniReadValue("Skin", "Skin");
             }
         }
@@ -314,8 +337,19 @@ namespace HY_Main.ViewModel.Sign
         {
             try
             {
+                if (string.IsNullOrEmpty(RestCollection.UserName))
+                {
+                    MessageBox.Show("请填写手机号");
+                    return;
+                }
+                _timerWtLogin.Start(); //验证码计时器开始 60s 过后重新执行
                 IUser user =BridgeFactory.BridgeManager.GetUserManager();
-                var genrator =await user.SendSmsCode(RestCollection.Verification,t);
+                var genrator =await user.SendSmsCode(RestCollection.UserName,t);
+                if (genrator.code!="000")
+                {
+                    MessageBox.Show(genrator.Message);
+                    //{ "code":"000","result":null,"message":"发送成功"}
+                }
             }
             catch (Exception ex)
             {

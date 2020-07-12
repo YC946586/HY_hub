@@ -6,8 +6,8 @@
         xmlns:loca="clr-namespace:HY_Main.View.Sign"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" 
-        xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
+           xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
+        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common"
         mc:Ignorable="d"
          Title="黑鹰hub登录"  Height="420" Width="330" 
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
@@ -24,8 +24,9 @@
         </ControlTemplate>
     </Window.Template>
     <Window.Resources>
-        <converters:NameToObjectConverter x:Key="Convrter"/>
+        <converters1:ToObjectConverter x:Key="Convrter"/>
         <converters:FlagConverter  x:Key="Flag"/>
+     
     </Window.Resources>
     <Grid>
         <Grid.Background>
@@ -58,14 +59,22 @@
             <TextBlock Text="忘记密码" FontSize="14" HorizontalAlignment="Right"
                        >
                 <TextBlock.InputBindings>
-                    <MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>
+                    <!--<MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>-->
                 </TextBlock.InputBindings>
             </TextBlock>
             <TextBlock Text="{Binding LoginCollection.Report}" Margin="0 10 0 0 "/>
         </StackPanel>
-        <UserControl  Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
-                      ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>
-        <!--<loca:Registere Visibility="{Binding Title,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" Grid.Row="2"/>-->
+
+        <!--<UserControl x:Name="User" Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" >
+            <ContentControl.ContentTemplateSelector>
+                <loca:ValueEditorTemplateSelector RegisteredDataTemplate="{StaticResource  RegisteredDataTemplate}" ResetDataTemplate="{StaticResource  ResetDataTemplate}">
+                </loca:ValueEditorTemplateSelector>
+            </ContentControl.ContentTemplateSelector>
+        </UserControl>-->
+       
+        <!--<UserControl  Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
+                      ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>-->
+        <loca:Registere Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" Grid.Row="2"/>
         <hc:LoadingCircle  Visibility="Collapsed"  />
     </Grid>
 </Window>

@@ -14,19 +14,19 @@
     <DataTemplate x:Key="RegisteredDataTemplate">
         <StackPanel Orientation="Vertical"   Margin="20 0"  >
             <StackPanel Orientation="Vertical"   Margin="20 0"  >
-                <TextBox Text="{Binding RestCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
+                <TextBox Text="{Binding  Path=RestCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
                      Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  
                              hc:InfoElement.Placeholder="请输入密码"  hc:InfoElement.Necessary="True" 
-                             loca:PasswordBoxHelper.Password="{Binding Path=RestCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                             loca:PasswordBoxHelper.Password="{Binding Path=RestCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource FindAncestor,  AncestorType=Window}}">
                     <hc:Interaction.Behaviors>
                         <loca:PasswordBoxBehavior/>
                     </hc:Interaction.Behaviors>
                 </hc:PasswordBox>
                 <hc:PasswordBox   VerticalAlignment="Center"  Height="40" FontSize="14"  
                              hc:InfoElement.Placeholder="请输入确认密码"  hc:InfoElement.Necessary="True"  
-                             loca:PasswordBoxHelper.Password="{Binding Path=RestCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                             loca:PasswordBoxHelper.Password="{Binding Path=RestCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource FindAncestor,  AncestorType=Window}}">
                     <hc:Interaction.Behaviors>
                         <loca:PasswordBoxBehavior/>
                     </hc:Interaction.Behaviors>
@@ -36,7 +36,7 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding RestCollection.Verification,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入验证码" Height="35" FontSize="12" Style="{DynamicResource TextBoxExtend}" 
+                    <TextBox Text="{Binding  Path=RestCollection.Verification,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource FindAncestor,  AncestorType=Window}}"  hc:InfoElement.Placeholder="请输入验证码" Height="35" FontSize="12" Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"  Margin="0 0 20 0"/>
                     <Button  Content="获取验证码"    Grid.Column="1"
                       Command="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType=Window},
@@ -60,7 +60,7 @@
     <DataTemplate x:Key="ResetDataTemplate">
         <StackPanel Orientation="Vertical"   Margin="20 0"  >
             <StackPanel Orientation="Vertical"   Margin="20 0"  >
-                <TextBox Text="{Binding RestCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
+                <TextBox Text="{Binding  Path=RestCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
                      Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  

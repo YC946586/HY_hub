@@ -86,6 +86,7 @@
     <Compile Include="Common\CoreLib\Modules\ModuleAttribute.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleComponent.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleManager.cs" />
+    <Compile Include="Common\ToObjectConverter.cs" />
     <Compile Include="Common\Unity\BootStrapper.cs" />
     <Compile Include="Common\Unity\IUnityLocator.cs" />
     <Compile Include="Common\Unity\ServiceProvider.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="View\Sign\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sign\Registere.xaml.cs">
+      <DependentUpon>Registere.xaml</DependentUpon>
+    </Compile>
     <Page Include="Common\UserControls\MainHanderMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sign\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sign\Registere.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -18,6 +18,13 @@ namespace HY.RequestConver.InterFace
         /// <param name="account">账号</param>
         /// <returns>结果</returns>
         Task<ServiceResponse> Register(string passWord, string phone, string validCode);
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        /// <param name="account">账号</param>
+        /// <returns>结果</returns>
+        Task<ServiceResponse> ResetPwdByCode(string passWord, string phone, string validCode);
         /// <summary>
         /// 根据账户获取账户信息
         /// </summary>
@@ -45,13 +52,7 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> Login(string macAdd, string password, string phone);
 
 
-        /// <summary>
-        /// 登录
-        /// </summary>          
-        /// <param name="account">账号</param>
-        /// <param name="password">密码</param>
-        /// <returns>用户信息</returns>
-        Task<ServiceResponse> ResetPwdByCode(string passWord, string phone, string validCode);
+     
         
     }
 }

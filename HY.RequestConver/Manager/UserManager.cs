@@ -33,8 +33,8 @@ namespace HY.RequestConver.Manager
             {
                 Dictionary<string, object> dic = new Dictionary<string, object>
                 {
-                    { "macAdd ", macAdd},
-                    { "passWord  ", password},
+                    { "macAdd", macAdd},
+                    { "passWord", password},
                     { "phone", phone},
                 };
                 var genrator = Task.Run(() => Network.ApiPost("user", "login", dic));
@@ -66,9 +66,9 @@ namespace HY.RequestConver.Manager
             {
                 Dictionary<string, object> dic = new Dictionary<string, object>
                 {
-                    { "passWord ", passWord},
-                    { "phone ", phone},
-                    { "validCode ", validCode},
+                    { "passWord", passWord},
+                    { "phone", phone},
+                    { "validCode", validCode},
                 };
                 var genrator = Task.Run(() => Network.ApiPost("user", "register", dic));
                 return genrator;

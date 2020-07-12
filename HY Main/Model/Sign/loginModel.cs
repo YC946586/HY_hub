@@ -18,7 +18,7 @@ namespace HY_Main.Model.Sign
         private string _confirmPassword = string.Empty;
         private bool _IsCancel = true;
         private string _verification = string.Empty;
-        private string _verificationContent = string.Empty;
+        private string _verificationContent = "获取验证码";
         private bool _verificationEnbled = true;
         /// <summary>
         /// 进度报告
