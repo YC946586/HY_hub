@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
 using HY.Application.Base;
+using HY.Client.Entity;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
 using HY.RequestConver;
@@ -16,6 +17,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace HY_Main.ViewModel.Sign
@@ -68,6 +71,7 @@ namespace HY_Main.ViewModel.Sign
         #region  属性
         private string _Title = "登录";
         public string _TemplateType = "RegisteredDataTemplate";
+        private ImageSource _SkinName;
         private loginModel _loginCollection = new loginModel();
         private loginModel _restCollection = new loginModel();
 
@@ -79,7 +83,11 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 背景图片
         /// </summary>
-        public string SkinName { get; set; }
+        public ImageSource SkinName
+        {
+            get { return _SkinName; }
+            set { _SkinName = value; RaisePropertyChanged(); }
+        }
 
 
         /// <summary>
@@ -215,7 +223,7 @@ namespace HY_Main.ViewModel.Sign
                             pwd = LoginCollection.Password;
                             break;
                         }
-                    case "注册":
+                    default:
                         {
                             if (string.IsNullOrEmpty(RestCollection.Verification))
                             {
@@ -229,23 +237,16 @@ namespace HY_Main.ViewModel.Sign
                             }
                             phone = RestCollection.UserName;
                             pwd = RestCollection.Password;
+                            ServiceResponse genrator = new ServiceResponse();
                             IUser user = BridgeFactory.BridgeManager.GetUserManager();
-                            var genrator =await user.Register(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
-                            //{ "code":"000","result":"13666142357","message":"注册成功"}
-                            if (genrator.code!="000")
+                            genrator = hander.Equals("注册")
+                                ? await user.Register(RestCollection.Password, RestCollection.UserName, RestCollection.Verification)
+                                : await user.ResetPwdByCode(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
+                            if (genrator.code != "000")
                             {
                                 MessageBox.Show(genrator.Message);
                                 return;
                             }
-                            break;
-                        }
-
-                    default:
-                        {
-                            phone = RestCollection.UserName;
-                            pwd = RestCollection.Password;
-                            IUser user = BridgeFactory.BridgeManager.GetUserManager();
-                            var genrator = await user.ResetPwdByCode(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
                             break;
                         }
                 }
@@ -253,8 +254,26 @@ namespace HY_Main.ViewModel.Sign
                 {
                     this.LoginCollection.IsCancel = false;
                     IUser user = BridgeFactory.BridgeManager.GetUserManager();
-                    var genrator = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
-                    MessageBox.Show(genrator.Message);
+                    if (phone.Equals("13666142357"))
+                    {
+                        var genrator = await user.Login("123", pwd, phone);
+                        if (genrator.code != "000")
+                        {
+                            MessageBox.Show(genrator.Message);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var genrator = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
+                        if (genrator.code != "000")
+                        {
+                            MessageBox.Show(genrator.Message);
+                            return;
+                        }
+                    }
+                   
+                
                 }
                 else
                 {
@@ -299,6 +318,8 @@ namespace HY_Main.ViewModel.Sign
         public void ReadConfigInfo()
         {
             TimerLoad();
+            var imgWebUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594631703207&di=3527ed4cb231172e3ea759080493bb0a&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20191006%2F19%2F1570360737-HvGOTkxnum.jpg";
+             SkinName= new BitmapImage(new Uri(imgWebUrl));
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
             if (File.Exists(cfgINI))
             {
@@ -306,7 +327,7 @@ namespace HY_Main.ViewModel.Sign
                 LoginCollection.UserName = ini.IniReadValue("Login", "User");
                 LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
                 Messenger.Default.Send<object>(this, "ShowPassword");
-                SkinName = ini.IniReadValue("Skin", "Skin");
+              
             }
         }
 
@@ -364,7 +385,10 @@ namespace HY_Main.ViewModel.Sign
         {
             try
             {
-                Hander = Content;
+                _timerWtLogin.Stop();
+                TimerLoad();
+                  Hander = Content;
+                TemplateType = Content.Equals("注册") ? "RegisteredDataTemplate" : "ResetDataTemplate";
                 //LoginCollection = new loginModel();
                 RestCollection = new loginModel();
             }

@@ -19,18 +19,13 @@ namespace HY_Main
     {
         //http://v.bidsneo.com/hub/index.html#id=sfmm4t&p=%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
         //http://118.31.16.221:8012/eagle/swagger-ui.html
+        //usercoupon，是使用激活码
+        //buyGame是获取游戏
 
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ////加载主题文件
-            //System.Windows.Application.Current.Resources.MergedDictionaries.Clear();
-            //System.Windows.Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary()
-            //{
-            //    Source = new Uri(
-            //        "pack://application:,,,/HY.CustomControl;component/Themes/SkinDefault.xaml",
-            //        UriKind.RelativeOrAbsolute)
-            //});
+
             var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
             if (!string.IsNullOrEmpty(MacAddress))
             {

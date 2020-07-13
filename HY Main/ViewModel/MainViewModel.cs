@@ -32,6 +32,7 @@ namespace HY_Main.ViewModel
         }
 
         #endregion
+
         #region 工具栏
 
         private NoticeViewModel _NoticeView;

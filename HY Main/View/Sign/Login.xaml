@@ -6,6 +6,7 @@
         xmlns:loca="clr-namespace:HY_Main.View.Sign"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
         xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common"
         mc:Ignorable="d" Name="mainLogin"
@@ -26,55 +27,53 @@
     <Window.Resources>
         <converters:NameToObjectConverter x:Key="Convrter"/>
         <converters:FlagConverter  x:Key="Flag"/>
-     
+
     </Window.Resources>
     <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="{Binding SkinName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border BorderThickness="0 0 0 2" BorderBrush="Black">
-            <TextBlock Text="{Binding Hander,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16"  Margin="5 0 0 0"/>
-        </Border>
-        <TextBlock Text="黑鹰hub" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Grid.Row="1"/>
-        <StackPanel Orientation="Vertical"   Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Login}" Margin="20 0"  Grid.Row="2">
-            <TextBox Text="{Binding LoginCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
+        <Image  gif:ImageBehavior.AnimatedSource="{Binding SkinName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Stretch"  Stretch="UniformToFill"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="0 0 0 2" BorderBrush="Black">
+                <Grid>
+                    <TextBlock Text="{Binding Hander,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16"  Margin="5 0 0 0"/>
+                    <Button  HorizontalAlignment="Right"  Tag="&#xe626;" Style="{DynamicResource ButtonStyle}" Foreground="Black" Command="{ Binding ExitCommand,Mode=OneWay}" />
+                </Grid>
+
+            </Border>
+            <TextBlock Text="黑鹰hub" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Grid.Row="1"/>
+            <StackPanel Orientation="Vertical"   Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Login}" Margin="20 0"  Grid.Row="2">
+                <TextBox Text="{Binding LoginCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
-            <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  
+                <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  
                              hc:InfoElement.Placeholder="请输入密码" x:Name="pass" hc:InfoElement.Necessary="True" 
                              loca1:PasswordBoxHelper.Password="{Binding Path=LoginCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                <hc:Interaction.Behaviors>
-                    <loca1:PasswordBoxBehavior/>
-                </hc:Interaction.Behaviors>
-            </hc:PasswordBox>
-            <Button  Content="登录" 
+                    <hc:Interaction.Behaviors>
+                        <loca1:PasswordBoxBehavior/>
+                    </hc:Interaction.Behaviors>
+                </hc:PasswordBox>
+                <Button  Content="登录" 
                         Command="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType=Window},
                        Path=DataContext.SignCommand}"  CommandParameter="登录"   Height="40"   Style="{StaticResource ButtonPrimary}"
                      Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}" />
-            <Button Content="注册" Margin="0 25"  Command="{Binding RegistereCommand}" CommandParameter="注册" Height="40" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}"/>
-            <TextBlock Text="忘记密码" FontSize="14" HorizontalAlignment="Right"
+                <Button Content="注册" Margin="0 25"  Command="{Binding RegistereCommand}" CommandParameter="注册" Height="40" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}"/>
+                <TextBlock Text="忘记密码" FontSize="14" HorizontalAlignment="Right"
                        >
-                <TextBlock.InputBindings>
-                    <!--<MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>-->
-                </TextBlock.InputBindings>
-            </TextBlock>
-            <TextBlock Text="{Binding LoginCollection.Report}" Margin="0 10 0 0 "/>
-        </StackPanel>
+                    <TextBlock.InputBindings>
+                        <MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+                <TextBlock Text="{Binding LoginCollection.Report}" Margin="0 10 0 0 "/>
+            </StackPanel>
 
-        <!--<UserControl x:Name="User" Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" >
-            <ContentControl.ContentTemplateSelector>
-                <loca:ValueEditorTemplateSelector RegisteredDataTemplate="{StaticResource  RegisteredDataTemplate}" ResetDataTemplate="{StaticResource  ResetDataTemplate}">
-                </loca:ValueEditorTemplateSelector>
-            </ContentControl.ContentTemplateSelector>
-        </UserControl>-->
-       
-        <UserControl   Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
+            <UserControl   Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
                       ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>
-        <!--<loca:Registere Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}" Grid.Row="2"/>-->
-        <hc:LoadingCircle  Visibility="Collapsed"  />
+
+            <hc:LoadingCircle  Visibility="Collapsed"  />
+        </Grid>
     </Grid>
+   
 </Window>
