@@ -11,7 +11,8 @@ namespace HY_Main.Model.CoreLib
         private string headerName;
         private string headerIcon;
         private object body;
-
+        private bool _isChecked;
+        
         /// <summary>
         /// 标题
         /// </summary>
@@ -20,6 +21,15 @@ namespace HY_Main.Model.CoreLib
             get { return headerName; }
             set { headerName = value; }
         }
+        /// <summary>
+        ///  
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { _isChecked = value; }
+        }
+        
         /// <summary>
         /// 标题图标
         /// </summary>

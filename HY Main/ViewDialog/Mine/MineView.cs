@@ -13,7 +13,7 @@ namespace HY_Main.ViewDialog.Mine
     /// <summary>
     ///  
     /// </summary>
-    [Module(ModuleType.Hander, "我的", "HY_Main.ViewDialog.Mine.MineView", "\xe6b8", 3)]
+    [Module(ModuleType.Hander, "我的", "HY_Main.ViewDialog.Mine.MineView", "\xe6a9", 3)]
     public class MineView : BaseView<HY_Main.View.Mine.MaineView, MineViewModel, MineModel>, IModel
     {
     }

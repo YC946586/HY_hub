@@ -16,9 +16,9 @@
                     <Border >
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{TemplateBinding Tag}" FontFamily="{DynamicResource IconFont}"  HorizontalAlignment="Center"  VerticalAlignment="Center"   
-                                   FontSize="15"  Foreground="{TemplateBinding Foreground}"  />
+                                   FontSize="18"  Foreground="{TemplateBinding Foreground}"  />
                             <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" 
-                                       FontSize="13"  Margin="3 0 0 0"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                       FontSize="14"  Margin="3 0 0 0"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </StackPanel>
 
                     </Border>

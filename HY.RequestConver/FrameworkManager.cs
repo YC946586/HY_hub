@@ -22,6 +22,17 @@ namespace HY.RequestConver
         {
             return new UserManager();
         }
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <returns></returns>
+        public override IHome GetHomeManager()
+        {
+            return new HomeManager();
+        }
+
+        
+       
     }
 
 }

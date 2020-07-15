@@ -41,9 +41,16 @@ namespace HY_Main.Common.CoreLib.Modules
                 ModuleComponent loader = new ModuleComponent();
                 var _IModule = await Task.Run(() => loader.GetModules());
                 if (_IModule == null) return null;
+                int cked = 0;
                 foreach (var m in _IModule.OrderBy(s=>s.Sort))
                 {
-                    HanderMenuModel handerMenu = new HanderMenuModel() { HeaderName = m.Name, HeaderIcon = m.ICON };
+                    bool Checked = false;
+                    if (cked == 0)
+                    {
+                        Checked = true;
+                    }
+                    cked++;
+                    HanderMenuModel handerMenu = new HanderMenuModel() { HeaderName = m.Name, HeaderIcon = m.ICON, IsChecked = Checked };
                     var ass = Assembly.GetExecutingAssembly();
                     if (ass.CreateInstance(m.ModuleNameSpace) is IModel dialog)
                     {

@@ -16,6 +16,7 @@ namespace HY.Client.Execute.Commons
         private static Loginer _Loginer = new Loginer(); //饿汉式单例
 
         public string macAdd { get; set; }
+        public string Authorization { get; set; }
         /// <summary>
         /// 当前用户
         /// </summary>

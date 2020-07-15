@@ -25,7 +25,7 @@ namespace HY.Client.Entity
         /// <summary>
         /// 返回的列表结果
         /// </summary>
-        public dynamic Results { get; set; }
+        public object result { get; set; }
 
         /// <summary>
         /// 结果总行数

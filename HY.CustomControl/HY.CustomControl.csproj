@@ -82,7 +82,7 @@
     <Resource Include="Resources\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\demo_index.html" />
+    <Content Include="Resources\demo_index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

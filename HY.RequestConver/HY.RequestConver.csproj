@@ -47,7 +47,9 @@
     <Compile Include="Bridge\BridgeFactory.cs" />
     <Compile Include="Bridge\BridgeManager.cs" />
     <Compile Include="FrameworkManager.cs" />
+    <Compile Include="InterFace\IHome.cs" />
     <Compile Include="InterFace\IUser.cs" />
+    <Compile Include="Manager\HomeManager.cs" />
     <Compile Include="Manager\UserManager.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

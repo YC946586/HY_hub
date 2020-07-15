@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
 using HY.Application.Base;
 using HY.Client.Entity;
+using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
 using HY.RequestConver;
@@ -11,6 +12,7 @@ using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.Unity;
 using HY_Main.Model.Sign;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -262,6 +264,9 @@ namespace HY_Main.ViewModel.Sign
                             MessageBox.Show(genrator.Message);
                             return;
                         }
+                        var Results = JsonConvert.DeserializeObject<LoginResultEntity>(genrator.result.ToString());
+                        Network.Authorization = Results.token;
+                        Loginer.LoginerUser.Authorization = Results.token;
                     }
                     else
                     {
@@ -272,8 +277,6 @@ namespace HY_Main.ViewModel.Sign
                             return;
                         }
                     }
-                   
-                
                 }
                 else
                 {

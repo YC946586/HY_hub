@@ -9,34 +9,90 @@
     <Grid>
         <!--<TextBlock Text="My name is HomePage"/>-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid>
+        <Grid Background="#474747">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Background="#333333"  VerticalAlignment="Center">
-                <TextBlock Text="常用游戏" Foreground="#767F7F" Margin="5 0"/>
-                <TextBlock Text="&#xe602;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   
-                                   FontSize="18" Foreground="#767F7F"  />
-            </StackPanel>
-            <TextBlock Text="双击启动游戏" Grid.Row="1" Foreground="#767F7F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ListBox Background="#AAAAAA" Grid.Row="2"></ListBox>
+            <Border BorderBrush="#656565" BorderThickness="0 1 0 0">
+                <Border Margin="20 0" BorderThickness="0 0 0 1" BorderBrush="#656565">
+                    <StackPanel Orientation="Horizontal"   VerticalAlignment="Center" >
+                        <TextBlock Text="&#xe67e;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="25" Foreground="#EEBE02"  />
 
-            <StackPanel Orientation="Horizontal" Grid.Row="3" Background="#333333"  >
-                <TextBlock  Foreground="#767F7F" Text="添加" Margin="15 0" VerticalAlignment="Center"/>
-                <TextBlock  Foreground="#767F7F" Text="管理" VerticalAlignment="Center"/>
-            </StackPanel>
+                        <TextBlock Text="常用游戏" Foreground="#FCFCFC"  Margin="5 0"  FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xe602;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#A9A9A9"  />
+                    </StackPanel>
+                </Border>
+               
+            </Border>
+
+            <TextBlock Text="双击启动游戏" Grid.Row="1" Foreground="#A7A7A7" FontSize="14"  VerticalAlignment="Center" Margin="20 0"/>
+            <ListBox  Background="#474747" ItemsSource="{Binding HotGames,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Margin" Value="0 5 "/>
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border x:Name="bor"  >
+                                        <Border.InputBindings>
+                                            <MouseBinding   MouseAction="LeftClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
+                             CommandParameter="{Binding }"/>
+                                        </Border.InputBindings>
+                                        <StackPanel Orientation="Horizontal" Margin="20 0">
+                                            <Border BorderBrush="#868686" BorderThickness="1" Margin="0 0 5 0" CornerRadius="5" Width="35" Height="35">
+                                                <Image Source="{Binding pict}" Stretch="Fill" Margin="0.5"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding title}" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" TargetName="bor" Value="#666666"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                     
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+            <Grid  Grid.Row="3" Background="#333333"  >
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                    <TextBlock Text="&#xe6b9;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="18" Foreground="#A8A8A8"  />
+                    <TextBlock  Foreground="#A8A8A8" Text="添加"  VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xe6fe;" FontFamily="{DynamicResource IconFont}"  Margin="15 0 0 0"  HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="18" Foreground="#A8A8A8"  />
+                    <TextBlock  Foreground="#A8A8A8" Text="管理" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+          
         </Grid>
 
-        <Grid Grid.Column="1" Background="White">
+        <Grid Grid.Column="1" Background="#F2F2F0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--热门推荐-->
             <usercontrols:Recommended/>

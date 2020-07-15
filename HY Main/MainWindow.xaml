@@ -7,7 +7,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:UserControls="clr-namespace:HY_Main.Common.UserControls"
         mc:Ignorable="d"
-        Title="黑鹰 Hub" Height="768" Width="1366"  
+        Title="黑鹰 Hub" Height="720" Width="1280"  
       WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
     <Window.Template>
         <ControlTemplate TargetType="Window">
@@ -28,23 +28,28 @@
         </Grid.RowDefinitions>
         <UniformGrid Columns="3" Background="#555555">
             <StackPanel Orientation="Horizontal">
-                <hc:Gravatar  Source="{Binding UserAvatar}" Margin="10"/>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding UserName}"/>
+                <!--<hc:Gravatar   Source="{Binding UserAvatar}" Margin="10"/>-->
+                <hc:Gravatar Style="{StaticResource GravatarCircleImg}"  Margin="10">
+                    <Image Source="/HY Main;component/UserAvatar.jpg"/>
+                </hc:Gravatar>
+                <StackPanel Orientation="Vertical"  >
+                    <!--<TextBlock Text="{Binding UserName}"/>
                     <Border Background="White" Height="30">
                         <TextBlock Text="{Binding UserBalance}" VerticalAlignment="Center"/>
-                    </Border>
+                    </Border>-->
+                    <TextBlock Text="黑鹰hub"  Foreground="#999999" FontSize="22"  FontWeight="Black" Margin="0 30 0 0" VerticalAlignment="Top"/>
+                   
                 </StackPanel>
             </StackPanel>
             <UserControls:MainHanderMenu/>
             <Grid HorizontalAlignment="Right">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
                     <Button Content="游戏工具" Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
-                    <Button Content="修改密码"  Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
+                    <Button Content="修改密码"  Margin="10 0 0 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
                     <UserControls:MainNotice/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" >

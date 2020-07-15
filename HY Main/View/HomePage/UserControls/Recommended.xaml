@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:HY_Main.View.HomePage.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Margin="20 0">
+        <StackPanel Orientation="Horizontal" Margin="0 15" VerticalAlignment="Top">
+            <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+            <TextBlock Text="热门推荐" FontSize="20" FontWeight="Black" Foreground="#333333" />
+        </StackPanel>
     </Grid>
 </UserControl>

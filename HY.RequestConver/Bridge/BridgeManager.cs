@@ -14,6 +14,12 @@ namespace HY.RequestConver.Bridge
         /// </summary>
         /// <returns></returns>
         public abstract IUser GetUserManager();
- 
+
+        /// <summary>
+        /// 获取Home接口
+        /// </summary>
+        /// <returns></returns>
+        public abstract IHome GetHomeManager();
+
     }
 }

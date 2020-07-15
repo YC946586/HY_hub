@@ -9,10 +9,15 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical"  Margin="10 0">
-            <TextBlock Text="热门下载" FontSize="16" FontWeight="Black" Foreground="Black" Margin="0 15"/>
+        <StackPanel Orientation="Vertical"  Margin="20 0">
+            <StackPanel Orientation="Horizontal" Margin="0 15">
+                <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                <TextBlock Text="热门下载" FontSize="20" FontWeight="Black" Foreground="#333333"/>
+            </StackPanel>
+          
             <ItemsControl ItemsSource="{Binding Path=DownloadManager.Groups}" Background="#F2F2F2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -61,18 +66,28 @@
         </StackPanel>
         <Grid  Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="5*"/>
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <StackPanel>
-                <TextBlock Text="游戏工具" FontSize="16" FontWeight="Black" Foreground="Black" Margin="0 15"/>
-                <Border Background="#F2F2F2" Height="60">
-                    <TextBlock Text="安装游戏必备运行库，可解决99%游戏无法进入的问题" Margin="10" TextAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
-                </Border>
-                <TextBlock Text="关于黑鹰 hub" FontSize="16" FontWeight="Black" Foreground="Black" Margin="0 15"/>
+                <StackPanel Orientation="Horizontal" Margin="0 15">
+                    <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                    <TextBlock Text="游戏工具" FontSize="20" FontWeight="Black" Foreground="#333333" />
+                </StackPanel>
+                <StackPanel Background="White"  Orientation="Vertical" >
+                    <TextBlock Text="安装游戏必备运行库，可解决99%游戏无法进入的问题。" Foreground="#909090" Margin="10 10 10 0"  TextWrapping="Wrap" FontSize="15"/>
+                    <TextBlock  Text="&#xe6a7;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#A8A8A8"  />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                    <TextBlock Text="关于黑鹰 hub" FontSize="20" FontWeight="Black" Foreground="#333333" Margin="0 15"/>
+                </StackPanel>
             </StackPanel>
-            <Border Background="#F2F2F2"  Grid.Row="1">
-                <TextBlock Text="黑鹰hub介绍"  Margin="10" TextWrapping="Wrap" FontSize="15"/>
+            <Border Background="White"  Grid.Row="1">
+                <TextBlock Text="黑鹰hub介绍"  Foreground="#909090" Margin="10" TextAlignment="Center" HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
             </Border>
 
         </Grid>
