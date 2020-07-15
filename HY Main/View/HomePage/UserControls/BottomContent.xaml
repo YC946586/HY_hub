@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HY_Main.View.HomePage.UserControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Refrenscommand="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -11,14 +13,19 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical"  Margin="20 0">
+        <Grid    Margin="20  0 0 0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Margin="0 15">
-                <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
-                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                <!--<TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
+                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />-->
+                <Image Source="{DynamicResource 云下载}" Width="28" Height="32" Margin="0 0 15 0" VerticalAlignment="Center"   />
                 <TextBlock Text="热门下载" FontSize="20" FontWeight="Black" Foreground="#333333"/>
             </StackPanel>
-          
-            <ItemsControl ItemsSource="{Binding Path=DownloadManager.Groups}" Background="#F2F2F2">
+
+            <ItemsControl ItemsSource="{Binding Path=DownloadManager.Groups}" Background="White"  Grid.Row="1">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="2" />
@@ -26,68 +33,92 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
                             <Border BorderThickness="0 0 0 2" BorderBrush="#797979"  Margin="10 0">
-                                <Grid Margin="0 10">
+                                <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="80"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="排名" Width="60"   HorizontalAlignment="Center"/>
-                                    <TextBlock Text="游戏" Grid.Column="1"/>
+                                    <TextBlock Text="排名"   FontSize="15"  HorizontalAlignment="Left"/>
+                                    <TextBlock Text="游戏" FontSize="15"  Grid.Column="1"/>
                                 </Grid>
                             </Border>
-                            <ItemsControl ItemsSource="{Binding MenuModels}">
-                                <ItemsControl.ItemsPanel>
+                            <ListBox ItemsSource="{Binding MenuModels}" Grid.Row="1">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseWheel">
+                                        <i:InvokeCommandAction  Command="{Binding Source={x:Static Refrenscommand:PreviewMouseWheel.PreviewMouseWheelCommand}}" 
+                                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ListBox}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel/>
+                                        <UniformGrid Rows="8"/>
                                     </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="10 10 10 0"  VerticalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="80"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Sort}"/>
-                                            <TextBlock Text="{Binding GameName}" Grid.Column="1"/>
-                                            <Button Content="获取游戏" Margin=" 20 0 " HorizontalAlignment="Right"  Style="{StaticResource ButtonPrimary}" Grid.Column="2"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                      
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <!--<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>-->
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                        <Setter Property="Background" Value="White"/>
+                                        <!-- 设置控件模板 -->
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem" >
+                                                    <Grid Margin="10 10 10 0" >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="80"/>
+                                                            <ColumnDefinition Width="80"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Button Content="{Binding Sort}" HorizontalAlignment="Left" Style="{StaticResource ButtonBackBkxStyle}"/>
+                                                        <TextBlock FontFamily="Microsoft YaHei" FontSize="12" Text="{Binding GameName}" VerticalAlignment="Center" Grid.Column="1"/>
+                                                        <Button Content="获取游戏"   HorizontalAlignment="Right"
+                                                    Style="{DynamicResource StyleDownloadButton}" Grid.Column="2"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+
+                                </ListBox.ItemContainerStyle>
+
+
+                            </ListBox>
+                        </Grid>
+
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
-        <Grid  Grid.Column="1">
+
+        </Grid>
+        <Grid  Grid.Column="1" Margin=" 20 0 0 0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
-            <StackPanel>
+            <StackPanel VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal" Margin="0 15">
-                    <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
-                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                    <Image Source="{DynamicResource 工具}" Width="28" Height="32" Margin="0 0 15 0" VerticalAlignment="Center"   />
                     <TextBlock Text="游戏工具" FontSize="20" FontWeight="Black" Foreground="#333333" />
                 </StackPanel>
                 <StackPanel Background="White"  Orientation="Vertical" >
-                    <TextBlock Text="安装游戏必备运行库，可解决99%游戏无法进入的问题。" Foreground="#909090" Margin="10 10 10 0"  TextWrapping="Wrap" FontSize="15"/>
+                    <TextBlock Text="安装游戏必备运行库，可解决99%游戏无法进入的问题。" Foreground="#666666" Margin="10 10 10 0"  TextWrapping="Wrap" FontSize="15"/>
                     <TextBlock  Text="&#xe6a7;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Center"   
                                    FontSize="20" Foreground="#A8A8A8"  />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 10">
-                    <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
-                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                    <Image Source="{DynamicResource 关于}" Width="28" Height="32" Margin="0 0 15 0" VerticalAlignment="Center"   />
                     <TextBlock Text="关于黑鹰 hub" FontSize="20" FontWeight="Black" Foreground="#333333" Margin="0 15"/>
                 </StackPanel>
             </StackPanel>
             <Border Background="White"  Grid.Row="1">
-                <TextBlock Text="黑鹰hub介绍"  Foreground="#909090" Margin="10" TextAlignment="Center" HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
+                <TextBlock Text="黑鹰hub介绍"  Foreground="#666666" Margin="10" TextAlignment="Center" HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
             </Border>
 
         </Grid>

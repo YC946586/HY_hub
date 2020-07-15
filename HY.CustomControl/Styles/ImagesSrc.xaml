@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:HY.CustomControl.Controls.Button"
+  >
+
+    <BitmapImage x:Key="黑鹰币" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/黑鹰币.png"></BitmapImage>
+    <BitmapImage x:Key="底" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/底.png"></BitmapImage>
+    <BitmapImage x:Key="矩形" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Main/矩形 2(1).png"></BitmapImage>
+    <BitmapImage x:Key="多边形右" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形右.png"></BitmapImage>
+    <BitmapImage x:Key="多边形左" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形左.png"></BitmapImage>
+    <BitmapImage x:Key="工具" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/工具.png"></BitmapImage>
+    <BitmapImage x:Key="关于" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/关于.png"></BitmapImage>
+    <BitmapImage x:Key="热门推荐" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/热门推荐.png"></BitmapImage>
+    <BitmapImage x:Key="云下载" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/云下载.png"></BitmapImage>
+    <BitmapImage x:Key="中国风" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/中国风.png"></BitmapImage>
+    <BitmapImage x:Key="多边形拷贝" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形拷贝.png"></BitmapImage>
+    
+    <!--<ImageBrush x:Key="云下载" ImageSource="pack://application:,,,/HY.CustomControl;component/Images/Home/云下载.png"></ImageBrush>-->
+</ResourceDictionary>

@@ -6,10 +6,6 @@
              xmlns:local="clr-namespace:HY_Main.Common.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-
-     
-    </UserControl.Resources>
     <Grid>
         <ItemsControl  ItemsSource="{Binding NoticeView.NoticeModels}" HorizontalAlignment="Right">
             <ItemsControl.ItemsPanel>

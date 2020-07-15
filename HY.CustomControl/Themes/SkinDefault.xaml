@@ -7,6 +7,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/IconButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/LoginDataTemplate.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/ImagesSrc.xaml" />
+        
     </ResourceDictionary.MergedDictionaries>
     <FontFamily x:Key="IconFont">pack://application:,,,/HY.CustomControl;component/Resources/#iconfont</FontFamily>
 

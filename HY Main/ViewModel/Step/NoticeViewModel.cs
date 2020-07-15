@@ -20,7 +20,7 @@ namespace HY_Main.ViewModel.Step
         {
             _NoticeModels = new ObservableCollection<NoticeModel>();
             _NoticeModels.Add(new NoticeModel() { IconName = "\ue668", ApplyCommand = MinCommand });
-            //_NoticeModels.Add(new NoticeModel() { IconName = "\ue600", ApplyCommand = MaxCommand });
+            _NoticeModels.Add(new NoticeModel() { IconName = "\ue600", ApplyCommand = MaxCommand });
             _NoticeModels.Add(new NoticeModel() { IconName = "\ue626", ApplyCommand = ExitCommand });
         }
 

@@ -24,5 +24,7 @@ namespace HY_Main.View.HomePage
         {
             InitializeComponent();
         }
+
+      
     }
 }
