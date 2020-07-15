@@ -72,6 +72,7 @@
     <Compile Include="LoginPassworHelper.cs" />
     <Compile Include="PreviewMouseWheel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SwiperContent.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

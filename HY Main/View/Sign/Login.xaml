@@ -53,7 +53,7 @@
                              loca1:PasswordBoxHelper.Password="{Binding Path=LoginCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                     <hc:Interaction.Behaviors>
                         <loca1:PasswordBoxBehavior/>
-                    </hc:Interaction.Behaviors>
+                    </hc:Interaction.Behaviors>     
                 </hc:PasswordBox>
                 <Button  Content="登录" 
                         Command="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType=Window},
