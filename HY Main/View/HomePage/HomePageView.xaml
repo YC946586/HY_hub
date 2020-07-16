@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid Background="#474747">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
@@ -34,70 +34,36 @@
             </Border>
 
             <TextBlock Text="双击启动游戏" Grid.Row="1" Foreground="#A7A7A7" FontSize="14"  VerticalAlignment="Center" Margin="20 0"/>
-            <ItemsControl  Background="#474747"  ItemsSource="{Binding HotGames,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border x:Name="bor"  Margin="0 5 " Cursor="Hand" >
-                            <Border.InputBindings>
-                                <MouseBinding   MouseAction="LeftClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
+            <ScrollViewer Grid.Row="2">
+                <ItemsControl  Background="#474747"  ItemsSource="{Binding HotGames,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="bor"  Margin="0 5 " Cursor="Hand" >
+                                <Border.InputBindings>
+                                    <MouseBinding   MouseAction="LeftClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
                              CommandParameter="{Binding }"/>
-                            </Border.InputBindings>
-                            <StackPanel Orientation="Horizontal" Margin="20 0">
-                                <Border BorderBrush="#868686" BorderThickness="1" Margin="0 0 5 0" CornerRadius="5" Width="32" Height="32">
-                                    <Image Source="{Binding pict}" Stretch="Fill" Margin="0.5"/>
-                                </Border>
-                                <TextBlock Text="{Binding title}" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
-                            </StackPanel>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="bor" Value="#666666"/>
-                            </Trigger>
-                        </DataTemplate.Triggers>
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <!--<ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
-                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
-                        <Setter Property="Cursor" Value="Hand"/>
-                        <Setter Property="Margin" Value="0 5 "/>
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <Border x:Name="bor"  >
-                                        <Border.InputBindings>
-                                            <MouseBinding   MouseAction="LeftClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
-                             CommandParameter="{Binding }"/>
-                                        </Border.InputBindings>
-                                        <StackPanel Orientation="Horizontal" Margin="20 0">
-                                            <Border BorderBrush="#868686" BorderThickness="1" Margin="0 0 5 0" CornerRadius="5" Width="32" Height="32">
-                                                <Image Source="{Binding pict}" Stretch="Fill" Margin="0.5"/>
-                                            </Border>
-                                            <TextBlock Text="{Binding title}" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
-                                        </StackPanel>
+                                </Border.InputBindings>
+                                <StackPanel Orientation="Horizontal" Margin="20 0">
+                                    <Border BorderBrush="#868686" BorderThickness="1" Margin="0 0 5 0" CornerRadius="5" Width="32" Height="32">
+                                        <Image Source="{Binding pict}" Stretch="Fill" Margin="0.5"/>
                                     </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" TargetName="bor" Value="#666666"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                     
-                    </Style>
-                </ItemsControl.ItemContainerStyle>-->
-            </ItemsControl>
-
+                                    <TextBlock Text="{Binding title}" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
+                                </StackPanel>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" TargetName="bor" Value="#666666"/>
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
             <Grid  Grid.Row="3" Background="#333333"  >
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                     <TextBlock Text="&#xe6b9;" FontFamily="{DynamicResource IconFont}"   HorizontalAlignment="Center"  VerticalAlignment="Center"   

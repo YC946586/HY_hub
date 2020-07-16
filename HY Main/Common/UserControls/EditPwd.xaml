@@ -1,0 +1,49 @@
+﻿<Window x:Class="HY_Main.Common.UserControls.EditPwd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loca="clr-namespace:HY_Main.Common.UserControls"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
+        mc:Ignorable="d"
+        Title="密码修改"  Height="250" Width="300" 
+        WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border Padding="1" Background="Transparent">
+                <Border CornerRadius="0" Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" />
+                    </Border.Effect>
+                    <ContentPresenter Margin="1" ClipToBounds="True" />
+                </Border>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+    <Grid>
+        <StackPanel  Orientation="Vertical" Margin="10">
+            <TextBlock Text="原始密码" FontSize="14"/>
+            <hc:PasswordBox   Margin="0 15"   VerticalAlignment="Center"  Height="40" FontSize="14"  
+                             hc:InfoElement.Placeholder="请输入原始密码"   hc:InfoElement.Necessary="True" 
+                             loca1:PasswordBoxHelper.Password="{Binding Path=oldPwd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <hc:Interaction.Behaviors>
+                    <loca1:PasswordBoxBehavior/>
+                </hc:Interaction.Behaviors>
+            </hc:PasswordBox>
+            <TextBlock Text="新密码" FontSize="14"/>
+            <hc:PasswordBox    Margin="0 15"   VerticalAlignment="Center"  Height="40" FontSize="14"  
+                             hc:InfoElement.Placeholder="请输入新密码"   hc:InfoElement.Necessary="True" 
+                             loca1:PasswordBoxHelper.Password="{Binding Path=newPwd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <hc:Interaction.Behaviors>
+                    <loca1:PasswordBoxBehavior/>
+                </hc:Interaction.Behaviors>
+            </hc:PasswordBox>
+            <StackPanel  Orientation="Horizontal"   HorizontalAlignment="Center"  >
+                <Button Content="取消" Width="80" Command="{Binding CancelCommand}" />
+                <Button Content="确定" Width="80" Command="{Binding SaveCommand}" Margin="40 0 0 0" Style="{StaticResource ButtonPrimary}"/>
+              
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

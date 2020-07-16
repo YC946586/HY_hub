@@ -1,4 +1,7 @@
-﻿using HY.Client.Entity.HomeEntitys;
+﻿using GalaSoft.MvvmLight.Command;
+using HandyControl.Data;
+using HY.Client.Entity.HomeEntitys;
+using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
@@ -11,6 +14,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
 
 namespace HY_Main.ViewModel.HomePage
 {
@@ -19,6 +24,26 @@ namespace HY_Main.ViewModel.HomePage
         private Download _DownloadManager;
         private ObservableCollection<Hotgame> _hotGames = new ObservableCollection<Hotgame>();
         private ObservableCollection<Recommendgame> _recommendGames = new ObservableCollection<Recommendgame>();
+
+        private string _describe;
+        private string _toolDes;
+        /// <summary>
+        ///  
+        /// </summary>
+        public string about
+        {
+            get { return _describe; }
+            set { _describe = value; RaisePropertyChanged(); }
+        }
+      
+        /// <summary>
+        ///  
+        /// </summary>
+        public string toolDes
+        {
+            get { return _toolDes; }
+            set { _toolDes = value; RaisePropertyChanged(); }
+        }
         /// <summary>
         /// 模块管理器
         /// </summary>
@@ -46,6 +71,8 @@ namespace HY_Main.ViewModel.HomePage
             }
         }
 
+       
+     
 
         public override void InitViewModel()
         {
@@ -68,14 +95,40 @@ namespace HY_Main.ViewModel.HomePage
                     }
                     if (Results.recommendGames != null && Results.recommendGames.Length != 0)
                     {
-                        Results.recommendGames.ToList().ForEach((ary) => RecommendGames.Add(ary));
+                        Results.recommendGames.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => RecommendGames.Add(ary));
                     } 
+                }
+
+                ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
+                var Commongenrator = await common.GetCommonDes();
+                if (Commongenrator.code.Equals("000"))
+                {
+                    var Results = JsonConvert.DeserializeObject<HomePageModel>(Commongenrator.result.ToString());
+                    about = Results.about;
+                    toolDes = Results.toolDes;
+
                 }
             }
             catch (Exception ex)
             {
+                Message.ErrorException(ex);
+            }
+        }
 
-                throw;
+
+        public override  void GainGames(Recommendgame tmodel)
+        {
+            try
+            {
+                if (Message.Question("是否使用黑鹰币获取游戏"))
+                {
+
+                } 
+             
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
             }
         }
 

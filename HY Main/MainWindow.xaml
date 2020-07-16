@@ -55,7 +55,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="游戏工具" Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
-                        <Button Content="修改密码"  Margin="10 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
+                        <Button Content="修改密码"  Command="{Binding UpdatePwd}" Margin="10 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
                         <UserControls:MainNotice/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" >

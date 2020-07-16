@@ -130,5 +130,44 @@ namespace HY.RequestConver.Manager
                 throw;
             }
         }
+
+        public Task<ServiceResponse> GetUserGames(string filter)
+        {
+            try
+            {
+                //(query) 短信类型：1 注册，2 重置密码
+                Dictionary<string, object> dic = new Dictionary<string, object>
+                {
+                    { "filter", filter}
+                };
+                var genrator = Task.Run(() => Network.ApiGet("userCenter", "getUserGames", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Task<ServiceResponse> ResetPwd(string newPwd, string oldPwd)
+        {
+            try
+            {
+                //(query) 短信类型：1 注册，2 重置密码
+                Dictionary<string, object> dic = new Dictionary<string, object>
+                {
+                    { "newPwd", newPwd},
+                    { "oldPwd", oldPwd}
+                };
+                var genrator = Task.Run(() => Network.ApiPost("user", "resetPwd", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

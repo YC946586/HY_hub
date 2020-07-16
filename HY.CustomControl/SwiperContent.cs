@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media.Animation;
 
 namespace HY.CustomControl
 {
     /// <summary>
     ///     轮播控件
     /// </summary>
+    [DefaultProperty("Items")]
+    [ContentProperty("Items")]
     //[TemplatePart(Name = ElementPanelPage, Type = typeof(Panel))]
     [TemplatePart(Name = ElementItemsControl, Type = typeof(ItemsPresenter))]
     public class SwiperContent : ListBox, IDisposable
     {
-
-
         public SwiperContent()
         {
             CommandBindings.Add(new CommandBinding(Prev, ButtonPrev_OnClick));
@@ -27,10 +30,9 @@ namespace HY.CustomControl
         private void ButtonPrev_OnClick(object sender, RoutedEventArgs e) => PageIndex--;
 
         private void ButtonNext_OnClick(object sender, RoutedEventArgs e) => PageIndex++;
-        //private const string ElementPanelPage = "PART_PanelPage";
         private const string ElementItemsControl = "PART_ItemsControl";
-        private int _pageIndex = -1;
-
+        private int _pageIndex = 0;
+        private int _pageCount = 0;
         /// <summary>
         ///     页码
         /// </summary>
@@ -40,36 +42,37 @@ namespace HY.CustomControl
             set
             {
                 if (Items.Count == 0) return;
-                if (_pageIndex == value) return;
-                if (value < 0)
-                    _pageIndex = Items.Count - 1;
-                else if (value >= Items.Count)
-                    _pageIndex = 0;
-                else
-                    _pageIndex = value;
-                //UpdatePageButtons(_pageIndex);
+
+                if (value < 0) return;
+                //_pageIndex = Items.Count - 1;
+                //else if (value >= Items.Count)
+                //    _pageIndex = 0;
+                //else
+                if (_pageCount== value) return;
+                _pageIndex = value;
+                UpdatePageButtons(_pageIndex);
             }
         }
         //private Panel _panelPage;
         private ItemsPresenter _itemsControl;
         public override void OnApplyTemplate()
         {
-
-
-            //_panelPage?.RemoveHandler(Button.ClickEvent, new RoutedEventHandler(ButtonPages_OnClick));
-
             base.OnApplyTemplate();
 
             _itemsControl = GetTemplateChild(ElementItemsControl) as ItemsPresenter;
-            //_panelPage = GetTemplateChild(ElementPanelPage) as Panel;
-         
-            if (ItemsSource == null)
-            {
-                return;
 
+            if (ItemsSource != null && Items.Count>4)
+            {
+                _pageCount = Convert.ToInt32(Math.Ceiling(Items.Count / (double)4));;
+                AllItemSource = new List<string>();
+                var IlistModel = ItemsSource as IEnumerable<dynamic>;
+                if (IlistModel.Count()>4)
+                {
+                    ItemsSource= IlistModel.Skip(0).Take(4);
+                }
+                AllItemSource = IlistModel;
+                //dd.ToList().ForEach((ary) => AllItemSource.Add(ary));
             }
-            AllItemSource = (IEnumerable<dynamic>)ItemsSource;
-            //_panelPage.AddHandler(Button.ClickEvent, new RoutedEventHandler(ButtonPages_OnClick));
 
             Update();
         }
@@ -80,49 +83,27 @@ namespace HY.CustomControl
         /// <summary>
         ///     更新页按钮
         /// </summary>
-        public void UpdatePageButtons(int index = -1)
+        public void UpdatePageButtons(int index)
         {
-
-            var count = AllItemSource.Count();
-
-            var width = .0;
-            this.ItemsSource = AllItemSource.First();
-            //foreach (FrameworkElement item in ItemsSource)
+            //var count = Items.Count;
+            //if (ItemsSource != null && AllItemSource == null)
             //{
-
-            //    item.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            //    width += item.DesiredSize.Width;
-
+            //    AllItemSource = new List<string>();
+            //    var dd = ItemsSource as IEnumerable<dynamic>;
+            //    AllItemSource = dd;
+            //    //dd.ToList().ForEach((ary) => AllItemSource.Add(ary));
             //}
+            //List<object> dynamics = new List<object>();
+            if (AllItemSource != null && AllItemSource.Count() > 4)
+            {
+                var items = AllItemSource.Skip(4 * index).Take(4);
+                _itemsControl.BeginAnimation(MarginProperty,
+             CreateAnimation(new Thickness(1, 0, 0, 0)));
+                ItemsSource = items;
+            }
 
-            //_itemsControl.Width = _widthList.Last() + ExtendWidth;
-            //_panelPage.Children.Clear();
-            //for (var i = 0; i < count; i++)
-            //{
-            //    _panelPage.Children.Add(new RadioButton
-            //    {
-            //        Style = PageButtonStyle
-            //    });
-            //}
 
-            //if (index == -1 && count > 0) index = 0;
-            //if (index >= 0 && index < count)
-            //{
-            //    if (_panelPage.Children[index] is RadioButton button)
-            //    {
-            //        button.IsChecked = true;
-            //        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
-            //        UpdateItemsPosition();
-            //    }
-            //}
-        }
-        public static readonly DependencyProperty PageButtonStyleProperty = DependencyProperty.Register(
-           "PageButtonStyle", typeof(Style), typeof(SwiperContent), new PropertyMetadata(default(Style)));
 
-        public Style PageButtonStyle
-        {
-            get => (Style)GetValue(PageButtonStyleProperty);
-            set => SetValue(PageButtonStyleProperty, value);
         }
 
         public static readonly DependencyProperty AllItemSourcePropertyProperty =
@@ -142,8 +123,8 @@ namespace HY.CustomControl
             if (Items.Count == 0) return;
             //if (!IsCenter)
             //{
-            //    _itemsControl.BeginAnimation(MarginProperty,
-            //        AnimationHelper.CreateAnimation(new Thickness(1, 0, 0, 0)));
+            _itemsControl.BeginAnimation(MarginProperty,
+                CreateAnimation(new Thickness(1, 0, 0, 0)));
             //}
             //else
             //{
@@ -154,9 +135,22 @@ namespace HY.CustomControl
             //        new Thickness(4 / 2, 0, 0, 0)));
             //}
         }
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            UpdateItemsPosition();
+        }
         private void ButtonPages_OnClick(object sender, RoutedEventArgs e)
         {
 
+
+            //var _selectedButton = e.OriginalSource as RadioButton;
+
+            //var index = _panelPage.Children.IndexOf(_selectedButton);
+            //if (index != -1)
+            //{
+            //    PageIndex = index;
+            //}
 
         }
         /// <summary>
@@ -168,9 +162,24 @@ namespace HY.CustomControl
         ///     下一个
         /// </summary>
         public static RoutedCommand Next { get; } = new RoutedCommand(nameof(Next), typeof(SwiperContent));
+
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     创建一个Thickness动画
+        /// </summary>
+        /// <param name="thickness"></param>
+        /// <param name="milliseconds"></param>
+        /// <returns></returns>
+        public static ThicknessAnimation CreateAnimation(Thickness thickness = default, double milliseconds = 200)
+        {
+            return new ThicknessAnimation(thickness, new Duration(TimeSpan.FromMilliseconds(milliseconds)))
+            {
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseInOut }
+            };
         }
     }
 }

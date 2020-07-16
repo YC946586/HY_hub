@@ -30,7 +30,7 @@
 
     </Window.Resources>
     <Grid>
-        <Image  gif:ImageBehavior.AnimatedSource="{Binding SkinName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Stretch"  Stretch="UniformToFill"/>
+        <Image  gif:ImageBehavior.AnimatedSource="{Binding SkinName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Stretch"  Stretch="Fill"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -40,7 +40,7 @@
             <Border BorderThickness="0 0 0 2" BorderBrush="Black">
                 <Grid>
                     <TextBlock Text="{Binding Hander,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16"  Margin="5 0 0 0"/>
-                    <Button  HorizontalAlignment="Right"  Tag="&#xe626;" Style="{DynamicResource ButtonStyle}" Foreground="Black" Command="{ Binding ExitCommand,Mode=OneWay}" />
+                    <Button  HorizontalAlignment="Right"  Tag="&#xe626;" Style="{DynamicResource ButtonTagImgStyle}" Foreground="Black" Command="{ Binding ExitCommand,Mode=OneWay}" />
                 </Grid>
 
             </Border>

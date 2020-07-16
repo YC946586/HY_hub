@@ -1,8 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
+using HY.Application.Base;
+using HY.Client.Execute.Commons;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.CoreLib.Modules;
+using HY_Main.Common.Unity;
 using HY_Main.Model.CoreLib;
 using HY_Main.ViewModel.Step;
 using System;
@@ -60,6 +63,7 @@ namespace HY_Main.ViewModel
             set { _CurrentPage = value; RaisePropertyChanged(); }
         }
         private RelayCommand<HanderMenuModel> _ExcuteCommand;
+        public RelayCommand updatePwd;
         /// <summary>
         /// 打开页
         /// </summary>
@@ -76,7 +80,21 @@ namespace HY_Main.ViewModel
             set { _ExcuteCommand = value; RaisePropertyChanged(); }
         }
 
-        
+      
+        public RelayCommand UpdatePwd
+        {
+            get
+            {
+                if (updatePwd == null)
+                {
+                    updatePwd = new RelayCommand(EditPwd);
+                }
+                return updatePwd;
+            }
+            set { updatePwd = value; RaisePropertyChanged(); }
+        }
+
+       
         #endregion
 
         #region 初始化/页面相关
@@ -104,11 +122,26 @@ namespace HY_Main.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Message.ErrorException(ex);
             }
             finally
             {
                 GC.Collect();
+            }
+        }
+
+        private async void EditPwd()
+        {
+            try
+            {
+                EditPwdViewModel model = new EditPwdViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("EditPwdDlg");
+                dialog.BindViewModel(model);
+                bool taskResult = await dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
             }
         }
         #endregion

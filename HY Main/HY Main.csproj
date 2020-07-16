@@ -97,6 +97,9 @@
     <Compile Include="Common\Unity\IUnityLocator.cs" />
     <Compile Include="Common\Unity\ServiceProvider.cs" />
     <Compile Include="Common\Unity\UnityServiceLocator.cs" />
+    <Compile Include="Common\UserControls\EditPwd.xaml.cs">
+      <DependentUpon>EditPwd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\UserControls\MainHanderMenu.xaml.cs">
       <DependentUpon>MainHanderMenu.xaml</DependentUpon>
     </Compile>
@@ -107,7 +110,6 @@
     <Compile Include="Model\CoreLib\ModuleGroup.cs" />
     <Compile Include="Model\HomePage\HomePageModel.cs" />
     <Compile Include="Model\Mine\MineModel.cs" />
-    <Compile Include="Model\ShopMall\ShopMallModel.cs" />
     <Compile Include="Model\Sign\loginModel.cs" />
     <Compile Include="ViewDialog\BaseView.cs" />
     <Compile Include="ViewDialog\BaseViewDialog.cs" />
@@ -116,12 +118,14 @@
     <Compile Include="ViewDialog\Mine\MineView.cs" />
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
+    <Compile Include="ViewDialog\Step\EditPwdDlg.cs" />
     <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
     <Compile Include="ViewModel\HomePage\UserControls\Download.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Mine\MineViewModel.cs" />
     <Compile Include="ViewModel\ShopMall\ShopMallViewModel.cs" />
     <Compile Include="ViewModel\Sign\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Step\EditPwdViewModel.cs" />
     <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
     <Compile Include="View\HomePage\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
@@ -141,6 +145,10 @@
     <Compile Include="View\Sign\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Page Include="Common\UserControls\EditPwd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\UserControls\MainHanderMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -237,6 +245,9 @@
       <Project>{0f230bfe-22b4-420c-82bb-77e3fbfb56c2}</Project>
       <Name>HY.RequestConver</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\ShopMall\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

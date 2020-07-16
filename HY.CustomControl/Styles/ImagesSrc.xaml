@@ -8,8 +8,9 @@
     <BitmapImage x:Key="黑鹰币" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/黑鹰币.png"></BitmapImage>
     <BitmapImage x:Key="底" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/底.png"></BitmapImage>
     <BitmapImage x:Key="矩形" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Main/矩形 2(1).png"></BitmapImage>
-    <BitmapImage x:Key="多边形右" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形右.png"></BitmapImage>
-    <BitmapImage x:Key="多边形左" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形左.png"></BitmapImage>
+    <ImageBrush x:Key="矩形2" ImageSource="pack://application:,,,/HY.CustomControl;component/Images/Main/矩形.png"></ImageBrush>
+    <ImageBrush x:Key="多边形右" ImageSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形右.png"></ImageBrush>
+    <ImageBrush x:Key="多边形左" ImageSource="pack://application:,,,/HY.CustomControl;component/Images/Home/多边形左.png"></ImageBrush>
     <BitmapImage x:Key="工具" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/工具.png"></BitmapImage>
     <BitmapImage x:Key="关于" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/关于.png"></BitmapImage>
     <BitmapImage x:Key="热门推荐" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Home/热门推荐.png"></BitmapImage>

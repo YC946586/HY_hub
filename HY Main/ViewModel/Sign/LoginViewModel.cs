@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
 using HY.Application.Base;
 using HY.Client.Entity;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
@@ -264,9 +265,14 @@ namespace HY_Main.ViewModel.Sign
                             MessageBox.Show(genrator.Message);
                             return;
                         }
-                        var Results = JsonConvert.DeserializeObject<LoginResultEntity>(genrator.result.ToString());
+                        var Results = JsonConvert.DeserializeObject<Loginer>(genrator.result.ToString());
                         Network.Authorization = Results.token;
                         Loginer.LoginerUser.Authorization = Results.token;
+                        Loginer.LoginerUser.UserName = Results.phone;
+                        Loginer.LoginerUser.balance = Results.balance;
+                        Loginer.LoginerUser.freeCount = Results.freeCount;
+                        Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
+                        Loginer.LoginerUser.vipType = Results.vipType;
                     }
                     else
                     {
@@ -280,7 +286,7 @@ namespace HY_Main.ViewModel.Sign
                 }
                 else
                 {
-                    MessageBox.Show("请输入用户名和密码");
+                    Message.Info("请输入用户名和密码");
                     return;
                 }
                 SaveLoginInfo();
@@ -294,6 +300,7 @@ namespace HY_Main.ViewModel.Sign
             catch (Exception ex)
             {
                 this.LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
+                Message.ErrorException(ex);
             }
             finally
             {
@@ -318,11 +325,9 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 读取本地配置信息
         /// </summary>
-        public void ReadConfigInfo()
+        public async void ReadConfigInfo()
         {
             TimerLoad();
-            var imgWebUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594631703207&di=3527ed4cb231172e3ea759080493bb0a&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20191006%2F19%2F1570360737-HvGOTkxnum.jpg";
-             SkinName= new BitmapImage(new Uri(imgWebUrl));
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
             if (File.Exists(cfgINI))
             {
@@ -330,8 +335,21 @@ namespace HY_Main.ViewModel.Sign
                 LoginCollection.UserName = ini.IniReadValue("Login", "User");
                 LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
                 Messenger.Default.Send<object>(this, "ShowPassword");
-              
+
             }
+            ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
+            var genrator = await common.GetLoginFormBackGroundPics();
+            if (genrator.code.Equals("000"))
+            {
+                var Results = JsonConvert.DeserializeObject<List<LoginFormBackGroundPicsEntity>>(genrator.result.ToString());
+                if (Results!=null&& Results.Count!=0)
+                {
+                    string imgWebUrl = Results[CommonsCall.GetRandomSeed(Results.Count)].pict;
+                    SkinName = new BitmapImage(new Uri(imgWebUrl));
+                }
+
+            }
+          
         }
 
         /// <summary>
@@ -377,8 +395,7 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-
-                throw;
+                Message.ErrorException(ex);
             }
         }
         /// <summary>
@@ -397,7 +414,7 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                throw;
+                Message.ErrorException(ex);
             }
         }
         #endregion

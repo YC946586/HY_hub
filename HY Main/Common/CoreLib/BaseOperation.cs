@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HY.Application.Base;
+using HY.Client.Entity.HomeEntitys;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,6 +81,24 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand _QueryCommand;
         private RelayCommand _ResetCommand;
 
+        private RelayCommand<Recommendgame> _GainGamesCommond;
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand<Recommendgame> GainGamesCommond
+        {
+            get
+            {
+                if (_GainGamesCommond == null)
+                {
+                    _GainGamesCommond = new RelayCommand<Recommendgame>(t => GainGames(t));
+                }
+                return _GainGamesCommond;
+            }
+            set { _GainGamesCommond = value; }
+        }
+
+     
 
         /// <summary>
         /// 新增
@@ -291,6 +310,7 @@ namespace HY_Main.Common.CoreLib
         /// </summary>
         public virtual void Add<TModel>(TModel model) { }
 
+        public virtual void GainGames(Recommendgame t) { }
         /// <summary>
         /// 编辑
         /// </summary>
@@ -372,7 +392,9 @@ namespace HY_Main.Common.CoreLib
                 return _CancelCommand;
             }
         }
-
+        /// <summary>
+        /// 确定
+        /// </summary>
         public RelayCommand SaveCommand
         {
             get
@@ -386,7 +408,7 @@ namespace HY_Main.Common.CoreLib
         /// <summary>
         /// 取消
         /// </summary>
-        public void Cancel()
+        public virtual void Cancel()
         {
             Result = false;
             Messenger.Default.Send("", "DialogClose");
@@ -395,7 +417,7 @@ namespace HY_Main.Common.CoreLib
         /// <summary>
         /// 确定
         /// </summary>
-        public void Save()
+        public virtual void Save()
         {
             Result = true;
             Messenger.Default.Send("", "DialogClose");

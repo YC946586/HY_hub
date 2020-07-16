@@ -18,7 +18,6 @@ namespace HY.RequestConver.Manager
         {
             try
             {
-              
                 var genrator = Task.Run(() => Network.ApiGet("home", "getHomeGames"));
                 return genrator;
             }

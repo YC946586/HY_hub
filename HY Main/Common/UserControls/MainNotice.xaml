@@ -15,7 +15,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button   Tag="{Binding IconName}" Style="{DynamicResource ButtonStyle}" Command="{ Binding ApplyCommand}" />
+                    <Button   Tag="{Binding IconName}" Style="{DynamicResource ButtonTagImgStyle}" Command="{ Binding ApplyCommand}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -8,75 +8,8 @@
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/IconButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/LoginDataTemplate.xaml" />
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/ImagesSrc.xaml" />
-        
+        <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/Swiper.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <FontFamily x:Key="IconFont">pack://application:,,,/HY.CustomControl;component/Resources/#iconfont</FontFamily>
 
-
-    <Style x:Key="ListBoxItemCustom" TargetType="ListBoxItem">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
-        <Setter Property="VerticalContentAlignment" Value="Top"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="CarouselListBoxItemStyle"  BasedOn="{StaticResource ListBoxItemCustom}" TargetType="ListBoxItem">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="Height" Value="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
-    </Style>
-    <ItemsPanelTemplate x:Key="CarouselListBoxItemPanelTemplate">
-        <StackPanel FocusVisualStyle="{x:Null}" Orientation="Horizontal" HorizontalAlignment="Left"/>
-    </ItemsPanelTemplate>
-    <Style TargetType="{x:Type local:SwiperContent}"  >
-        <Setter Property="ItemsPanel" Value="{StaticResource CarouselListBoxItemPanelTemplate}"/>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource CarouselListBoxItemStyle}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:SwiperContent}" >
-                    <!--<ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="GridTop" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:.1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="GridTop" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:.1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </ControlTemplate.Triggers>-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Command="loss:SwiperContent.Prev" HorizontalAlignment="Left"  Content="上一个" VerticalAlignment="Center" >
-
-                        </Button>
-                        <Button Command="loss:SwiperContent.Prev" HorizontalAlignment="Right" Content="下一个" Grid.Column="2" VerticalAlignment="Center">
-
-                        </Button>
-                        <ItemsPresenter x:Name="PART_ItemsControl" Grid.Column="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Left"/>
-                        <!--<StackPanel Name="PART_PanelPage" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center"  />-->
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

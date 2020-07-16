@@ -40,5 +40,20 @@ namespace HY.Client.Execute.Commons
 
             return macs;
         }
+
+        /// <summary>
+        /// 生成随机数
+        /// </summary>
+        /// <returns></returns>
+        public static int GetRandomSeed(int next)
+        {
+            byte[] bytes = new byte[4];
+            System.Security.Cryptography.RNGCryptoServiceProvider rng =
+                new System.Security.Cryptography.RNGCryptoServiceProvider();
+            rng.GetBytes(bytes);
+            var seed = BitConverter.ToInt32(bytes, 0);
+            var random = new Random(seed).Next(next);
+            return random;
+        }
     }
 }
