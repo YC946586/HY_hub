@@ -77,13 +77,8 @@ namespace HY_Main.ViewModel.ShopMall
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Results.AddRange(Results);
-                    }
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
-                    var dd = Results.Skip(0).Take(8);
-                    dd.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
+                    Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
             }
             catch (Exception ex)

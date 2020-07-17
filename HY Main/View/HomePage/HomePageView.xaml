@@ -9,8 +9,8 @@
     <Grid>
         <!--<TextBlock Text="My name is HomePage"/>-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid Background="#474747">
             <Grid.RowDefinitions>
@@ -52,7 +52,7 @@
                                     <Border BorderBrush="#868686" BorderThickness="1" Margin="0 0 5 0" CornerRadius="5" Width="32" Height="32">
                                         <Image Source="{Binding pict}" Stretch="Fill" Margin="0.5"/>
                                     </Border>
-                                    <TextBlock Text="{Binding title}" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
+                                    <TextBlock Text="{Binding title}" TextTrimming="WordEllipsis" VerticalAlignment="Center" Foreground="#FCFCFC" FontSize="16"/>
                                 </StackPanel>
                             </Border>
                             <DataTemplate.Triggers>

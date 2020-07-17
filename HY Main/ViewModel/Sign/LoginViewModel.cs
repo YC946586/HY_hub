@@ -335,7 +335,20 @@ namespace HY_Main.ViewModel.Sign
                 LoginCollection.UserName = ini.IniReadValue("Login", "User");
                 LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
                 Messenger.Default.Send<object>(this, "ShowPassword");
-
+            }
+            string curPathName = string.Empty;
+            //判断是否本地存在图片
+            string strPath = AppDomain.CurrentDomain.BaseDirectory + "LoginImg\\";
+            if (Directory.Exists(strPath))
+            {
+                DirectoryInfo root = new DirectoryInfo(strPath);
+                FileInfo[] files = root.GetFiles();
+                if (files.Length!=0)
+                {
+                    var first = files.OrderByDescending(s => s.CreationTime).First();
+                    curPathName = first.Name;
+                    SkinName = new BitmapImage(new Uri(first.FullName));
+                }
             }
             ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
             var genrator = await common.GetLoginFormBackGroundPics();
@@ -344,14 +357,20 @@ namespace HY_Main.ViewModel.Sign
                 var Results = JsonConvert.DeserializeObject<List<LoginFormBackGroundPicsEntity>>(genrator.result.ToString());
                 if (Results!=null&& Results.Count!=0)
                 {
-                    string imgWebUrl = Results[CommonsCall.GetRandomSeed(Results.Count)].pict;
-                    SkinName = new BitmapImage(new Uri(imgWebUrl));
+                    var curNext = CommonsCall.GetRandomSeed(Results.Count);
+                    string imgWebUrl = Results[curNext].pict;
+                    var imgName = Results[curNext].id + imgWebUrl.Substring(imgWebUrl.Length-4, 4);
+                    if (!curPathName.Equals(imgName))
+                    {
+                        SkinName = new BitmapImage(new Uri(imgWebUrl));
+                        GC.Collect();
+                       await Task.Run(() => Network.HttpDownload(imgWebUrl, strPath, imgName));
+                    }    
                 }
-
             }
-          
         }
 
+       
         /// <summary>
         /// 保存登录信息
         /// </summary>

@@ -19,10 +19,10 @@ using System.Windows;
 
 namespace HY_Main.ViewModel.HomePage
 {
-     public class HomePageViewModel: BaseOperation<HomePageModel>
+    public class HomePageViewModel : BaseOperation<HomePageModel>
     {
         private Download _DownloadManager;
-        private ObservableCollection<Hotgame> _hotGames = new ObservableCollection<Hotgame>();
+        private ObservableCollection<GetCommonUseGamesEntity> _hotGames = new ObservableCollection<GetCommonUseGamesEntity>();
         private ObservableCollection<Recommendgame> _recommendGames = new ObservableCollection<Recommendgame>();
 
         private string _describe;
@@ -35,7 +35,7 @@ namespace HY_Main.ViewModel.HomePage
             get { return _describe; }
             set { _describe = value; RaisePropertyChanged(); }
         }
-      
+
         /// <summary>
         ///  
         /// </summary>
@@ -51,8 +51,8 @@ namespace HY_Main.ViewModel.HomePage
         {
             get { return _DownloadManager; }
         }
-        
-        public ObservableCollection<Hotgame> HotGames
+
+        public ObservableCollection<GetCommonUseGamesEntity> HotGames
         {
             get { return _hotGames; }
             set
@@ -71,8 +71,8 @@ namespace HY_Main.ViewModel.HomePage
             }
         }
 
-       
-     
+
+
 
         public override void InitViewModel()
         {
@@ -80,7 +80,7 @@ namespace HY_Main.ViewModel.HomePage
             _DownloadManager = new Download();
             InitHotRecomenAsync();
         }
-        public   async  void InitHotRecomenAsync()
+        public async void InitHotRecomenAsync()
         {
             try
             {
@@ -89,14 +89,19 @@ namespace HY_Main.ViewModel.HomePage
                 if (genrator.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<GetHomeResultEntity>(genrator.result.ToString());
-                    if (Results.hotGames!=null&& Results.hotGames.Length!=0)
-                    {
-                        Results.hotGames.ToList().ForEach((ary) => HotGames.Add(ary));
-                    }
                     if (Results.recommendGames != null && Results.recommendGames.Length != 0)
                     {
                         Results.recommendGames.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => RecommendGames.Add(ary));
-                    } 
+                    }
+                }
+                var comkmogenrator = await home.GetCommonUseGames();
+                if (comkmogenrator.code.Equals("000"))
+                {
+                    var Results = JsonConvert.DeserializeObject<List<GetCommonUseGamesEntity>>(comkmogenrator.result.ToString());
+                    if (Results != null && Results.Count != 0)
+                    {
+                        Results.ToList().ForEach((ary) => HotGames.Add(ary));
+                    }
                 }
 
                 ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
@@ -116,15 +121,15 @@ namespace HY_Main.ViewModel.HomePage
         }
 
 
-        public override  void GainGames(Recommendgame tmodel)
+        public override void GainGames(Recommendgame tmodel)
         {
             try
             {
                 if (Message.Question("是否使用黑鹰币获取游戏"))
                 {
 
-                } 
-             
+                }
+
             }
             catch (Exception ex)
             {

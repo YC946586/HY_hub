@@ -134,5 +134,61 @@ namespace HY.RequestConver
 
         }
 
+
+        /// <summary>
+        /// 下载图片
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="strPath"></param>
+        /// <returns></returns>
+        public static void HttpDownload(string url, string strPath,string imgName)
+        {
+            try
+            {
+                if (!Directory.Exists(strPath))
+                {
+                    Directory.CreateDirectory(strPath);
+                }
+                else
+                {
+                    DirectoryInfo root = new DirectoryInfo(strPath);
+                    FileInfo[] files = root.GetFiles();
+                    foreach (var item in files)
+                    {
+                        try
+                        {
+                            item.Delete();
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
+                strPath = strPath + imgName;
+                FileStream fs = new FileStream(strPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                // 设置参数
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "GET";
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                Stream responseStream = response.GetResponseStream();
+                byte[] bArr = new byte[1024];
+                int iTotalSize = 0;
+                int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                while (size > 0)
+                {
+                    iTotalSize += size;
+                    fs.Write(bArr, 0, size);
+                    size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                }
+                fs.Close();
+                responseStream.Close();
+                
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

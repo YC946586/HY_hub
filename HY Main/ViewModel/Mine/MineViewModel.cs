@@ -55,7 +55,6 @@ namespace HY_Main.ViewModel.Mine
                             break;
                         }
                 }
-
                 ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
 
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();

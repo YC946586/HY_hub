@@ -10,6 +10,20 @@ namespace HY.RequestConver.Manager
 {
     public class HomeManager : IHome
     {
+        public Task<ServiceResponse> GetCommonUseGames()
+        {
+            try
+            {
+                var genrator = Task.Run(() => Network.ApiGet("home", "getCommonUseGames"));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// 获取推荐游戏
         /// </summary>
