@@ -28,17 +28,21 @@ namespace HY.RequestConver.Manager
             }
         }
        
-        public Task<ServiceResponse> GetGames(string cateId, string filter, int pageIndex, int pageSize)
+        public Task<ServiceResponse> GetGames(int cateId, string filter, int pageIndex, int pageSize)
         {
             try
             {
                 Dictionary<string, object> dic = new Dictionary<string, object>
                 {
-                    { "cateId", cateId},
+                 
                     { "filter", filter},
                     { "pageIndex", pageIndex},
                     { "pageSize", pageSize},
                 };
+                if (cateId!=1212121211)
+                {
+                    dic.Add("cateId", cateId);
+                }
                 var genrator = Task.Run(() => Network.ApiGet("store", "getGames", dic));
                 return genrator;
             }

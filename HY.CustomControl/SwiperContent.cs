@@ -23,10 +23,18 @@ namespace HY.CustomControl
     {
         public SwiperContent()
         {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SwiperContent), new FrameworkPropertyMetadata(typeof(SwiperContent)));
             CommandBindings.Add(new CommandBinding(Prev, ButtonPrev_OnClick));
             CommandBindings.Add(new CommandBinding(Next, ButtonNext_OnClick));
-
         }
+        public static readonly DependencyProperty AllItemSourceProperty = DependencyProperty.Register("AllItemSource", typeof(IEnumerable<dynamic>), typeof(SwiperContent));
+        public IEnumerable<dynamic> AllItemSource
+        {
+            get { return (IEnumerable<dynamic>)GetValue(AllItemSourceProperty); }
+            set { SetValue(AllItemSourceProperty, value); }
+        }
+
+
         private void ButtonPrev_OnClick(object sender, RoutedEventArgs e) => PageIndex--;
 
         private void ButtonNext_OnClick(object sender, RoutedEventArgs e) => PageIndex++;
@@ -44,10 +52,7 @@ namespace HY.CustomControl
                 if (Items.Count == 0) return;
 
                 if (value < 0) return;
-                //_pageIndex = Items.Count - 1;
-                //else if (value >= Items.Count)
-                //    _pageIndex = 0;
-                //else
+               
                 if (_pageCount== value) return;
                 _pageIndex = value;
                 UpdatePageButtons(_pageIndex);
@@ -61,17 +66,9 @@ namespace HY.CustomControl
 
             _itemsControl = GetTemplateChild(ElementItemsControl) as ItemsPresenter;
 
-            if (ItemsSource != null && Items.Count>4)
+            if (AllItemSource != null && AllItemSource.Count()>4)
             {
-                _pageCount = Convert.ToInt32(Math.Ceiling(Items.Count / (double)4));;
-                AllItemSource = new List<string>();
-                var IlistModel = ItemsSource as IEnumerable<dynamic>;
-                if (IlistModel.Count()>4)
-                {
-                    ItemsSource= IlistModel.Skip(0).Take(4);
-                }
-                AllItemSource = IlistModel;
-                //dd.ToList().ForEach((ary) => AllItemSource.Add(ary));
+                _pageCount = Convert.ToInt32(Math.Ceiling(AllItemSource.Count() / (double)4));;
             }
 
             Update();
@@ -85,15 +82,6 @@ namespace HY.CustomControl
         /// </summary>
         public void UpdatePageButtons(int index)
         {
-            //var count = Items.Count;
-            //if (ItemsSource != null && AllItemSource == null)
-            //{
-            //    AllItemSource = new List<string>();
-            //    var dd = ItemsSource as IEnumerable<dynamic>;
-            //    AllItemSource = dd;
-            //    //dd.ToList().ForEach((ary) => AllItemSource.Add(ary));
-            //}
-            //List<object> dynamics = new List<object>();
             if (AllItemSource != null && AllItemSource.Count() > 4)
             {
                 var items = AllItemSource.Skip(4 * index).Take(4);
@@ -102,18 +90,9 @@ namespace HY.CustomControl
                 ItemsSource = items;
             }
 
-
-
         }
 
-        public static readonly DependencyProperty AllItemSourcePropertyProperty =
-  DependencyProperty.Register("ItemsSourceProperty", typeof(IEnumerable<dynamic>), typeof(SwiperContent), new PropertyMetadata(null));
-        public IEnumerable<dynamic> AllItemSource
-        {
-            get => (IEnumerable<dynamic>)GetValue(AllItemSourcePropertyProperty);
-            set => SetValue(AllItemSourcePropertyProperty, value);
-        }
-
+    
         /// <summary>
         ///  更新项的位置
         /// </summary>
@@ -121,38 +100,16 @@ namespace HY.CustomControl
         {
 
             if (Items.Count == 0) return;
-            //if (!IsCenter)
-            //{
             _itemsControl.BeginAnimation(MarginProperty,
                 CreateAnimation(new Thickness(1, 0, 0, 0)));
-            //}
-            //else
-            //{
-            //var ctl = (FrameworkElement)Items[PageIndex];
-            //var ctlWidth = ctl.DesiredSize.Width;
-            //_itemsControl.BeginAnimation(MarginProperty,
-            //    AnimationHelper.CreateAnimation(
-            //        new Thickness(4 / 2, 0, 0, 0)));
-            //}
+            
         }
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
             UpdateItemsPosition();
         }
-        private void ButtonPages_OnClick(object sender, RoutedEventArgs e)
-        {
-
-
-            //var _selectedButton = e.OriginalSource as RadioButton;
-
-            //var index = _panelPage.Children.IndexOf(_selectedButton);
-            //if (index != -1)
-            //{
-            //    PageIndex = index;
-            //}
-
-        }
+       
         /// <summary>
         ///     上一个
         /// </summary>

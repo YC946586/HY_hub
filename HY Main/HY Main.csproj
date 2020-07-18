@@ -121,6 +121,7 @@
     <Compile Include="ViewDialog\Step\EditPwdDlg.cs" />
     <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
     <Compile Include="ViewModel\HomePage\UserControls\Download.cs" />
+    <Compile Include="ViewModel\HomePage\UserControls\EditUserGamesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Mine\MineViewModel.cs" />
     <Compile Include="ViewModel\ShopMall\ShopMallViewModel.cs" />
@@ -132,6 +133,9 @@
     </Compile>
     <Compile Include="View\HomePage\UserControls\BottomContent.xaml.cs">
       <DependentUpon>BottomContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\HomePage\UserControls\EditUserGames.xaml.cs">
+      <DependentUpon>EditUserGames.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HomePage\UserControls\Recommended.xaml.cs">
       <DependentUpon>Recommended.xaml</DependentUpon>
@@ -174,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\HomePage\UserControls\BottomContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HomePage\UserControls\EditUserGames.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

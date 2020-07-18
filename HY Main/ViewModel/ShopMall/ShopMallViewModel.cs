@@ -22,24 +22,13 @@ namespace HY_Main.ViewModel.ShopMall
         public override void InitViewModel()
         {
             base.InitViewModel();
+            PageIndex = 1;
             InitHotRecomenAsync();
         }
 
         #region 属性
 
-        /// <summary>
-        ///     页码
-        /// </summary>
-        private int _pageIndex = 1;
-
-        /// <summary>
-        ///     页码
-        /// </summary>
-        public new int PageIndex
-        {
-            get => _pageIndex;
-            set => Set(ref _pageIndex, value);
-        }
+       
 
         private ToolEntity _SelectCombox;
 
@@ -73,12 +62,13 @@ namespace HY_Main.ViewModel.ShopMall
                     Results.ForEach((ary) => { CatesList.Add(new ToolEntity() { Key = ary.name, Values = ary }); });
                     SelectCombox = CatesList.First();
                 }
-                var gamesGetGames = await store.GetGames("","",1,8);
+                var gamesGetGames = await store.GetGames(1212121211,"",1,100000);
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
-                    Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
+                    var curShowmodel = Results.Skip(0).Take(8);
+                    curShowmodel.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
             }
             catch (Exception ex)
@@ -108,17 +98,21 @@ namespace HY_Main.ViewModel.ShopMall
             {
                 cateId = SelectCombox.Values.id;
             }
+            else
+            {
+                cateId = "1212121211";
+            }
             IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-            var gamesGetGames = await store.GetGames(cateId, SearchText, info.Info-1, 8);
+            var gamesGetGames = await store.GetGames(int.Parse(cateId), SearchText, info.Info, 8);
             if (gamesGetGames.code.Equals("000"))
             {
                 var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
                 if (Results.Count == 0)
                 {
+                    PageCount = 0;
                     Message.Info("暂未查询出数据,请您重新查询");
                     return;
                 }
-                PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
                 Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
             }
         }
@@ -133,18 +127,24 @@ namespace HY_Main.ViewModel.ShopMall
                 {
                     cateId = SelectCombox.Values.id;
                 }
+                else
+                {
+                    cateId = "1212121211";
+                }
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-                var gamesGetGames = await store.GetGames(cateId, SearchText, 1, 8);
+                var gamesGetGames = await store.GetGames(int.Parse(cateId), SearchText, 1, 100000);
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
                     if (Results.Count==0)
                     {
+                        PageCount = 0;
                         Message.Info("暂未查询出数据,请您重新查询");
                         return;
                     }
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
-                    Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
+                    var curShowmodel = Results.Skip(0).Take(8);
+                    curShowmodel.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
             }
             catch (Exception ex)

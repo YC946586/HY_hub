@@ -41,5 +41,26 @@ namespace HY.RequestConver.Manager
                 throw;
             }
         }
+
+        public Task<ServiceResponse> UpdateCommomUseGames(List<int> gameIdList, string type)
+        {
+            try
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object> { { "type", type} };
+                string gameIds = string.Empty;
+                foreach (var item in gameIdList)
+                {
+                    gameIds += item+ "|";
+                }
+                dic.Add("gameIds", gameIds.TrimEnd(Convert.ToChar("|")));
+                var genrator = Task.Run(() => Network.ApiPost("home", "updateCommomUseGames", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

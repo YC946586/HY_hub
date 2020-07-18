@@ -18,7 +18,7 @@
                 <TextBlock Text="热门推荐" FontSize="20" FontWeight="Black" Foreground="#333333" />
             </StackPanel>
 
-            <customcontrol:SwiperContent Grid.Row="2" ItemsSource="{Binding RecommendGames}" >
+            <customcontrol:SwiperContent Grid.Row="2"   AllItemSource="{Binding RecommendGames}" ItemsSource="{Binding RecommendSkipGames}" >
                 <customcontrol:SwiperContent.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -29,15 +29,11 @@
                          
                             <Image Source="{Binding pict}" Stretch="Fill"/>
                             <Grid Background="White" Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1.5*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Vertical" Margin="10 10 0 10">
                                     <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666"/>
                                     <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>
                                 </StackPanel>
-                                <Button Content="获取游戏"   HorizontalAlignment="Right"       Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
+                                <Button Content="获取游戏"   VerticalAlignment="Center" HorizontalAlignment="Right"       Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
                                         Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                         CommandParameter="{Binding }"       />
                             </Grid>

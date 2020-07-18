@@ -30,7 +30,6 @@ namespace HY.CustomControl.Converters
                                     return Visibility.Collapsed;
                             }
                         }
-                  
                     case "Registere":
                         {
                             switch (value.ToString())
@@ -54,7 +53,6 @@ namespace HY.CustomControl.Converters
                             }
                             return Visibility.Collapsed;
                         }
-
                 }
             }
             int resultPage;

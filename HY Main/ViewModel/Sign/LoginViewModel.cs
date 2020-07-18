@@ -13,6 +13,7 @@ using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.Unity;
 using HY_Main.Model.Sign;
+using HY_Main.View.HomePage.UserControls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace HY_Main.ViewModel.Sign
         }
 
         #endregion
-
+            
 
         #region  属性
         private string _Title = "登录";

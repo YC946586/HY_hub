@@ -5,6 +5,7 @@
               xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
                      xmlns:loca="clr-namespace:HY_Main.View.Sign"
+      
             >
     <!--StartupUri="View/Sign/Login.xaml"-->
     <Application.Resources>

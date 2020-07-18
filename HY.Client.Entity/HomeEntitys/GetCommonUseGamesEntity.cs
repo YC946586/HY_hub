@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HY.Client.Entity.HomeEntitys
 {
-    public class GetCommonUseGamesEntity
+    public class GetCommonUseGamesEntity : ViewModelBase
     {
         public int id { get; set; }
         public int gameId { get; set; }
@@ -26,6 +27,13 @@ namespace HY.Client.Entity.HomeEntitys
         public string setUpFile { get; set; }
         public int fileSize { get; set; }
         public object version { get; set; }
+
+        public bool _IsSelected;
+        public bool IsSelected
+        {
+            get { return _IsSelected; }
+            set { _IsSelected = value; RaisePropertyChanged(); }
+        }
     }
      
 

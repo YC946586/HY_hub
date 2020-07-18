@@ -35,7 +35,7 @@ namespace HY_Main.ViewDialog.Sign
         public override void RegisterDefaultEvent()
         {
             GetDialogWindow().MouseDown += (sender, e) => { if (e.LeftButton == MouseButtonState.Pressed) { GetDialogWindow().DragMove(); } };
-            Messenger.Default.Register(GetDialogWindow(), "ApplicationHiding", new Action<string>((msg) => { GetDialogWindow().Close(); }));
+            Messenger.Default.Register(GetDialogWindow(), "ApplicationHiding", new Action<string>((msg) => { Close(); }));
             Messenger.Default.Register(GetDialogWindow(), "ApplicationShutdown", new Action<string>((arg) => { Application.Current.Shutdown(); }));
         }
 

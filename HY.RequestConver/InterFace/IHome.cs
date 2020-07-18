@@ -12,5 +12,7 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> GetHomeGames();
 
         Task<ServiceResponse> GetCommonUseGames();
+
+        Task<ServiceResponse> UpdateCommomUseGames(List<int> gameIds, string type);
     }
 }

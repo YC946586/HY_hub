@@ -8,10 +8,11 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
-        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common"
+        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common" xmlns:sign="clr-namespace:HY_Main.ViewModel.Sign"
         mc:Ignorable="d" Name="mainLogin"
          Title="黑鹰hub登录"  Height="420" Width="330" 
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
+    
     <Window.Template>
         <ControlTemplate TargetType="Window">
             <Border Padding="1" Background="Transparent">
@@ -29,6 +30,9 @@
         <converters:FlagConverter  x:Key="Flag"/>
 
     </Window.Resources>
+    <Window.DataContext>
+        <sign:LoginViewModel/>
+    </Window.DataContext>
     <Grid>
         <Image  gif:ImageBehavior.AnimatedSource="{Binding SkinName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Stretch"  Stretch="Fill"/>
         <Grid>

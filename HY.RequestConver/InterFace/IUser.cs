@@ -52,7 +52,7 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> Login(string macAdd, string password, string phone);
 
             
-        Task<ServiceResponse> GetUserGames(string filter);
+        Task<ServiceResponse> GetUserGames(string filter,int pageIndex,int pageSize);
 
 
         Task<ServiceResponse> ResetPwd(string newPwd,string oldPwd);
