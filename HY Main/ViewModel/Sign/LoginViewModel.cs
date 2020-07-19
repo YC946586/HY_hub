@@ -266,6 +266,7 @@ namespace HY_Main.ViewModel.Sign
                             MessageBox.Show(genrator.Message);
                             return;
                         }
+
                         var Results = JsonConvert.DeserializeObject<Loginer>(genrator.result.ToString());
                         Network.Authorization = Results.token;
                         Loginer.LoginerUser.Authorization = Results.token;
@@ -274,6 +275,12 @@ namespace HY_Main.ViewModel.Sign
                         Loginer.LoginerUser.freeCount = Results.freeCount;
                         Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
                         Loginer.LoginerUser.vipType = Results.vipType;
+                        string vipType = string.Empty;
+                        if (Loginer.LoginerUser.vipType.Equals("1")|| Loginer.LoginerUser.vipType.Equals("2"))
+                        {
+                            Loginer.LoginerUser.IsAdmin = true;
+                        }
+                       
                     }
                     else
                     {

@@ -12,5 +12,9 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> GetCates();
 
         Task<ServiceResponse> GetGames(int cateId,string filter,int pageIndex, int pageSize);
+
+        Task<ServiceResponse> BuyGame(int gameId);
+
+        Task<ServiceResponse> GetGameFiles(int gameId);
     }
 }

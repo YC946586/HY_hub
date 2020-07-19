@@ -23,7 +23,7 @@ namespace HY.CustomControl
     {
         public SwiperContent()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SwiperContent), new FrameworkPropertyMetadata(typeof(SwiperContent)));
+            //DefaultStyleKeyProperty.OverrideMetadata(typeof(SwiperContent), new FrameworkPropertyMetadata(typeof(SwiperContent)));
             CommandBindings.Add(new CommandBinding(Prev, ButtonPrev_OnClick));
             CommandBindings.Add(new CommandBinding(Next, ButtonNext_OnClick));
         }
@@ -52,7 +52,12 @@ namespace HY.CustomControl
                 if (Items.Count == 0) return;
 
                 if (value < 0) return;
-               
+
+                if (AllItemSource != null && AllItemSource.Count() > 4)
+                {
+                    _pageCount = Convert.ToInt32(Math.Ceiling(AllItemSource.Count() / (double)4)); ;
+                }
+
                 if (_pageCount== value) return;
                 _pageIndex = value;
                 UpdatePageButtons(_pageIndex);

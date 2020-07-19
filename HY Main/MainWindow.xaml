@@ -42,13 +42,13 @@
                                 <Image Source="/HY Main;component/UserAvatar.jpg"/>
                             </hc:Gravatar>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center"  >
-                                <TextBlock Text="黑鹰hub"  Foreground="#999999" FontSize="22"  FontWeight="Black" />
-                                <Grid  Height="30">
+                                <TextBlock Text="{Binding UserName}"  Foreground="#999999" FontSize="22"  FontWeight="Black" />
+                                <Grid  Height="30" Width="120" HorizontalAlignment="Left">
                                     <Grid.Background>
                                         <ImageBrush ImageSource="{DynamicResource 黑鹰币}"/>
                                     </Grid.Background>
                                     <!--Text="{Binding UserBalance}"-->
-                                    <TextBlock Text="黑硬币:1000" HorizontalAlignment="Center" Margin="5 0" Foreground="#333333" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Balance,StringFormat={}{0}黑鹰币}" HorizontalAlignment="Center" Margin="5 0" Foreground="#333333" VerticalAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
                         </StackPanel>

@@ -62,7 +62,7 @@ namespace HY_Main
                 Current.Shutdown();
                 return;
             }
-          
+            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
             base.OnStartup(e);
             ////IOC接口注册
             BootStrapper.Initialize();

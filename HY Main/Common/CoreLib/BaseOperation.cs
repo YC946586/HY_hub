@@ -3,6 +3,9 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HY.Application.Base;
 using HY.Client.Entity.HomeEntitys;
+using HY.Client.Execute.Commons;
+using HY.RequestConver.Bridge;
+using HY.RequestConver.InterFace;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -81,17 +84,17 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand _QueryCommand;
         private RelayCommand _ResetCommand;
 
-        private RelayCommand<Recommendgame> _GainGamesCommond;
+        private RelayCommand<int> _GainGamesCommond;
         /// <summary>
         /// 
         /// </summary>
-        public RelayCommand<Recommendgame> GainGamesCommond
+        public RelayCommand<int> GainGamesCommond
         {
             get
             {
                 if (_GainGamesCommond == null)
                 {
-                    _GainGamesCommond = new RelayCommand<Recommendgame>(t => GainGames(t));
+                    _GainGamesCommond = new RelayCommand<int>(t => GainGames(t));
                 }
                 return _GainGamesCommond;
             }
@@ -310,7 +313,29 @@ namespace HY_Main.Common.CoreLib
         /// </summary>
         public virtual void Add<TModel>(TModel model) { }
 
-        public virtual void GainGames(Recommendgame t) { }
+        public virtual async void GainGames(int gameId)
+        {
+            try
+            {
+                IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                var genrator = await store.BuyGame(gameId);
+                if (!genrator.code.Equals("000"))
+                {
+                    Message.Info(genrator.Message);
+                }
+
+
+                //if (Message.Question("是否使用黑鹰币获取游戏"))
+                //{
+
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
         /// <summary>
         /// 编辑
         /// </summary>

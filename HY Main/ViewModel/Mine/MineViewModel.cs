@@ -1,11 +1,15 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using HandyControl.Controls;
 using HandyControl.Data;
+using HY.Application.Base;
 using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
+using HY_Main.Common.Unity;
 using HY_Main.Model.Mine;
+using HY_Main.ViewModel.Mine.UserControls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -128,5 +132,36 @@ namespace HY_Main.ViewModel.Mine
                 Results.OrderBy(s => s.id).ToList().ForEach((ary) => GridModelList.Add(ary));
             }
         }
+        /// <summary>
+        /// 下载游戏
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="model"></param>
+        public override async void Edit<TModel>(TModel model)
+        {
+            try
+            {
+                GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
+                var gamesEntity = model as UserGamesEntity;
+                viewModel.PageCollection = gamesEntity;
+                viewModel.InitAsyncViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");
+                dialog.BindViewModel(viewModel);
+
+                var d = Dialog.Show(dialog.GetDialog());
+
+                viewModel.ShowList += (async () =>
+                {
+                    d.Close();
+                });
+             
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+      
     }
 }

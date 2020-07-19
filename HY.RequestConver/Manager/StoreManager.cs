@@ -10,6 +10,8 @@ namespace HY.RequestConver.Manager
 {
     public class StoreManager : IStore
     {
+       
+
         /// <summary>
         /// 游戏分类
         /// </summary>
@@ -44,6 +46,50 @@ namespace HY.RequestConver.Manager
                     dic.Add("cateId", cateId);
                 }
                 var genrator = Task.Run(() => Network.ApiGet("store", "getGames", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// 购买游戏
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public Task<ServiceResponse> BuyGame(int gameId)
+        {
+            try
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object>
+                {
+                    { "gameId", gameId },
+                };
+                var genrator = Task.Run(() => Network.ApiPost("store", "buyGame", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// 下载游戏
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public Task<ServiceResponse> GetGameFiles(int gameId)
+        {
+            try
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object>
+                {
+                    { "gameId", gameId },
+                };
+                var genrator = Task.Run(() => Network.ApiGet("store", "getGameFiles", dic));
                 return genrator;
             }
             catch (Exception)

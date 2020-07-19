@@ -74,7 +74,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SwiperContent.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\demo_index.html" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Styles\Swiper.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -114,7 +116,6 @@
     <Resource Include="Images\Home\多边形拷贝.png" />
     <Resource Include="Images\Main\底.png" />
     <Resource Include="Images\Main\矩形 2%281%29.png" />
-    <Content Include="Resources\demo_index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

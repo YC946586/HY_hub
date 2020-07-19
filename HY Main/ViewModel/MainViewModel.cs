@@ -47,7 +47,29 @@ namespace HY_Main.ViewModel
         {
             get { return _NoticeView; }
         }
+        private float _balance;
+        /// <summary>
+        /// 月
+        /// </summary>
+        public float Balance
+        {
+            get { return _balance; }
+            set { _balance = value; RaisePropertyChanged(); }
+        }
 
+
+        private string _UserName;
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set { _UserName = value; RaisePropertyChanged(); }
+        }
         #endregion
 
         #region 命令(Binding Command)
@@ -104,6 +126,9 @@ namespace HY_Main.ViewModel
         /// </summary>
         public async void InitDefaultView()
         {
+
+            Balance = Loginer.LoginerUser.balance;
+            UserName = Loginer.LoginerUser.UserName;
             //初始化工具栏,通知窗口
             _NoticeView = new NoticeViewModel();
             ////加载窗体模块

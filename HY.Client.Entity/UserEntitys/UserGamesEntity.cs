@@ -34,6 +34,23 @@ namespace HY.Client.Entity.UserEntitys
             get { return _IsSelected; }
             set { _IsSelected = value; RaisePropertyChanged(); }
         }
+
+        private string _strupPath = string.Empty;
+
+        /// <summary>
+        /// 安装目录
+        /// </summary>
+        public string StrupPath
+        {
+            get { return _strupPath; }
+            set
+            {
+                _strupPath = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string GameSize { get; set; }
+
     }
 
      

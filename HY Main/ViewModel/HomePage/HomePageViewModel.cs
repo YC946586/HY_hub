@@ -24,6 +24,7 @@ using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using HandyControl.Tools;
 using System.Windows.Documents;
+using HY.Client.Entity.UserEntitys;
 
 namespace HY_Main.ViewModel.HomePage
 {
@@ -123,6 +124,15 @@ namespace HY_Main.ViewModel.HomePage
         {
             try
             {
+                //获取我的游戏
+                //List<UserGamesEntity> userGamesEntities = new List<UserGamesEntity>();
+                //IUser user = BridgeFactory.BridgeManager.GetUserManager();
+                //var genratorGames = await user.GetUserGames(SearchText, 1, 100000);
+                //if (genratorGames.code.Equals("000"))
+                //{
+                //    userGamesEntities = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genratorGames.result.ToString());
+                //}
+
                 IHome home = BridgeFactory.BridgeManager.GetHomeManager();
                 var genrator = await home.GetHomeGames();
                 if (genrator.code.Equals("000"))
@@ -130,11 +140,39 @@ namespace HY_Main.ViewModel.HomePage
                     var Results = JsonConvert.DeserializeObject<GetHomeResultEntity>(genrator.result.ToString());
                     if (Results.recommendGames != null && Results.recommendGames.Length != 0)
                     {
+                        //if (userGamesEntities.Count != 0)
+                        //{
+                        //    foreach (var item in Results.recommendGames)
+                        //    {
+                        //        var curExist = userGamesEntities.Where(s => s.id == item.id);
+                        //        if (curExist.Any())
+                        //        {
+                        //            item.Content = "开始游戏";
+                        //        }
+                        //    }
+                        //}
                         Results.recommendGames.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => RecommendGames.Add(ary));
                         var ItemsSource = Results.recommendGames.OrderBy(s => s.displayOrder).Skip(0).Take(4);
                         ItemsSource.ForEach((ary) => RecommendSkipGames.Add(ary));
                     }
+                    if (Results.hotGames != null && Results.hotGames.Length != 0)
+                    {
+
+                        //if (userGamesEntities.Count != 0)
+                        //{
+                        //    foreach (var item in Results.hotGames)
+                        //    {
+                        //        var curExist = userGamesEntities.Where(s => s.id == item.id);
+                        //        if (curExist.Any())
+                        //        {
+                        //            item.Content = "开始游戏";
+                        //        }
+                        //    }
+                        //}
+                        DownloadManager.LoadModulesAsync(Results.hotGames.OrderBy(s => s.displayOrder).ToList());
+                    }
                 }
+                //常用游戏
                 var comkmogenrator = await home.GetCommonUseGames();
                 if (comkmogenrator.code.Equals("000"))
                 {
@@ -162,21 +200,7 @@ namespace HY_Main.ViewModel.HomePage
         }
 
 
-        public override void GainGames(Recommendgame tmodel)
-        {
-            try
-            {
-                if (Message.Question("是否使用黑鹰币获取游戏"))
-                {
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Message.ErrorException(ex);
-            }
-        }
+      
 
         private void OpenEdit(string t)
         {
@@ -195,8 +219,8 @@ namespace HY_Main.ViewModel.HomePage
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EditUserGamesDlg");
                 dialog.BindViewModel(viewModel);
 
-                var d =  Dialog.Show(dialog.GetDialog());
-              
+                var d = Dialog.Show(dialog.GetDialog());
+
                 viewModel.ShowList += (async () =>
                 {
                     d.Close();
@@ -218,7 +242,7 @@ namespace HY_Main.ViewModel.HomePage
                 Message.ErrorException(ex);
             }
         }
-      
+
 
     }
 }

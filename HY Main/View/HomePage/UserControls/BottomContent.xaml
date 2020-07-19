@@ -77,8 +77,9 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Button Content="{Binding Sort}" HorizontalAlignment="Left" Style="{StaticResource ButtonBackBkxStyle}"/>
-                                                        <TextBlock FontFamily="Microsoft YaHei" FontSize="12" Text="{Binding GameName}" VerticalAlignment="Center" Grid.Column="1"/>
-                                                        <Button Content="获取游戏"   HorizontalAlignment="Right"
+                                                        <TextBlock FontFamily="Microsoft YaHei" FontSize="12" Text="{Binding title}" VerticalAlignment="Center" Grid.Column="1"/>
+                                                        <Button Content="{Binding Content}"     Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding id}"  HorizontalAlignment="Right"
                                                     Style="{DynamicResource StyleDownloadButton}" Grid.Column="2"/>
                                                     </Grid>
                                                 </ControlTemplate>

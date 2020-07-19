@@ -152,21 +152,6 @@ namespace HY_Main.ViewModel.ShopMall
                 Message.ErrorException(ex);
             }
         }
-
-        public override void GainGames(Recommendgame tmodel)
-        {
-            try
-            {
-                if (Message.Question("是否使用黑鹰币获取游戏"))
-                {
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Message.ErrorException(ex);
-            }
-        }
+ 
     }
 }

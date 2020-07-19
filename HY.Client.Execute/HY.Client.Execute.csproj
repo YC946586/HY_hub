@@ -66,16 +66,24 @@
     <Compile Include="Commons\CEncoder.cs" />
     <Compile Include="Commons\CommonsCall.cs" />
     <Compile Include="Commons\Configuration.cs" />
+    <Compile Include="Commons\DownLoadHelp.cs" />
     <Compile Include="Commons\ExceptionLibrary.cs" />
     <Compile Include="Commons\Files\IniFile.cs" />
     <Compile Include="Commons\Loginer.cs" />
     <Compile Include="Commons\MacAddressHelper.cs" />
     <Compile Include="Commons\Message.cs" />
+    <Compile Include="Commons\TaskCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="项目需求书%283%29%281%29%281%29.docx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HY.Client.Entity\HY.Client.Entity.csproj">
+      <Project>{8AF4E6D8-C1DD-4FE0-94B3-D2F6B3FE72B7}</Project>
+      <Name>HY.Client.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
