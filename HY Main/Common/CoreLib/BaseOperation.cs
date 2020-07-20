@@ -6,6 +6,8 @@ using HY.Client.Entity.HomeEntitys;
 using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
+using HY_Main.Common.Unity;
+using HY_Main.ViewModel.Mine.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -85,6 +87,9 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand _ResetCommand;
 
         private RelayCommand<int> _GainGamesCommond;
+        //打开下载进度
+        private RelayCommand _downShowCommand;
+        
         /// <summary>
         /// 
         /// </summary>
@@ -183,7 +188,18 @@ namespace HY_Main.Common.CoreLib
             set { _ResetCommand = value; }
         }
 
-
+        public RelayCommand DownShowCommand
+        {
+            get
+            {
+                if (_downShowCommand == null)
+                {
+                    _downShowCommand = new RelayCommand(DownShow);
+                }
+                return _downShowCommand;
+            }
+            set { _downShowCommand = value; RaisePropertyChanged(); }
+        }
 
         #endregion
     }
@@ -361,10 +377,23 @@ namespace HY_Main.Common.CoreLib
         {
             this.SearchText = string.Empty;
         }
-
+        private async void DownShow()
+        {
+            try
+            {
+                UserGamesDownShowViewModel viewModel = new UserGamesDownShowViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("UserGamesDownShowDlg");
+                dialog.BindViewModel(viewModel);
+                bool taskResult = await dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
         #endregion
 
-        
+
     }
 
     /// <summary>

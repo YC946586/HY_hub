@@ -40,6 +40,18 @@ namespace HY.CustomControl.Converters
                                     return Visibility.Visible;
                             }
                         }
+                    case "Progress":
+                        {
+                            if (value!=null)
+                            {
+                                return Visibility.Visible;
+                            }
+                            else
+                            {
+                                return Visibility.Collapsed;
+                            }
+                           
+                        }
                     default:
                         {
                             int result;

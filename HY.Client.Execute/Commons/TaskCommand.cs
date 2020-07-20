@@ -1,7 +1,11 @@
-﻿using System;
+﻿using HY.Client.Entity.CommonEntitys;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,17 +23,11 @@ namespace HY.Client.Execute.Commons
         /// <summary>
         /// 开始任务
         /// </summary>
-        public void StartData()
+        public void StartData(DwonloadEntity urlList)
         {
             tokenSource = new CancellationTokenSource();
             resetEvent = new ManualResetEvent(true);
-
-            List<int> Ids = new List<int>();
-            for (int i = 0; i < 10000; i++)
-            {
-                Ids.Add(i);
-            }
-            thread = new Thread(new ThreadStart(() => StartTask(Ids)));
+            thread = new Thread(new ThreadStart(() => StartTask(urlList)));
             thread.Start();
         }
         /// <summary>
@@ -72,7 +70,7 @@ namespace HY.Client.Execute.Commons
         /// 执行数据
         /// </summary>
         /// <param name="Index"></param>
-        public void Execute(int Index)
+        public void Execute(DwonloadEntity Index)
         {
             //阻止当前线程
             resetEvent.WaitOne();
@@ -96,36 +94,38 @@ namespace HY.Client.Execute.Commons
         /// </summary>
         private List<Task> ParallelTasks { get; set; }
         //控制线程并行数量
-        public void StartTask(List<int> Ids)
+        public void StartTask(DwonloadEntity Ids)
         {
             IsInitTask = true;
             ParallelTasks = new List<Task>();
             AsyncQueues = new Queue<MeterAsyncQueue>();
             //获取并发数
             ParallelTaskCount = 5;
-
             //初始化异步队列
             InitAsyncQueue(Ids);
             //开始执行队列任务
             HandlingTask();
 
-            Task.WaitAll(new Task[] { Task.WhenAll(ParallelTasks.ToArray()) });
+            Task.WaitAll(new Task[] { 
+                
+                Task.WhenAll(ParallelTasks.ToArray()) 
+            });
         }
         /// <summary>
         /// 初始化异步队列
         /// </summary>
-        private void InitAsyncQueue(List<int> Ids)
+        private void InitAsyncQueue(DwonloadEntity item)
         {
-            foreach (var item in Ids)
+            MeterInfo info = new MeterInfo();
+            info.entity = item;
+            DownloadFile(item);
+            AsyncQueues.Enqueue(new MeterAsyncQueue()
             {
-                MeterInfo info = new MeterInfo();
-                info.Id = item;
-                AsyncQueues.Enqueue(new MeterAsyncQueue()
-                {
-                    MeterInfoTask = info
-                });
-            }
+                MeterInfoTask = info
+            });
+           
         }
+    
         /// <summary>
         /// 是否首次执行任务
         /// </summary>
@@ -181,7 +181,7 @@ namespace HY.Client.Execute.Commons
                         //阻止当前线程
                         resetEvent.WaitOne();
                         //执行任务
-                        Execute(asyncQueue.MeterInfoTask.Id);
+                        Execute(asyncQueue.MeterInfoTask.entity);
 
                     }, token).ContinueWith(t =>
                     {
@@ -221,7 +221,7 @@ namespace HY.Client.Execute.Commons
          {
  
         }
-         public int Id { get; set; }
+         public DwonloadEntity entity { get; set; }
 
      }
 }

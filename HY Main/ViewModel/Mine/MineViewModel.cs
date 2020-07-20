@@ -2,6 +2,7 @@
 using HandyControl.Controls;
 using HandyControl.Data;
 using HY.Application.Base;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
@@ -141,9 +142,28 @@ namespace HY_Main.ViewModel.Mine
         {
             try
             {
-                GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
                 var gamesEntity = model as UserGamesEntity;
+                IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                var genrator = await store.GetGameFiles(gamesEntity.gameId);
+                if (!genrator.code.Equals("000"))
+                {
+                    Message.Info(genrator.Message);
+                    return;
+                }
+                var Results = JsonConvert.DeserializeObject<List<DwonloadEntity>>(genrator.result.ToString());
+                if (Results.Count==0)
+                {
+                    Message.Info("游戏获取失败,请重试");
+                    return;
+                }
+                if (CommonsCall.UserGames.Any(s => s.gameId.Equals(gamesEntity.gameId)))
+                {
+                    Message.Info(gamesEntity.title + "已经进入下载队列中");
+                    return;
+                }
+                GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
                 viewModel.PageCollection = gamesEntity;
+                viewModel.dwonloadEntities = Results;
                 viewModel.InitAsyncViewModel();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");
                 dialog.BindViewModel(viewModel);

@@ -3,22 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HY_Main.View.HomePage.UserControls" xmlns:customcontrol="clr-namespace:HY.CustomControl;assembly=HY.CustomControl" xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:customcontrol="clr-namespace:HY.CustomControl;assembly=HY.CustomControl" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:usercontrols="clr-namespace:HY_Main.Common.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20 0">
+    <Grid >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <usercontrols:Progress />
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 0">
                 <Image Source="{DynamicResource 热门推荐}" Width="28" Height="32" Margin="0 0 10 0" VerticalAlignment="Center"   />
                 <TextBlock Text="热门推荐" FontSize="20" FontWeight="Black" Foreground="#333333" />
             </StackPanel>
 
-            <customcontrol:SwiperContent Grid.Row="2"   AllItemSource="{Binding RecommendGames}" ItemsSource="{Binding RecommendSkipGames}" >
+            <customcontrol:SwiperContent Grid.Row="2" Margin="20 0"  AllItemSource="{Binding RecommendGames}" ItemsSource="{Binding RecommendSkipGames}" >
                 <customcontrol:SwiperContent.ItemTemplate>
                     <DataTemplate>
                         <Grid>

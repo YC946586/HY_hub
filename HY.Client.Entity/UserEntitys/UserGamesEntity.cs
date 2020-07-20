@@ -25,7 +25,7 @@ namespace HY.Client.Entity.UserEntitys
         public string cateName { get; set; }
         public string startFileName { get; set; }
         public string setUpFile { get; set; }
-        public int fileSize { get; set; }
+        public long fileSize { get; set; }
         public object version { get; set; }
 
         public bool _IsSelected;
@@ -50,6 +50,37 @@ namespace HY.Client.Entity.UserEntitys
             }
         }
         public string GameSize { get; set; }
+
+        private string _SurplusSize = string.Empty;
+
+        private string _content = "暂停";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string content
+        {
+            get { return _content; }
+            set
+            {
+                _content = value;
+                RaisePropertyChanged();
+            }
+        }
+     
+        /// <summary>
+        ///  
+        /// </summary>
+        public string SurplusSize
+        {
+            get { return _SurplusSize; }
+            set
+            {
+                _SurplusSize = value;
+                RaisePropertyChanged();
+            }
+        }
+      
 
     }
 

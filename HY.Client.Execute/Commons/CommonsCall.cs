@@ -1,7 +1,10 @@
 ﻿using HandyControl.Controls;
 using HY.Client.Entity.HomeEntitys;
+using HY.Client.Entity.UserEntitys;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -113,13 +116,49 @@ namespace HY.Client.Execute.Commons
         {
             try
             {
-                var dd = fileSize / 1024;
+                var dd = fileSize / (1024 * 1024 * 1024);
                 return dd.ToString("F2");
             }
             catch (Exception)
             {
 
                 throw;
+            }
+        }
+
+        //静态属性通知事件 (4.5支持)
+        public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
+
+        private static string _DownProgress;
+        /// <summary>
+        ///  
+        /// </summary>
+        public static string DownProgress
+        {
+            get { return _DownProgress; }
+            set
+            {
+                _DownProgress = value;
+                if (StaticPropertyChanged != null)
+                {
+                    StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("DownProgress"));
+                }
+            }
+        }
+
+
+        private static ObservableCollection<UserGamesEntity> userGamesEntities = new ObservableCollection<UserGamesEntity>();
+
+        public static ObservableCollection<UserGamesEntity> UserGames
+        {
+            get { return userGamesEntities; }
+            set
+            {
+                userGamesEntities = value;
+                if (StaticPropertyChanged != null)
+                {
+                    StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("UserGames"));
+                }
             }
         }
 

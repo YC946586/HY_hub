@@ -72,7 +72,6 @@
     <Compile Include="Commons\Loginer.cs" />
     <Compile Include="Commons\MacAddressHelper.cs" />
     <Compile Include="Commons\Message.cs" />
-    <Compile Include="Commons\TaskCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

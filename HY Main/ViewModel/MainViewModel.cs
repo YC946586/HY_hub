@@ -7,6 +7,7 @@ using HY_Main.Common.CoreLib;
 using HY_Main.Common.CoreLib.Modules;
 using HY_Main.Common.Unity;
 using HY_Main.Model.CoreLib;
+using HY_Main.ViewModel.Mine.UserControls;
 using HY_Main.ViewModel.Step;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,8 @@ namespace HY_Main.ViewModel
         }
         private RelayCommand<HanderMenuModel> _ExcuteCommand;
         public RelayCommand updatePwd;
+        public RelayCommand _useCouponCommand;
+        public RelayCommand _downShowCommand;
         /// <summary>
         /// 打开页
         /// </summary>
@@ -103,7 +106,7 @@ namespace HY_Main.ViewModel
         }
 
       
-        public RelayCommand UpdatePwd
+        public RelayCommand UpdatePwdCommand
         {
             get
             {
@@ -115,8 +118,24 @@ namespace HY_Main.ViewModel
             }
             set { updatePwd = value; RaisePropertyChanged(); }
         }
+        public RelayCommand UseCouponCommand
+        {
+            get
+            {
+                if (_useCouponCommand == null)
+                {
+                    _useCouponCommand = new RelayCommand(UseCoupon);
+                }
+                return _useCouponCommand;
+            }
+            set { _useCouponCommand = value; RaisePropertyChanged(); }
+        }
+
 
        
+
+     
+
         #endregion
 
         #region 初始化/页面相关
@@ -169,6 +188,27 @@ namespace HY_Main.ViewModel
                 Message.ErrorException(ex);
             }
         }
+
+        private void UseCoupon()
+        {
+            try
+            {
+                CouponViewModel viewModel = new CouponViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("CouponDlg");
+                dialog.BindViewModel(viewModel);
+                var d = Dialog.Show(dialog.GetDialog());
+                viewModel.ClostEvent += (async () =>
+                {
+                    d.Close();
+                });
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
+
+       
         #endregion
 
     }

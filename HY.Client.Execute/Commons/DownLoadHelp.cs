@@ -16,8 +16,10 @@ namespace HY.Client.Execute.Commons
         /// </summary>
         /// <param name="strFileName">下载文件的保存路径</param>
         /// <param name="strUrl">文件下载地址</param>
-        public void DownloadFile(string strFileName, string strUrl)
+        public static void DownloadFile(string strUrl)
         {
+
+           var strFileName= AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + strUrl.Substring(strUrl.LastIndexOf("/") + 1);
             float percent = 0;
             //打开上次下载的文件或新建文件
             long SPosition = 0;
@@ -59,7 +61,7 @@ namespace HY.Client.Execute.Commons
                 myStream.Close();
                 
             }
-            catch
+            catch(Exception ex)
             {
                 FStream.Close();
             }

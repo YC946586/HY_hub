@@ -37,5 +37,23 @@ namespace HY.RequestConver.Manager
                 throw;
             }
         }
+
+        public Task<ServiceResponse> UseCoupon(string code)
+        {
+            try
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object>
+                {
+                    { "code", code },
+                };
+                var genrator = Task.Run(() => Network.ApiPost("coupon", "useCoupon", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> GetCommonDes();
 
         Task<ServiceResponse> GetLoginFormBackGroundPics();
+
+        Task<ServiceResponse> UseCoupon(string code);
     }
 }
