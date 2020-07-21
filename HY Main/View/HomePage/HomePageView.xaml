@@ -98,8 +98,8 @@
                 <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="UniformToFill"/>
             </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
             <!--热门推荐-->
             <usercontrols:Recommended/>

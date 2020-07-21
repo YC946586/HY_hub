@@ -13,16 +13,16 @@
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="360"/>
+                <RowDefinition Height="120"/>
             </Grid.RowDefinitions>
             <usercontrols:Progress />
-            <TextBlock Grid.Row="1"  FontSize="14" VerticalAlignment="Center" Text="{Binding ShowUser,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="1"   Margin="20 0" FontSize="14" VerticalAlignment="Center" Text="{Binding ShowUser,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             <Grid Grid.Row="2" Margin="20 0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock  VerticalAlignment="Center">
@@ -36,7 +36,7 @@
                         Command="{Binding  QueryCommand}" Height="40"   Style="{StaticResource ButtonPrimary}"
                     />
                 </StackPanel>
-                <ItemsControl Grid.Row="2"  ItemsSource="{Binding GridModelList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl Grid.Row="2"  Margin="20" ItemsSource="{Binding GridModelList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="4" Rows="1"/>
@@ -59,12 +59,34 @@
                                         <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666"/>
                                         <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>
                                     </StackPanel>
-                                    <Button Content="开始游戏"   HorizontalAlignment="Right"     Command="{Binding DataContext.EditCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    <Button Content="安装游戏"   x:Name="gridStuep" Visibility="{Binding StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Flag},ConverterParameter=MaineView}"   HorizontalAlignment="Right"     Command="{Binding DataContext.EditCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                         CommandParameter="{Binding }"        Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
                                      />
-                                    <!--<Button Content="获取游戏"   HorizontalAlignment="Right"       Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
-                                        Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                        CommandParameter="{Binding }"/>-->
+                                    <ToggleButton Content="操作菜单"  Visibility="{Binding StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=MaineView1,FallbackValue=Collapsed}"  Grid.Column="1"  x:Name="menu"/>
+                                    <Popup  StaysOpen="False"  Margin="0" PlacementTarget="{Binding ElementName=menu}" AllowsTransparency="True">
+                                        <Grid Width="140" HorizontalAlignment="Left">
+                                            <Border BorderThickness="0" CornerRadius="3" Background="White" Margin="3">
+                                                <Border.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFB6B6B6"/>
+                                                </Border.Effect>
+                                                <StackPanel  >
+                                                    <MenuItem Header="开始游戏"  Command="{Binding  DataContext.AddCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding }"/>
+                                                    <MenuItem Header="卸载游戏"  Command="{Binding  DataContext.DelCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding }"/>
+                                                    <MenuItem Header="打开目录"  Command="{Binding  DataContext.EditGameCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding }"/>
+                                                    <MenuItem Header="游戏攻略"  Command="{Binding  DataContext.GameGlCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding }"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                        <Popup.Style>
+                                            <Style TargetType="Popup">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=menu,Path=IsChecked}" Value="True">
+                                                        <Setter Property="IsOpen" Value="True"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Popup.Style>
+                                    </Popup>
                                 </Grid>
                                 <Border Background="{StaticResource 矩形2}"   VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="5" Grid.ColumnSpan="2" Margin="8" Width="60" Height="20">
                                     <TextBlock Text="{Binding price,StringFormat={}{0}黑鹰币}" FontFamily="Microsoft YaHei" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>

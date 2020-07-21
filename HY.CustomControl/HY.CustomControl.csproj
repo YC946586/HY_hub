@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Button\IconButton.cs" />
+    <Compile Include="Converters\BooleanToNameConverter.cs" />
     <Compile Include="Converters\FlagConverter.cs" />
     <Compile Include="Converters\NameToObjectConverter.cs" />
     <Compile Include="LoginPassworHelper.cs" />

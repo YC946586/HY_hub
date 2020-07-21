@@ -12,5 +12,7 @@ namespace HY.Client.Entity.ToolEntitys
 
 
         public dynamic Values { get; set; }
+
+        public string remarks { get; set; }
     }
 }

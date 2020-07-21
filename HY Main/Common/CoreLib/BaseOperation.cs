@@ -339,7 +339,10 @@ namespace HY_Main.Common.CoreLib
                 {
                     Message.Info(genrator.Message);
                 }
-
+                else
+                {
+                    Message.Info(genrator.Message+",请前往我的 安装游戏");
+                }
 
                 //if (Message.Question("是否使用黑鹰币获取游戏"))
                 //{

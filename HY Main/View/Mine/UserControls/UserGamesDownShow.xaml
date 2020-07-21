@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HY_Main.View.Mine.UserControls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Icon="/HY Main;component/48px.ico"
            xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
          Title="游戏下载进度"  Height="500" Width="650" 
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >

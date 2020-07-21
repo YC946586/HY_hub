@@ -9,8 +9,8 @@
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
         xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common" xmlns:sign="clr-namespace:HY_Main.ViewModel.Sign"
-        mc:Ignorable="d" Name="mainLogin"
-         Title="黑鹰hub登录"  Height="420" Width="330" 
+        mc:Ignorable="d" Name="mainLogin" Icon="/HY Main;component/48px.ico"
+         Title="黑鹰hub登录"   Height="720" Width="1280"  
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
     
     <Window.Template>
@@ -49,7 +49,7 @@
 
             </Border>
             <TextBlock Text="黑鹰hub" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Grid.Row="1"/>
-            <StackPanel Orientation="Vertical"   Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Login}" Margin="20 0"  Grid.Row="2">
+            <StackPanel Orientation="Vertical"  Height="420" Width="350"  Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Login}" Margin="20 0"  Grid.Row="2">
                 <TextBox Text="{Binding LoginCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  
@@ -64,7 +64,7 @@
                        Path=DataContext.SignCommand}"  CommandParameter="登录"   Height="40"   Style="{StaticResource ButtonPrimary}"
                      Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}" />
                 <Button Content="注册" Margin="0 25"  Command="{Binding RegistereCommand}" CommandParameter="注册" Height="40" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}"/>
-                <TextBlock Text="忘记密码" FontSize="14" HorizontalAlignment="Right"
+                <TextBlock Text="忘记密码" FontSize="14" HorizontalAlignment="Right" Foreground="White"
                        >
                     <TextBlock.InputBindings>
                         <MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>
@@ -73,7 +73,7 @@
                 <TextBlock Text="{Binding LoginCollection.Report}" Margin="0 10 0 0 "/>
             </StackPanel>
 
-            <UserControl   Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
+            <UserControl  Height="420" Width="350"  Grid.Row="2" Visibility="{Binding Hander,Converter={StaticResource Flag},ConverterParameter=Registere,FallbackValue=Collapsed}"  
                       ContentTemplate="{Binding  TemplateType,Converter={StaticResource Convrter}}"/>
 
             <hc:LoadingCircle  Visibility="Collapsed"  />

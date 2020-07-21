@@ -14,13 +14,13 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="120"/>
             </Grid.RowDefinitions>
             <usercontrols:Progress />
             <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center"  Margin="20 0">
-                <ComboBox ItemsSource="{Binding CatesList,UpdateSourceTrigger=PropertyChanged}"   SelectedItem="{Binding SelectCombox,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" SelectedIndex="0" DisplayMemberPath="Key" SelectedValuePath="Values"/>
+                <ComboBox ItemsSource="{Binding CatesList,UpdateSourceTrigger=PropertyChanged}"  Height="40"  SelectedItem="{Binding SelectCombox,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" SelectedIndex="0" DisplayMemberPath="Key" SelectedValuePath="Values"/>
                 <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="搜索游戏" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                         Width="300"   />
                 <Button  Content="搜索游戏" 

@@ -80,7 +80,8 @@ namespace HY.Client.Entity.UserEntitys
                 RaisePropertyChanged();
             }
         }
-      
+        
+        public string gameName { get; set; }
 
     }
 

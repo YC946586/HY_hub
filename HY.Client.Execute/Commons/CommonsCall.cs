@@ -1,6 +1,8 @@
 ﻿using HandyControl.Controls;
 using HY.Client.Entity.HomeEntitys;
+using HY.Client.Entity.ToolEntitys;
 using HY.Client.Entity.UserEntitys;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -126,6 +128,184 @@ namespace HY.Client.Execute.Commons
             }
         }
 
+        /// <summary>
+        /// 判断句子中是否含有中文
+        /// </summary>
+        /// <param >字符串</param>
+        public static bool WordsIScn(string words)
+        {
+
+            string TmmP;
+            for (int i = 0; i < words.Length; i++)
+            {
+                TmmP = words.Substring(i, 1);
+                byte[] sarr = Encoding.GetEncoding("gb2312").GetBytes(TmmP);
+                if (sarr.Length == 2)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="file"></param>
+        public static void DeleteDir(string file)
+        {
+            try
+            {
+                //去除文件夹和子文件的只读属性
+                //去除文件夹的只读属性
+                System.IO.DirectoryInfo fileInfo = new DirectoryInfo(file);
+                fileInfo.Attributes = FileAttributes.Normal & FileAttributes.Directory;
+                //去除文件的只读属性
+                System.IO.File.SetAttributes(file, System.IO.FileAttributes.Normal);
+
+                //判断文件夹是否还存在
+                if (Directory.Exists(file))
+                {
+                    foreach (string f in Directory.GetFileSystemEntries(file))
+                    {
+                        if (File.Exists(f))
+                        {
+                            //如果有子文件删除文件
+                            File.Delete(f);
+                            Console.WriteLine(f);
+                        }
+                        else
+                        {
+                            //循环递归删除子文件夹
+                            DeleteDir(f);
+                        }
+                    }
+
+                    //删除空文件夹
+                    Directory.Delete(file);
+                    Console.WriteLine(file);
+                }
+
+            }
+            catch (Exception ex) // 异常处理
+            {
+                Console.WriteLine(ex.Message.ToString());// 异常信息
+            }
+        }
+        #region  注册表操作
+
+        /// <summary>
+        /// 记住游戏ID和安装路径
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="route"></param>
+        public static void HyGameInstall(string gameId, string route,string gameName)
+        {
+            try
+            {
+                RegistryKey CUKey = null;
+                RegistryKey CNCTKJPTKey = null;
+                CUKey = Registry.CurrentUser;
+                CNCTKJPTKey = CUKey.OpenSubKey(@"Software\HyGameInstall", true);
+                if (CNCTKJPTKey == null)
+                {
+                    //说明这个路径不存在，需要创建
+                    CUKey.CreateSubKey(@"Software\HyGameInstall");
+                    CNCTKJPTKey = CUKey.OpenSubKey(@"Software\HyGameInstall", true);
+                }
+                RegistryKey userInfo = CNCTKJPTKey.OpenSubKey(gameId, true);
+                if (userInfo == null)
+                {
+                    //说明这个路径不存在，需要创建
+                    CNCTKJPTKey.CreateSubKey(gameId);
+                    userInfo = CNCTKJPTKey.OpenSubKey(gameId, true);
+                }
+                //记录当前checkbox的状态为选中状态
+                userInfo.SetValue("route", route);
+                userInfo.SetValue("gameId", gameId);
+                userInfo.SetValue("gameName", gameName);
+                userInfo.SetValue("establishDate", DateTime.Now);
+                userInfo.Close();
+                CNCTKJPTKey.Close();
+                CUKey.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// 读取游戏注册表
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public static ToolEntity ReadUserGameInfo(string gameId)
+        {
+            try
+            {
+                ToolEntity toolEntity = new ToolEntity();
+                RegistryKey cuKey = Registry.CurrentUser;
+                RegistryKey cnctkjptKey = cuKey.OpenSubKey(@"Software\HyGameInstall\" + gameId, true);
+                if (cnctkjptKey != null)
+                {
+                    object objDate = cnctkjptKey.GetValue("route");
+                    object gameName = cnctkjptKey.GetValue("gameName");
+                    
+                    if (objDate!=null)
+                    {
+                        toolEntity.Key = objDate.ToString();
+                        toolEntity.remarks = gameName.ToString();
+                    }
+                }
+                return toolEntity;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 删除根节点
+        /// </summary>
+        public static void DeleteSubKeyTree(string gameId)
+        {
+            try
+            {
+
+                RegistryKey CUKey = Registry.CurrentUser;
+                RegistryKey CNCTKJPTKey = null;
+                CNCTKJPTKey = CUKey.OpenSubKey(@"Software\HyGameInstall", true);
+                if (CNCTKJPTKey == null)
+                {
+                    //说明这个路径不存在，不需要删除
+                    return;
+                }
+                RegistryKey userInfo = CNCTKJPTKey.OpenSubKey(gameId, true);
+                if (userInfo == null)
+                {
+                    return;
+                }
+                else
+                {
+                    //删除指定项
+                    CNCTKJPTKey.DeleteSubKey(gameId, true);
+                }
+                userInfo.Close();
+                CNCTKJPTKey.Close();
+                CUKey.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        #endregion
+
+        #region  属性
         //静态属性通知事件 (4.5支持)
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged;
 
@@ -161,6 +341,8 @@ namespace HY.Client.Execute.Commons
                 }
             }
         }
+        #endregion
 
-    }  
+
+    }
 }

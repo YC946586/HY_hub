@@ -6,7 +6,7 @@
         xmlns:loca="clr-namespace:HY_Main.Common.UserControls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Icon="/HY Main;component/48px.ico"
         Title="密码修改"  Height="250" Width="300" 
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
     <Window.Template>

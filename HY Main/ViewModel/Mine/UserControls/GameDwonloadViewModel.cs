@@ -26,6 +26,8 @@ namespace HY_Main.ViewModel.Mine.UserControls
     {
 
         public event Action ShowList;
+
+        public event Action<string,string> stuepEnd;
         private UserGamesEntity _pageCollection = new UserGamesEntity();
 
 
@@ -83,6 +85,11 @@ namespace HY_Main.ViewModel.Mine.UserControls
                         HY.Client.Execute.Commons.Message.Info("磁盘大小不足,请您选择其他路径");
                         return;
                     }
+                    if (CommonsCall.WordsIScn(fbd.SelectedPath))
+                    {
+                        HY.Client.Execute.Commons.Message.Info("当前路径包含中文,请重新选择");
+                        return;
+                    }
                     PageCollection.StrupPath = fbd.SelectedPath;
                 }
             }
@@ -124,8 +131,9 @@ namespace HY_Main.ViewModel.Mine.UserControls
                                 resetEvent.WaitOne();
                                 DownloadFile(item);
                                 GC.Collect();
-                                var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + PageCollection.title;
-                                Compress(PageCollection.StrupPath+@"\"+ PageCollection.title, strFileName);
+                                var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
+                                Compress(PageCollection.StrupPath, strFileName);
+                                CommonsCall.DeleteDir(strFileName);
                                 return;
                             }
 
@@ -136,24 +144,23 @@ namespace HY_Main.ViewModel.Mine.UserControls
                     Task.WaitAll(ParallelTasks.ToArray());
                     resetEvent.Close();
                     GC.Collect();
-                    CommonsCall.UserGames.Remove(PageCollection);
                     //strFileName
-                    var dd = dwonloadEntities.First().name;
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        CommonsCall.UserGames.Remove(PageCollection);
+                    }));
+                    var pathName = dwonloadEntities.First().name;
+                    pathName = pathName.Substring(0, pathName.Length - 4);
+                    var path = PageCollection.StrupPath +"\\" + pathName;
                     if (PageCollection.IsSelected)
                     {
-                        dd = dd.Substring(0, dd.Length - 4);
-                        CreateShortcut(PageCollection.title + ".lnk", PageCollection.StrupPath + @"\" + PageCollection.title+ "\\"+dd, PageCollection.title);
+                        CreateShortcut(PageCollection.title+".lnk", path, PageCollection.title);
                     }
-
+                    stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
+                    CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
                 });
 
-                //List<string> Results = new List<string>();
-                //dwonloadEntities.ForEach((ary) => Results.Add(ary.url));
-                //TaskCommand task = new TaskCommand();
-                //foreach (var item in dwonloadEntities)
-                //{
-                //    task.StartData(item);
-                //}     
+               
             }
             catch (Exception ex)
             {
@@ -257,6 +264,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
 
                     //保存快捷方式 
                     shortcut.Save();
+                  
                     Process.Start(path + @"\" + PageCollection.startFileName);
                 }
 
@@ -279,7 +287,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
         public void DownloadFile(DwonloadEntity dwonloadEntity)
         {
             string strUrl = dwonloadEntity.url;
-            var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + PageCollection.title;
+            var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + dwonloadEntity.name;
             //打开上次下载的文件或新建文件
             long SPosition = 0;
             FileStream FStream;
@@ -357,7 +365,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
         {
             try
             {
-             
                 CommonsCall.DownProgress = CommonsCall.ConvertByG(dwonloadEntity.size) + "G / " + CommonsCall.ConvertByG(dwonloadEntity.SurplusSize) + "G";
                 PageCollection.SurplusSize = CommonsCall.ConvertByG((dwonloadEntities.Sum(s => s.SurplusSize)))+"G";
                 foreach (var item in CommonsCall.UserGames)

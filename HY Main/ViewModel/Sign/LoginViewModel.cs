@@ -254,42 +254,42 @@ namespace HY_Main.ViewModel.Sign
                             break;
                         }
                 }
+                ServiceResponse genratorlogin;
                 if (!string.IsNullOrWhiteSpace(phone) && !string.IsNullOrWhiteSpace(pwd))
                 {
-                    this.LoginCollection.IsCancel = false;
+                    LoginCollection.IsCancel = false;
                     IUser user = BridgeFactory.BridgeManager.GetUserManager();
                     if (phone.Equals("13666142357"))
                     {
-                        var genrator = await user.Login("123", pwd, phone);
-                        if (genrator.code != "000")
+                        genratorlogin = await user.Login("123", pwd, phone);
+                        if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genrator.Message);
+                            MessageBox.Show(genratorlogin.Message);
                             return;
                         }
-
-                        var Results = JsonConvert.DeserializeObject<Loginer>(genrator.result.ToString());
-                        Network.Authorization = Results.token;
-                        Loginer.LoginerUser.Authorization = Results.token;
-                        Loginer.LoginerUser.UserName = Results.phone;
-                        Loginer.LoginerUser.balance = Results.balance;
-                        Loginer.LoginerUser.freeCount = Results.freeCount;
-                        Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
-                        Loginer.LoginerUser.vipType = Results.vipType;
-                        string vipType = string.Empty;
-                        if (Loginer.LoginerUser.vipType.Equals("1")|| Loginer.LoginerUser.vipType.Equals("2"))
-                        {
-                            Loginer.LoginerUser.IsAdmin = true;
-                        }
-                       
                     }
                     else
                     {
-                        var genrator = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
-                        if (genrator.code != "000")
+                        genratorlogin = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
+                        if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genrator.Message);
+                            MessageBox.Show(genratorlogin.Message);
                             return;
                         }
+                    }
+
+                    var Results = JsonConvert.DeserializeObject<Loginer>(genratorlogin.result.ToString());
+                    Network.Authorization = Results.token;
+                    Loginer.LoginerUser.Authorization = Results.token;
+                    Loginer.LoginerUser.UserName = Results.phone;
+                    Loginer.LoginerUser.balance = Results.balance;
+                    Loginer.LoginerUser.freeCount = Results.freeCount;
+                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
+                    Loginer.LoginerUser.vipType = Results.vipType;
+                    string vipType = string.Empty;
+                    if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+                    {
+                        Loginer.LoginerUser.IsAdmin = true;
                     }
                 }
                 else
@@ -307,12 +307,12 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                this.LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
+                LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
                 Message.ErrorException(ex);
             }
             finally
             {
-                this.LoginCollection.IsCancel = true;
+                LoginCollection.IsCancel = true;
             }
         }
 

@@ -49,8 +49,29 @@ namespace HY.CustomControl.Converters
                             else
                             {
                                 return Visibility.Collapsed;
+                            }   
+                        }
+                    case "MaineView":
+                        {
+                            if (value != null&&!string.IsNullOrEmpty(value.ToString()))
+                            {
+                                return Visibility.Collapsed;
                             }
-                           
+                            else
+                            {
+                                return Visibility.Visible;
+                            }
+                        }
+                    case "MaineView1":
+                        {
+                            if (value != null && !string.IsNullOrEmpty(value.ToString()))
+                            {
+                                return Visibility.Visible;
+                            }
+                            else
+                            {
+                                return Visibility.Collapsed;
+                            }
                         }
                     default:
                         {
