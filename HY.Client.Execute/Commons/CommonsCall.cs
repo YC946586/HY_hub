@@ -326,6 +326,37 @@ namespace HY.Client.Execute.Commons
             }
         }
 
+        private static float _UserBalance;
+        /// <summary>
+        ///  
+        /// </summary>
+        public static float UserBalance
+        {
+            get { return _UserBalance; }
+            set
+            {
+                _UserBalance = value;
+                if (StaticPropertyChanged != null)
+                {
+                    StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("UserBalance"));
+                }
+            }
+        }
+
+        private static string _showUser;
+        /// <summary>
+        ///  
+        /// </summary>
+        public static string ShowUser
+        {
+            get { return _showUser; }
+            set { _showUser = value; 
+                if (StaticPropertyChanged != null)
+                {
+                    StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("ShowUser"));
+                }
+            }
+        }
 
         private static ObservableCollection<UserGamesEntity> userGamesEntities = new ObservableCollection<UserGamesEntity>();
 

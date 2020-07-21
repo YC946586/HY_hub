@@ -66,6 +66,7 @@
     <Compile Include="StoreEntitys\GetGamesEntity.cs" />
     <Compile Include="ToolEntitys\ToolEntity.cs" />
     <Compile Include="UserEntitys\LoginResultEntity.cs" />
+    <Compile Include="UserEntitys\UserBuyGameEntity.cs" />
     <Compile Include="UserEntitys\UserGamesEntity.cs" />
   </ItemGroup>
   <ItemGroup>

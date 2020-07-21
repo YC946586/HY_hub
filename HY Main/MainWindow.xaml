@@ -7,6 +7,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:UserControls="clr-namespace:HY_Main.Common.UserControls"
         mc:Ignorable="d"   Background="Transparent"
+        xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
         Title="黑鹰 Hub" Height="720" Width="1280"   Icon="/HY Main;component/48px.ico"
       WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
     <!--<Window.Template>
@@ -47,7 +48,7 @@
                                     <ImageBrush ImageSource="{DynamicResource 黑鹰币}"/>
                                 </Grid.Background>
                                 <!--Text="{Binding UserBalance}"-->
-                                <TextBlock Text="{Binding Balance,StringFormat={}{0}黑鹰币}" HorizontalAlignment="Center" Margin="5 0" Foreground="#333333" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Path=(com:CommonsCall.UserBalance),StringFormat={}{0}黑鹰币}" HorizontalAlignment="Center" Margin="5 0" Foreground="#333333" VerticalAlignment="Center"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>

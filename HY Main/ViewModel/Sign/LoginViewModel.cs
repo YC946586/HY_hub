@@ -291,13 +291,33 @@ namespace HY_Main.ViewModel.Sign
                     {
                         Loginer.LoginerUser.IsAdmin = true;
                     }
+                    switch (Loginer.LoginerUser.vipType)
+                    {
+                        case "0":
+                            {
+                                vipType = "普通用户";
+                                break;
+                            }
+                        case "1":
+                            {
+                                vipType = "月费用户";
+                                break;
+                            }
+                        case "2":
+                            {
+                                vipType = "年费用户";
+                                break;
+                            }
+                    }
+                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
                 }
                 else
                 {
                     Message.Info("请输入用户名和密码");
                     return;
                 }
-                SaveLoginInfo();
+                SaveLoginInfo(phone, pwd);
                 MainViewModel model = new MainViewModel();
                 model.InitDefaultView();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("MainViewDlg");
@@ -382,7 +402,7 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 保存登录信息
         /// </summary>
-        private void SaveLoginInfo()
+        private void SaveLoginInfo(string name,string pwd)
         {
             string strPath = AppDomain.CurrentDomain.BaseDirectory + "config\\";
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
@@ -391,8 +411,8 @@ namespace HY_Main.ViewModel.Sign
                 Directory.CreateDirectory(strPath);
             }
             IniFile ini = new IniFile(cfgINI);
-            ini.IniWriteValue("Login", "User", LoginCollection.UserName);
-            ini.IniWriteValue("Login", "Password", CEncoder.Encode(LoginCollection.Password));
+            ini.IniWriteValue("Login", "User", name);
+            ini.IniWriteValue("Login", "Password", CEncoder.Encode(pwd));
         }
 
         #endregion

@@ -59,17 +59,6 @@ namespace HY_Main.ViewModel.Mine
             set { _gameGlCommand = value; }
         }
 
-       
-
-        private string _showUser;
-        /// <summary>
-        ///  
-        /// </summary>
-        public string ShowUser
-        {
-            get { return _showUser; }
-            set { _showUser = value; RaisePropertyChanged(); }
-        }
 
         public override void InitViewModel()
         {
@@ -81,26 +70,26 @@ namespace HY_Main.ViewModel.Mine
             try
             {
                 //viptype类型 0：普通用户  1：月费用户  2：年费用户
-                string vipType = string.Empty;
-                switch (Loginer.LoginerUser.vipType)
-                {
-                    case "0":
-                        {
-                            vipType = "普通用户";
-                            break;
-                        }
-                    case "1":
-                        {
-                            vipType = "月费用户";
-                            break;
-                        }
-                    case "2":
-                        {
-                            vipType = "年费用户";
-                            break;
-                        }
-                }
-                ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+              //  string vipType = string.Empty;
+              //  switch (Loginer.LoginerUser.vipType)
+              //  {
+              //      case "0":
+              //          {
+              //              vipType = "普通用户";
+              //              break;
+              //          }
+              //      case "1":
+              //          {
+              //              vipType = "月费用户";
+              //              break;
+              //          }
+              //      case "2":
+              //          {
+              //              vipType = "年费用户";
+              //              break;
+              //          }
+              //  }
+              //CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
 
                 GridModelList.Clear();
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
@@ -128,6 +117,7 @@ namespace HY_Main.ViewModel.Mine
             }
         }
 
+         
         public override async void Query()
         {
             try

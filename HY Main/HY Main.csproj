@@ -311,7 +311,9 @@
     <Resource Include="头像.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="48px.ico" />
+    <Resource Include="48px.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

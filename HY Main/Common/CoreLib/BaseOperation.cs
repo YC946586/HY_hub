@@ -3,11 +3,13 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HY.Application.Base;
 using HY.Client.Entity.HomeEntitys;
+using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
 using HY_Main.Common.Unity;
 using HY_Main.ViewModel.Mine.UserControls;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -335,13 +337,39 @@ namespace HY_Main.Common.CoreLib
             {
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                 var genrator = await store.BuyGame(gameId);
-                if (!genrator.code.Equals("000"))
+                Message.Info(genrator.Message);
+                if (genrator.code.Equals("100"))
                 {
-                    Message.Info(genrator.Message);
-                }
-                else
-                {
-                    Message.Info(genrator.Message+",请前往我的 安装游戏");
+                    var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
+                    Loginer.LoginerUser.balance = Results.balance;
+                    Loginer.LoginerUser.freeCount = Results.freeCount;
+                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo.ToString();
+                    Loginer.LoginerUser.vipType = Results.vipType.ToString();
+                    string vipType = string.Empty;
+                    if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+                    {
+                        Loginer.LoginerUser.IsAdmin = true;
+                    }
+                    switch (Loginer.LoginerUser.vipType)
+                    {
+                        case "0":
+                            {
+                                vipType = "普通用户";
+                                break;
+                            }
+                        case "1":
+                            {
+                                vipType = "月费用户";
+                                break;
+                            }
+                        case "2":
+                            {
+                                vipType = "年费用户";
+                                break;
+                            }
+                    }
+                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
                 }
 
                 //if (Message.Question("是否使用黑鹰币获取游戏"))

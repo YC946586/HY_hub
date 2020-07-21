@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HY_Main.View.Mine" xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:usercontrols="clr-namespace:HY_Main.Common.UserControls"
+             xmlns:local="clr-namespace:HY_Main.View.Mine" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
+             xmlns:usercontrols="clr-namespace:HY_Main.Common.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid >
@@ -18,7 +21,7 @@
                 <RowDefinition Height="120"/>
             </Grid.RowDefinitions>
             <usercontrols:Progress />
-            <TextBlock Grid.Row="1"   Margin="20 0" FontSize="14" VerticalAlignment="Center" Text="{Binding ShowUser,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="1"   Margin="20 0" FontSize="14" VerticalAlignment="Center" Text="{Binding Path=(com:CommonsCall.ShowUser),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }"/>
             <Grid Grid.Row="2" Margin="20 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
