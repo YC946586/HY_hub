@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -302,6 +303,44 @@ namespace HY.Client.Execute.Commons
             {
 
             }
+        }
+
+        const string _uriDeviecId = "SOFTWARE\\Microsoft\\YouYangCong";
+        public static string GetDeviceId()
+        {
+            string ret = string.Empty;
+            using (var obj = Registry.CurrentUser.OpenSubKey(_uriDeviecId, false))
+            {
+                if (obj != null)
+                {
+                    var value = obj.GetValue("DeviceId");
+                    if (value != null)
+                        ret = Convert.ToString(value);
+                }
+            }
+            return ret;
+        }
+
+        public static string SetDeviceId()
+        {
+            string ret = string.Empty;
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(DateTime.Now.ToString()));
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                string id = sBuilder.ToString();
+                using (var tempk = Registry.CurrentUser.CreateSubKey(_uriDeviecId))
+                {
+                    tempk.SetValue("DeviceId", id);
+                }
+                ret = id;
+            }
+            return ret;
         }
         #endregion
 

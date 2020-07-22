@@ -25,6 +25,8 @@ using HandyControl.Tools.Extension;
 using HandyControl.Tools;
 using System.Windows.Documents;
 using HY.Client.Entity.UserEntitys;
+using System.IO;
+using System.Diagnostics;
 
 namespace HY_Main.ViewModel.HomePage
 {
@@ -49,7 +51,24 @@ namespace HY_Main.ViewModel.HomePage
             set { _OpenEditCommand = value; }
         }
 
+        private RelayCommand<GetCommonUseGamesEntity> _openCommand;
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand<GetCommonUseGamesEntity> OpenCommand
+        {
+            get
+            {
+                if (_openCommand == null)
+                {
+                    _openCommand = new RelayCommand<GetCommonUseGamesEntity>(t => Open(t));
+                }
+                return _openCommand;
+            }
+            set { _openCommand = value; }
+        }
 
+        
 
 
         #endregion
@@ -140,17 +159,6 @@ namespace HY_Main.ViewModel.HomePage
                     var Results = JsonConvert.DeserializeObject<GetHomeResultEntity>(genrator.result.ToString());
                     if (Results.recommendGames != null && Results.recommendGames.Length != 0)
                     {
-                        //if (userGamesEntities.Count != 0)
-                        //{
-                        //    foreach (var item in Results.recommendGames)
-                        //    {
-                        //        var curExist = userGamesEntities.Where(s => s.id == item.id);
-                        //        if (curExist.Any())
-                        //        {
-                        //            item.Content = "开始游戏";
-                        //        }
-                        //    }
-                        //}
                         Results.recommendGames.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => RecommendGames.Add(ary));
                         var ItemsSource = Results.recommendGames.OrderBy(s => s.displayOrder).Skip(0).Take(4);
                         ItemsSource.ForEach((ary) => RecommendSkipGames.Add(ary));
@@ -158,17 +166,6 @@ namespace HY_Main.ViewModel.HomePage
                     if (Results.hotGames != null && Results.hotGames.Length != 0)
                     {
 
-                        //if (userGamesEntities.Count != 0)
-                        //{
-                        //    foreach (var item in Results.hotGames)
-                        //    {
-                        //        var curExist = userGamesEntities.Where(s => s.id == item.id);
-                        //        if (curExist.Any())
-                        //        {
-                        //            item.Content = "开始游戏";
-                        //        }
-                        //    }
-                        //}
                         DownloadManager.LoadModulesAsync(Results.hotGames.OrderBy(s => s.displayOrder).ToList());
                     }
                 }
@@ -199,8 +196,37 @@ namespace HY_Main.ViewModel.HomePage
             }
         }
 
-
-      
+        /// <summary>
+        /// 常用功能双击
+        /// </summary>
+        /// <param name="t"></param>
+        private void Open(GetCommonUseGamesEntity model)
+        {
+            try
+            {
+                var GameRoute = CommonsCall.ReadUserGameInfo(model.gameId.ToString());
+                if (!string.IsNullOrEmpty(GameRoute.Key))
+                {
+                    if (File.Exists(GameRoute.Key))//判断文件是否存在
+                    {
+                        Process.Start(GameRoute.Key);
+                    }
+                    else
+                    {
+                        CommonsCall.DeleteSubKeyTree(GameRoute.Key);
+                        Message.Info("游戏损坏,请重新安装游戏");
+                    }
+                }
+                else
+                {
+                    Message.Info("请您先安装游戏");
+                }
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
 
         private void OpenEdit(string t)
         {

@@ -338,8 +338,12 @@ namespace HY_Main.Common.CoreLib
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                 var genrator = await store.BuyGame(gameId);
                 Message.Info(genrator.Message);
-                if (genrator.code.Equals("100"))
+                if (genrator.code.Equals("000"))
                 {
+                    if (genrator.result.Equals("888"))
+                    {
+                        return;
+                    }
                     var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
                     Loginer.LoginerUser.balance = Results.balance;
                     Loginer.LoginerUser.freeCount = Results.freeCount;
@@ -369,7 +373,16 @@ namespace HY_Main.Common.CoreLib
                             }
                     }
                     CommonsCall.UserBalance = Loginer.LoginerUser.balance;
-                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+                    if (vipType.Equals("普通用户"))
+                    {
+                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   ";
+                    }
+                    else
+                    {
+                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ": " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+
+                    }
+
                 }
 
                 //if (Message.Question("是否使用黑鹰币获取游戏"))

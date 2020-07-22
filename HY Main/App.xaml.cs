@@ -1,6 +1,7 @@
 ﻿using HY.Application.Base;
 using HY.Client.Execute.Commons;
 using HY_Main.Common.Unity;
+using HY_Main.Common.UserControls;
 using HY_Main.ViewModel.Sign;
 using System;
 using System.Collections.Generic;
@@ -52,15 +53,20 @@ namespace HY_Main
         {
 
             var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
-            if (!string.IsNullOrEmpty(MacAddress))
+            if (string.IsNullOrEmpty(MacAddress))
             {
-                Loginer.LoginerUser.macAdd = MacAddress;
+                MessageBox.Show("网络连接失败,请您连接网络,稍后重新运行");
+                Current.Shutdown();
+                return;
+            }
+            var MAC = CommonsCall.GetDeviceId();
+            if (!string.IsNullOrEmpty(MAC))
+            {
+                Loginer.LoginerUser.macAdd = MAC;
             }
             else
             {
-                MessageBox.Show("网络连接失败,请您稍后重新运行");
-                Current.Shutdown();
-                return;
+                Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
             }
             Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
             base.OnStartup(e);

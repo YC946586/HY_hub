@@ -46,7 +46,7 @@
                         <DataTemplate>
                             <Border x:Name="bor"  Margin="0 5 " Cursor="Hand" >
                                 <Border.InputBindings>
-                                    <MouseBinding   MouseAction="LeftClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
+                                    <MouseBinding   MouseAction="LeftDoubleClick"  Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"    
                              CommandParameter="{Binding }"/>
                                 </Border.InputBindings>
                                 <StackPanel Orientation="Horizontal" Margin="20 0">

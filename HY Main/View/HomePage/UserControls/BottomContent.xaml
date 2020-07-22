@@ -48,49 +48,52 @@
                                     <TextBlock Text="游戏" FontSize="15"  Grid.Column="1"/>
                                 </Grid>
                             </Border>
-                            <ListBox ItemsSource="{Binding MenuModels}" Grid.Row="1">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseWheel">
-                                        <i:InvokeCommandAction  Command="{Binding Source={x:Static Refrenscommand:PreviewMouseWheel.PreviewMouseWheelCommand}}" 
+                            <ScrollViewer  Grid.Row="1">
+                                <ListBox ItemsSource="{Binding MenuModels}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseWheel">
+                                            <i:InvokeCommandAction  Command="{Binding Source={x:Static Refrenscommand:PreviewMouseWheel.PreviewMouseWheelCommand}}" 
                                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ListBox}}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Rows="8"/>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                        <!--<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>-->
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                        <Setter Property="Background" Value="White"/>
-                                        <!-- 设置控件模板 -->
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="ListBoxItem" >
-                                                    <Grid Margin="10 10 10 0" >
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="80"/>
-                                                            <ColumnDefinition Width="80"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Button Content="{Binding Sort}" HorizontalAlignment="Left" Style="{StaticResource ButtonBackBkxStyle}"/>
-                                                        <TextBlock FontFamily="Microsoft YaHei" FontSize="12" Text="{Binding title}" VerticalAlignment="Center" Grid.Column="1"/>
-                                                        <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"      Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="8"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                            <!--<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>-->
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Background" Value="White"/>
+                                            <!-- 设置控件模板 -->
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem" >
+                                                        <Grid Margin="10 10 10 0" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="80"/>
+                                                                <ColumnDefinition Width="80"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button Content="{Binding Sort}" HorizontalAlignment="Left" Style="{StaticResource ButtonBackBkxStyle}"/>
+                                                            <TextBlock FontFamily="Microsoft YaHei" FontSize="12"  TextTrimming="WordEllipsis" ToolTip="{Binding title}" Text="{Binding title}" VerticalAlignment="Center" Grid.Column="1"/>
+                                                            <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"      Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                         CommandParameter="{Binding id}"  HorizontalAlignment="Right"
                                                     Style="{DynamicResource StyleDownloadButton}" Grid.Column="2"/>
-                                                    </Grid>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
 
-                                </ListBox.ItemContainerStyle>
+                                    </ListBox.ItemContainerStyle>
 
 
-                            </ListBox>
+                                </ListBox>
+                            </ScrollViewer>
+                        
                         </Grid>
 
                     </DataTemplate>

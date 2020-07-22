@@ -43,8 +43,8 @@
             </Grid.RowDefinitions>
             <Border BorderThickness="0 0 0 2" BorderBrush="Black">
                 <Grid>
-                    <TextBlock Text="{Binding Hander,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16"  Margin="5 0 0 0"/>
-                    <Button  HorizontalAlignment="Right"  Tag="&#xe626;" Style="{DynamicResource ButtonTagImgStyle}" Foreground="Black" Command="{ Binding ExitCommand,Mode=OneWay}" />
+                    <TextBlock Foreground="White" Text="{Binding Hander,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16"  Margin="5 0 0 0"/>
+                    <Button  HorizontalAlignment="Right"  Tag="&#xe626;" Style="{DynamicResource ButtonTagImgStyle}" Foreground="White" Command="{ Binding ExitCommand,Mode=OneWay}" />
                 </Grid>
 
             </Border>

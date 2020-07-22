@@ -99,6 +99,7 @@
     <Compile Include="Common\CoreLib\Modules\ModuleAttribute.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleComponent.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleManager.cs" />
+    <Compile Include="Common\CoreLib\Msg.cs" />
     <Compile Include="Common\ToObjectConverter.cs" />
     <Compile Include="Common\Unity\BootStrapper.cs" />
     <Compile Include="Common\Unity\IUnityLocator.cs" />
@@ -115,6 +116,9 @@
     </Compile>
     <Compile Include="Common\UserControls\MainNotice.xaml.cs">
       <DependentUpon>MainNotice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControls\MsgBox.xaml.cs">
+      <DependentUpon>MsgBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\UserControls\Progress.xaml.cs">
       <DependentUpon>Progress.xaml</DependentUpon>
@@ -133,6 +137,7 @@
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
     <Compile Include="ViewDialog\Step\EditPwdDlg.cs" />
+    <Compile Include="ViewDialog\Step\MsgBoxViewDlg.cs" />
     <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
     <Compile Include="ViewModel\HomePage\UserControls\Download.cs" />
     <Compile Include="ViewModel\HomePage\UserControls\EditUserGamesViewModel.cs" />
@@ -144,6 +149,7 @@
     <Compile Include="ViewModel\Sign\LoginViewModel.cs" />
     <Compile Include="ViewModel\Step\CouponViewModel.cs" />
     <Compile Include="ViewModel\Step\EditPwdViewModel.cs" />
+    <Compile Include="ViewModel\Step\MsgBoxViewModel.cs" />
     <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
     <Compile Include="View\HomePage\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
@@ -185,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\UserControls\MainNotice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\MsgBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

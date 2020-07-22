@@ -13,7 +13,7 @@
 
     <DataTemplate x:Key="RegisteredDataTemplate">
         <StackPanel Orientation="Vertical"   Margin="20 0"  >
-            <TextBox Text="{Binding DataContext.RestCollection.UserName,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource AncestorType=Window}}" MaxLength="11"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
+            <TextBox  Text="{Binding DataContext.RestCollection.UserName,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource AncestorType=Window}}" MaxLength="11"  hc:InfoElement.Placeholder="请输入手机号" Height="40" FontSize="14" 
                      Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
             <hc:PasswordBox  Margin="0 25"   VerticalAlignment="Center"  Height="40" FontSize="14"  
