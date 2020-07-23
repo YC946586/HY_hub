@@ -8,5 +8,7 @@ namespace HY_Main.Model.HomePage
 {
      public class HomePageModel
     {
+        public string about { get; set; }
+        public string toolDes { get; set; }
     }
 }

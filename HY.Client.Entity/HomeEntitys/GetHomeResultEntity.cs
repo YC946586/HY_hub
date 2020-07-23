@@ -24,6 +24,9 @@ namespace HY.Client.Entity.HomeEntitys
         public string cateName { get; set; }
         public int displayOrder { get; set; }
         public string fileDir { get; set; }
+        public int Sort { get; set; }
+        public bool isPurchased { get; set; }
+        public string Content { get; set; } = "获取游戏";
     }
 
     public class Recommendgame
@@ -36,5 +39,7 @@ namespace HY.Client.Entity.HomeEntitys
         public string cateName { get; set; }
         public int displayOrder { get; set; }
         public string fileDir { get; set; }
+        public bool isPurchased { get; set; }
+        public string Content { get; set; } = "获取游戏";
     }
 }

@@ -21,5 +21,18 @@ namespace HY.RequestConver.Bridge
         /// <returns></returns>
         public abstract IHome GetHomeManager();
 
+
+        /// <summary>
+        /// 获取Home接口
+        /// </summary>
+        /// <returns></returns>
+        public abstract IStore GetStoreManager();
+
+        /// <summary>
+        /// 获取Home接口
+        /// </summary>
+        /// <returns></returns>
+        public abstract ICommon GetCommonManager();
+
     }
 }

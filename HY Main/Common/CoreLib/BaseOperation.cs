@@ -2,6 +2,14 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HY.Application.Base;
+using HY.Client.Entity.HomeEntitys;
+using HY.Client.Entity.UserEntitys;
+using HY.Client.Execute.Commons;
+using HY.RequestConver.Bridge;
+using HY.RequestConver.InterFace;
+using HY_Main.Common.Unity;
+using HY_Main.ViewModel.Mine.UserControls;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,6 +88,27 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand _QueryCommand;
         private RelayCommand _ResetCommand;
 
+        private RelayCommand<int> _GainGamesCommond;
+        //打开下载进度
+        private RelayCommand _downShowCommand;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand<int> GainGamesCommond
+        {
+            get
+            {
+                if (_GainGamesCommond == null)
+                {
+                    _GainGamesCommond = new RelayCommand<int>(t => GainGames(t));
+                }
+                return _GainGamesCommond;
+            }
+            set { _GainGamesCommond = value; }
+        }
+
+     
 
         /// <summary>
         /// 新增
@@ -161,7 +190,18 @@ namespace HY_Main.Common.CoreLib
             set { _ResetCommand = value; }
         }
 
-
+        public RelayCommand DownShowCommand
+        {
+            get
+            {
+                if (_downShowCommand == null)
+                {
+                    _downShowCommand = new RelayCommand(DownShow);
+                }
+                return _downShowCommand;
+            }
+            set { _downShowCommand = value; RaisePropertyChanged(); }
+        }
 
         #endregion
     }
@@ -291,6 +331,71 @@ namespace HY_Main.Common.CoreLib
         /// </summary>
         public virtual void Add<TModel>(TModel model) { }
 
+        public virtual async void GainGames(int gameId)
+        {
+            try
+            {
+                IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                var genrator = await store.BuyGame(gameId);
+                Message.Info(genrator.Message);
+                if (genrator.code.Equals("000"))
+                {
+                    if (genrator.result.Equals("888"))
+                    {
+                        return;
+                    }
+                    var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
+                    Loginer.LoginerUser.balance = Results.balance;
+                    Loginer.LoginerUser.freeCount = Results.freeCount;
+                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo.ToString();
+                    Loginer.LoginerUser.vipType = Results.vipType.ToString();
+                    string vipType = string.Empty;
+                    if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+                    {
+                        Loginer.LoginerUser.IsAdmin = true;
+                    }
+                    switch (Loginer.LoginerUser.vipType)
+                    {
+                        case "0":
+                            {
+                                vipType = "普通用户";
+                                break;
+                            }
+                        case "1":
+                            {
+                                vipType = "月费用户";
+                                break;
+                            }
+                        case "2":
+                            {
+                                vipType = "年费用户";
+                                break;
+                            }
+                    }
+                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                    if (vipType.Equals("普通用户"))
+                    {
+                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   ";
+                    }
+                    else
+                    {
+                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ": " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+
+                    }
+
+                }
+
+                //if (Message.Question("是否使用黑鹰币获取游戏"))
+                //{
+
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
         /// <summary>
         /// 编辑
         /// </summary>
@@ -316,10 +421,23 @@ namespace HY_Main.Common.CoreLib
         {
             this.SearchText = string.Empty;
         }
-
+        private async void DownShow()
+        {
+            try
+            {
+                UserGamesDownShowViewModel viewModel = new UserGamesDownShowViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("UserGamesDownShowDlg");
+                dialog.BindViewModel(viewModel);
+                bool taskResult = await dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
         #endregion
 
-        
+
     }
 
     /// <summary>
@@ -372,7 +490,9 @@ namespace HY_Main.Common.CoreLib
                 return _CancelCommand;
             }
         }
-
+        /// <summary>
+        /// 确定
+        /// </summary>
         public RelayCommand SaveCommand
         {
             get
@@ -386,7 +506,7 @@ namespace HY_Main.Common.CoreLib
         /// <summary>
         /// 取消
         /// </summary>
-        public void Cancel()
+        public virtual void Cancel()
         {
             Result = false;
             Messenger.Default.Send("", "DialogClose");
@@ -395,7 +515,7 @@ namespace HY_Main.Common.CoreLib
         /// <summary>
         /// 确定
         /// </summary>
-        public void Save()
+        public virtual void Save()
         {
             Result = true;
             Messenger.Default.Send("", "DialogClose");

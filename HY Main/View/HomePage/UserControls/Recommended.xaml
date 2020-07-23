@@ -3,14 +3,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HY_Main.View.HomePage.UserControls"
+             xmlns:customcontrol="clr-namespace:HY.CustomControl;assembly=HY.CustomControl" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:usercontrols="clr-namespace:HY_Main.Common.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20 0">
-        <StackPanel Orientation="Horizontal" Margin="0 15" VerticalAlignment="Top">
-            <TextBlock  Text="&#xe6af;" FontFamily="{DynamicResource IconFont}"     VerticalAlignment="Center"   
-                                   FontSize="20" Foreground="#333333"  Margin="0 0 10 0" />
-            <TextBlock Text="热门推荐" FontSize="20" FontWeight="Black" Foreground="#333333" />
-        </StackPanel>
+    <Grid >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <usercontrols:Progress />
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 0">
+                <Image Source="{DynamicResource 热门推荐}" Width="28" Height="32" Margin="0 0 10 0" VerticalAlignment="Center"   />
+                <TextBlock Text="热门推荐" FontSize="20" FontWeight="Black" Foreground="#333333" />
+            </StackPanel>
+
+            <customcontrol:SwiperContent Grid.Row="2" Margin="20 0"  AllItemSource="{Binding RecommendGames}" ItemsSource="{Binding RecommendSkipGames}" >
+                <customcontrol:SwiperContent.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding pict}" Stretch="Fill"/>
+                            <Grid Background="White" Grid.Row="1">
+                                <StackPanel Orientation="Vertical" Margin="10 10 0 10">
+                                    <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666"/>
+                                    <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>
+                                </StackPanel>
+                                <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"   VerticalAlignment="Center" HorizontalAlignment="Right"       Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
+                                        Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding id}"       />
+                            </Grid>
+                            <Border Background="{StaticResource 矩形2}"   VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="5" Grid.ColumnSpan="2" Margin="8" Width="60" Height="20">
+                                <TextBlock Text="{Binding price,StringFormat={}{0}黑鹰币}" FontFamily="Microsoft YaHei" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </customcontrol:SwiperContent.ItemTemplate>
+            </customcontrol:SwiperContent>
+        </Grid>
     </Grid>
 </UserControl>

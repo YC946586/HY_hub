@@ -6,10 +6,6 @@
              xmlns:local="clr-namespace:HY_Main.Common.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-
-     
-    </UserControl.Resources>
     <Grid>
         <ItemsControl  ItemsSource="{Binding NoticeView.NoticeModels}" HorizontalAlignment="Right">
             <ItemsControl.ItemsPanel>
@@ -19,7 +15,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button   Tag="{Binding IconName}" Style="{DynamicResource ButtonStyle}" Command="{ Binding ApplyCommand}" />
+                    <Button   Tag="{Binding IconName}" Style="{DynamicResource ButtonTagImgStyle}" Command="{ Binding ApplyCommand}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

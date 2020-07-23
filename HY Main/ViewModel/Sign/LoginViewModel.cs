@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
 using HY.Application.Base;
 using HY.Client.Entity;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Entity.UserEntitys;
 using HY.Client.Execute.Commons;
 using HY.Client.Execute.Commons.Files;
@@ -12,6 +13,7 @@ using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.Unity;
 using HY_Main.Model.Sign;
+using HY_Main.View.HomePage.UserControls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -68,7 +70,7 @@ namespace HY_Main.ViewModel.Sign
         }
 
         #endregion
-
+            
 
         #region  属性
         private string _Title = "登录";
@@ -252,38 +254,70 @@ namespace HY_Main.ViewModel.Sign
                             break;
                         }
                 }
+                ServiceResponse genratorlogin;
                 if (!string.IsNullOrWhiteSpace(phone) && !string.IsNullOrWhiteSpace(pwd))
                 {
-                    this.LoginCollection.IsCancel = false;
+                    LoginCollection.IsCancel = false;
                     IUser user = BridgeFactory.BridgeManager.GetUserManager();
                     if (phone.Equals("13666142357"))
                     {
-                        var genrator = await user.Login("123", pwd, phone);
-                        if (genrator.code != "000")
+                        genratorlogin = await user.Login("123", pwd, phone);
+                        if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genrator.Message);
+                            MessageBox.Show(genratorlogin.Message);
                             return;
                         }
-                        var Results = JsonConvert.DeserializeObject<LoginResultEntity>(genrator.result.ToString());
-                        Network.Authorization = Results.token;
-                        Loginer.LoginerUser.Authorization = Results.token;
                     }
                     else
                     {
-                        var genrator = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
-                        if (genrator.code != "000")
+                        genratorlogin = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
+                        if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genrator.Message);
+                            MessageBox.Show(genratorlogin.Message);
                             return;
                         }
                     }
+
+                    var Results = JsonConvert.DeserializeObject<Loginer>(genratorlogin.result.ToString());
+                    Network.Authorization = Results.token;
+                    Loginer.LoginerUser.Authorization = Results.token;
+                    Loginer.LoginerUser.UserName = Results.phone;
+                    Loginer.LoginerUser.balance = Results.balance;
+                    Loginer.LoginerUser.freeCount = Results.freeCount;
+                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
+                    Loginer.LoginerUser.vipType = Results.vipType;
+                    string vipType = string.Empty;
+                    if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+                    {
+                        Loginer.LoginerUser.IsAdmin = true;
+                    }
+                    switch (Loginer.LoginerUser.vipType)
+                    {
+                        case "0":
+                            {
+                                vipType = "普通用户";
+                                break;
+                            }
+                        case "1":
+                            {
+                                vipType = "月费用户";
+                                break;
+                            }
+                        case "2":
+                            {
+                                vipType = "年费用户";
+                                break;
+                            }
+                    }
+                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipValidTo;
                 }
                 else
                 {
-                    MessageBox.Show("请输入用户名和密码");
+                    Message.Info("请输入用户名和密码");
                     return;
                 }
-                SaveLoginInfo();
+                SaveLoginInfo(phone, pwd);
                 MainViewModel model = new MainViewModel();
                 model.InitDefaultView();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("MainViewDlg");
@@ -293,11 +327,12 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                this.LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
+                LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
+                Message.ErrorException(ex);
             }
             finally
             {
-                this.LoginCollection.IsCancel = true;
+                LoginCollection.IsCancel = true;
             }
         }
 
@@ -318,11 +353,9 @@ namespace HY_Main.ViewModel.Sign
         /// <summary>
         /// 读取本地配置信息
         /// </summary>
-        public void ReadConfigInfo()
+        public async void ReadConfigInfo()
         {
             TimerLoad();
-            var imgWebUrl = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594631703207&di=3527ed4cb231172e3ea759080493bb0a&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20191006%2F19%2F1570360737-HvGOTkxnum.jpg";
-             SkinName= new BitmapImage(new Uri(imgWebUrl));
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
             if (File.Exists(cfgINI))
             {
@@ -330,14 +363,46 @@ namespace HY_Main.ViewModel.Sign
                 LoginCollection.UserName = ini.IniReadValue("Login", "User");
                 LoginCollection.Password = CEncoder.Decode(ini.IniReadValue("Login", "Password"));
                 Messenger.Default.Send<object>(this, "ShowPassword");
-              
+            }
+            string curPathName = string.Empty;
+            //判断是否本地存在图片
+            string strPath = AppDomain.CurrentDomain.BaseDirectory + "LoginImg\\";
+            if (Directory.Exists(strPath))
+            {
+                DirectoryInfo root = new DirectoryInfo(strPath);
+                FileInfo[] files = root.GetFiles();
+                if (files.Length!=0)
+                {
+                    var first = files.OrderByDescending(s => s.CreationTime).First();
+                    curPathName = first.Name;
+                    SkinName = new BitmapImage(new Uri(first.FullName));
+                }
+            }
+            ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
+            var genrator = await common.GetLoginFormBackGroundPics();
+            if (genrator.code.Equals("000"))
+            {
+                var Results = JsonConvert.DeserializeObject<List<LoginFormBackGroundPicsEntity>>(genrator.result.ToString());
+                if (Results!=null&& Results.Count!=0)
+                {
+                    var curNext = CommonsCall.GetRandomSeed(Results.Count);
+                    string imgWebUrl = Results[curNext].pict;
+                    var imgName = Results[curNext].id + imgWebUrl.Substring(imgWebUrl.Length-4, 4);
+                    if (!curPathName.Equals(imgName))
+                    {
+                        SkinName = new BitmapImage(new Uri(imgWebUrl));
+                        GC.Collect();
+                       await Task.Run(() => Network.HttpDownload(imgWebUrl, strPath, imgName));
+                    }    
+                }
             }
         }
 
+       
         /// <summary>
         /// 保存登录信息
         /// </summary>
-        private void SaveLoginInfo()
+        private void SaveLoginInfo(string name,string pwd)
         {
             string strPath = AppDomain.CurrentDomain.BaseDirectory + "config\\";
             string cfgINI = AppDomain.CurrentDomain.BaseDirectory + SerivceFiguration.INI_CFG;
@@ -346,8 +411,8 @@ namespace HY_Main.ViewModel.Sign
                 Directory.CreateDirectory(strPath);
             }
             IniFile ini = new IniFile(cfgINI);
-            ini.IniWriteValue("Login", "User", LoginCollection.UserName);
-            ini.IniWriteValue("Login", "Password", CEncoder.Encode(LoginCollection.Password));
+            ini.IniWriteValue("Login", "User", name);
+            ini.IniWriteValue("Login", "Password", CEncoder.Encode(pwd));
         }
 
         #endregion
@@ -377,8 +442,7 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-
-                throw;
+                Message.ErrorException(ex);
             }
         }
         /// <summary>
@@ -397,7 +461,7 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                throw;
+                Message.ErrorException(ex);
             }
         }
         #endregion

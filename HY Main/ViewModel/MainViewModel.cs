@@ -1,9 +1,13 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
+using HY.Application.Base;
+using HY.Client.Execute.Commons;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.CoreLib.Modules;
+using HY_Main.Common.Unity;
 using HY_Main.Model.CoreLib;
+using HY_Main.ViewModel.Mine.UserControls;
 using HY_Main.ViewModel.Step;
 using System;
 using System.Collections.Generic;
@@ -44,7 +48,29 @@ namespace HY_Main.ViewModel
         {
             get { return _NoticeView; }
         }
+        private float _balance;
+        /// <summary>
+        /// 月
+        /// </summary>
+        public float Balance
+        {
+            get { return _balance; }
+            set { _balance = value; RaisePropertyChanged(); }
+        }
 
+
+        private string _UserName;
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set { _UserName = value; RaisePropertyChanged(); }
+        }
         #endregion
 
         #region 命令(Binding Command)
@@ -60,6 +86,9 @@ namespace HY_Main.ViewModel
             set { _CurrentPage = value; RaisePropertyChanged(); }
         }
         private RelayCommand<HanderMenuModel> _ExcuteCommand;
+        public RelayCommand updatePwd;
+        public RelayCommand _useCouponCommand;
+        public RelayCommand _downShowCommand;
         /// <summary>
         /// 打开页
         /// </summary>
@@ -76,7 +105,37 @@ namespace HY_Main.ViewModel
             set { _ExcuteCommand = value; RaisePropertyChanged(); }
         }
 
-        
+      
+        public RelayCommand UpdatePwdCommand
+        {
+            get
+            {
+                if (updatePwd == null)
+                {
+                    updatePwd = new RelayCommand(EditPwd);
+                }
+                return updatePwd;
+            }
+            set { updatePwd = value; RaisePropertyChanged(); }
+        }
+        public RelayCommand UseCouponCommand
+        {
+            get
+            {
+                if (_useCouponCommand == null)
+                {
+                    _useCouponCommand = new RelayCommand(UseCoupon);
+                }
+                return _useCouponCommand;
+            }
+            set { _useCouponCommand = value; RaisePropertyChanged(); }
+        }
+
+
+       
+
+     
+
         #endregion
 
         #region 初始化/页面相关
@@ -86,6 +145,9 @@ namespace HY_Main.ViewModel
         /// </summary>
         public async void InitDefaultView()
         {
+
+            Balance = Loginer.LoginerUser.balance;
+            UserName = Loginer.LoginerUser.UserName;
             //初始化工具栏,通知窗口
             _NoticeView = new NoticeViewModel();
             ////加载窗体模块
@@ -104,13 +166,49 @@ namespace HY_Main.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Message.ErrorException(ex);
             }
             finally
             {
                 GC.Collect();
             }
         }
+
+        private async void EditPwd()
+        {
+            try
+            {
+                EditPwdViewModel model = new EditPwdViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("EditPwdDlg");
+                dialog.BindViewModel(model);
+                bool taskResult = await dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
+
+        private void UseCoupon()
+        {
+            try
+            {
+                CouponViewModel viewModel = new CouponViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("CouponDlg");
+                dialog.BindViewModel(viewModel);
+                var d = Dialog.Show(dialog.GetDialog());
+                viewModel.ClostEvent += (async () =>
+                {
+                    d.Close();
+                });
+            }
+            catch (Exception ex)
+            {
+                Message.ErrorException(ex);
+            }
+        }
+
+       
         #endregion
 
     }

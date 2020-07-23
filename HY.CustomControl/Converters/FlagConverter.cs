@@ -30,7 +30,6 @@ namespace HY.CustomControl.Converters
                                     return Visibility.Collapsed;
                             }
                         }
-                  
                     case "Registere":
                         {
                             switch (value.ToString())
@@ -39,6 +38,39 @@ namespace HY.CustomControl.Converters
                                     return Visibility.Collapsed;
                                 default:
                                     return Visibility.Visible;
+                            }
+                        }
+                    case "Progress":
+                        {
+                            if (value!=null)
+                            {
+                                return Visibility.Visible;
+                            }
+                            else
+                            {
+                                return Visibility.Collapsed;
+                            }   
+                        }
+                    case "MaineView":
+                        {
+                            if (value != null&&!string.IsNullOrEmpty(value.ToString()))
+                            {
+                                return Visibility.Collapsed;
+                            }
+                            else
+                            {
+                                return Visibility.Visible;
+                            }
+                        }
+                    case "MaineView1":
+                        {
+                            if (value != null && !string.IsNullOrEmpty(value.ToString()))
+                            {
+                                return Visibility.Visible;
+                            }
+                            else
+                            {
+                                return Visibility.Collapsed;
                             }
                         }
                     default:
@@ -54,7 +86,6 @@ namespace HY.CustomControl.Converters
                             }
                             return Visibility.Collapsed;
                         }
-
                 }
             }
             int resultPage;

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="HY_Main.Common.UserControls.Progress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HY_Main.Common.UserControls"
+             xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute" xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:FlagConverter x:Key="Flag"/>
+    </UserControl.Resources>
+    <Grid Background="White"  VerticalAlignment="Top"    Visibility="{Binding Path=(com:CommonsCall.DownProgress),Converter={StaticResource Flag}, ConverterParameter=Progress,
+        UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,FallbackValue=Collapsed}">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="正在下载,完成" Foreground="#999999" VerticalAlignment="Center"  FontSize="14"/>
+            <TextBlock  VerticalAlignment="Center" Foreground="#999999" FontSize="14" Text="{Binding Path=(com:CommonsCall.DownProgress),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+            <Button Command="{Binding DownShowCommand}" Margin="10 0" Content="查看明细" Height="30"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

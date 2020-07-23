@@ -1,0 +1,58 @@
+﻿<ResourceDictionary
+    xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="https://handyorg.github.io/handycontrol"
+    xmlns:local="clr-namespace:HY.CustomControl"
+   >
+    <Style x:Key="SwiperListBoxItemCustom" TargetType="ListBoxItem">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="10 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SwiperContentListBoxItemStyle"  BasedOn="{StaticResource SwiperListBoxItemCustom}" TargetType="ListBoxItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Height" Value="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+    </Style>
+    <ItemsPanelTemplate x:Key="SwiperContentPanelTemplate">
+        <!--<StackPanel FocusVisualStyle="{x:Null}" Orientation="Horizontal" HorizontalAlignment="Left"/>-->
+        <UniformGrid Columns="4" Margin="10 0" HorizontalAlignment="Left"/>
+    </ItemsPanelTemplate>
+    <Style TargetType="{x:Type local:SwiperContent}"  >
+        <Setter Property="ItemsPanel" Value="{StaticResource SwiperContentPanelTemplate}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource SwiperContentListBoxItemStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SwiperContent}" >
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="35"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Command="local:SwiperContent.Prev" HorizontalAlignment="Left" Background="{DynamicResource 多边形左}" Style="{DynamicResource ButtoHomeSelectSwiperStyle}"   VerticalAlignment="Center" />
+                        <Button Command="local:SwiperContent.Next" HorizontalAlignment="Right" Background="{DynamicResource 多边形右}" Style="{DynamicResource ButtoHomeSelectSwiperStyle}" Grid.Column="2" VerticalAlignment="Center"/>
+                        <ItemsPresenter x:Name="PART_ItemsControl" Grid.Column="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Left"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -10,5 +10,9 @@ namespace HY.RequestConver.InterFace
      public interface IHome
     {
         Task<ServiceResponse> GetHomeGames();
+
+        Task<ServiceResponse> GetCommonUseGames();
+
+        Task<ServiceResponse> UpdateCommomUseGames(List<int> gameIds, string type);
     }
 }

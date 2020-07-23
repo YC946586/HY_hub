@@ -30,9 +30,20 @@ namespace HY.RequestConver
         {
             return new HomeManager();
         }
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <returns></returns>
+        public override IStore GetStoreManager()
+        {
+            return new StoreManager();
+        }
 
-        
-       
+        public override ICommon GetCommonManager()
+        {
+            return new CommonManager();
+        }
+
     }
 
 }

@@ -1,0 +1,66 @@
+﻿<Window x:Class="HY_Main.View.Mine.UserControls.UserGamesDownShow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HY_Main.View.Mine.UserControls"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d" Icon="/HY Main;component/48px.ico"
+           xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
+         Title="游戏下载进度"  Height="500" Width="650" 
+        WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border Padding="1" Background="Transparent">
+                <Border CornerRadius="0" Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" />
+                    </Border.Effect>
+                    <ContentPresenter Margin="1" ClipToBounds="True" />
+                </Border>
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="10 0" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Text="&#xe623;" FontFamily="{DynamicResource IconFont}"  HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="20"    />
+                <TextBlock  VerticalAlignment="Center"  FontSize="14" Foreground="Black" Text="黑鹰hub 下载游戏进度"/>
+            </StackPanel>
+      
+            <Button Width="24" Height="24" Style="{StaticResource ButtonIcon}" Foreground="{DynamicResource PrimaryBrush}" 
+                hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4"
+                Click="Button_Click" />
+        </Grid>
+
+        <DataGrid  HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False"   Margin="10"
+                          hc:DataGridAttach.ShowRowNumber="True"  Grid.Row="1" ItemsSource="{Binding Path=(com:CommonsCall.UserGames),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50" CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding pict}" Width="32" Height="32" Stretch="Uniform"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Width="2*" Binding="{Binding title}" IsReadOnly="True" Header="游戏名字"/>
+                <DataGridTextColumn Width="1*" Binding="{Binding  GameSize,StringFormat={}{0}G,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Header="游戏总大小"/>
+                <DataGridTextColumn Width="1*" Binding="{Binding SurplusSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Header="已下载"/>
+                <DataGridTemplateColumn Width="100" CanUserResize="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   Command="{Binding DataContext.EditCommand,RelativeSource={ RelativeSource AncestorType=DataGrid}}" 
+                                    CommandParameter="{Binding }"
+                                    />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

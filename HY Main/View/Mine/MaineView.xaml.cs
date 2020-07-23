@@ -24,5 +24,6 @@ namespace HY_Main.View.Mine
         {
             InitializeComponent();
         }
+        
     }
 }

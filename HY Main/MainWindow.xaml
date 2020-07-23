@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:HY_Main"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:UserControls="clr-namespace:HY_Main.Common.UserControls"
-        mc:Ignorable="d"
-        Title="黑鹰 Hub" Height="720" Width="1280"  
+        mc:Ignorable="d"   Background="Transparent"
+        xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
+        Title="黑鹰 Hub" Height="720" Width="1280"   Icon="/HY Main;component/48px.ico"
       WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
-    <Window.Template>
+    <!--<Window.Template>
         <ControlTemplate TargetType="Window">
             <Border Padding="1" Background="Transparent">
                 <Border CornerRadius="0" Background="White">
@@ -20,46 +21,59 @@
                 </Border>
             </Border>
         </ControlTemplate>
-    </Window.Template>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <UniformGrid Columns="3" Background="#555555">
-            <StackPanel Orientation="Horizontal">
-                <!--<hc:Gravatar   Source="{Binding UserAvatar}" Margin="10"/>-->
-                <hc:Gravatar Style="{StaticResource GravatarCircleImg}"  Margin="10">
-                    <Image Source="/HY Main;component/UserAvatar.jpg"/>
-                </hc:Gravatar>
-                <StackPanel Orientation="Vertical"  >
-                    <!--<TextBlock Text="{Binding UserName}"/>
-                    <Border Background="White" Height="30">
-                        <TextBlock Text="{Binding UserBalance}" VerticalAlignment="Center"/>
-                    </Border>-->
-                    <TextBlock Text="黑鹰hub"  Foreground="#999999" FontSize="22"  FontWeight="Black" Margin="0 30 0 0" VerticalAlignment="Top"/>
-                   
-                </StackPanel>
-            </StackPanel>
-            <UserControls:MainHanderMenu/>
-            <Grid HorizontalAlignment="Right">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="游戏工具" Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
-                    <Button Content="修改密码"  Margin="10 0 0 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
-                    <UserControls:MainNotice/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" >
-                    <Button Content="充      值" Style="{DynamicResource ButtonBinlpStyle}"/>
-                    <Button Content="使用激活码" Margin="10 0"  Style="{DynamicResource ButtonBinlpStyle}"/>
-                </StackPanel>
+    </Window.Template>-->
+    <Border BorderBrush="Black" BorderThickness="0" x:Name="borderMain"   Margin="5" >
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" Opacity="0.9"/>
+        </Border.Effect>
+        <Grid Height="{Binding ElementName=borderMain,Path=Height}" Width="{Binding ElementName=borderMain,Path=Width}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="110"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="{DynamicResource 底}" Stretch="Fill"/>
+                </Grid.Background>
+                <UniformGrid Columns="3">
+                    <StackPanel Orientation="Horizontal">
+                        <!--<hc:Gravatar   Source="{Binding UserAvatar}" Margin="10"/>-->
+                        <hc:Gravatar Style="{StaticResource GravatarCircleImg}"  Margin="10">
+                            <Image Source="/HY Main;component/头像.png"/>
+                        </hc:Gravatar>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center"  >
+                            <TextBlock Text="{Binding UserName}"  Foreground="#999999" FontSize="22"  FontWeight="Black" />
+                            <Grid  Height="30" Width="120" HorizontalAlignment="Left">
+                                <Grid.Background>
+                                    <ImageBrush ImageSource="{DynamicResource 黑鹰币}"/>
+                                </Grid.Background>
+                                <!--Text="{Binding UserBalance}"-->
+                                <TextBlock Text="{Binding Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Path=(com:CommonsCall.UserBalance),StringFormat={}{0}黑鹰币}" HorizontalAlignment="Center" Margin="5 0" Foreground="#333333" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                    <UserControls:MainHanderMenu/>
+                    <Grid HorizontalAlignment="Right">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="游戏工具"  Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
+                            <Button Content="修改密码"  Command="{Binding UpdatePwdCommand}" Margin="10 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
+                            <UserControls:MainNotice/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" >
+                            <Button Content="充值"  Style="{StaticResource ButtonBackJxStyle}"/>
+                            <Button Content="使用激活码" Command="{Binding UseCouponCommand}" Margin="10 0"  Style="{StaticResource ButtonBackJxStyle}"/>
+                        </StackPanel>
+                    </Grid>
+                </UniformGrid>
             </Grid>
-        </UniformGrid>
-        <Grid Grid.Row="1">
-            <ContentControl FocusVisualStyle="{x:Null}" Content="{Binding CurrentPage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+            <Grid Grid.Row="1">
+                <ContentControl FocusVisualStyle="{x:Null}" Content="{Binding CurrentPage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

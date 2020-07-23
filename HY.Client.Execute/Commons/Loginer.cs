@@ -17,6 +17,15 @@ namespace HY.Client.Execute.Commons
 
         public string macAdd { get; set; }
         public string Authorization { get; set; }
+
+        public string token { get; set; }
+        public string phone { get; set; }
+        // 0：普通用户  1：月费用户  2：年费用户
+        public string vipType { get; set; }
+        //是免费下载次数
+        public int freeCount { get; set; }
+        //VIP有效期
+        public string vipValidTo { get; set; }
         /// <summary>
         /// 当前用户
         /// </summary>
@@ -29,7 +38,7 @@ namespace HY.Client.Execute.Commons
         private string _UserName = string.Empty;
         private string _Email = string.Empty;
         private bool _Admin = false;
-     
+        private float _balance = 0;
 
         /// <summary>
         /// 登录名
@@ -53,15 +62,6 @@ namespace HY.Client.Execute.Commons
         }
 
         /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email
-        {
-            get { return _Email; }
-            set { _Email = value; RaisePropertyChanged(); }
-        }
-
-        /// <summary>
         /// 是否属于管理员
         /// </summary>
         public bool IsAdmin
@@ -69,7 +69,15 @@ namespace HY.Client.Execute.Commons
             get { return _Admin; }
             set { _Admin = value; RaisePropertyChanged(); }
         }
-
+        /// <summary>
+        /// 月
+        /// </summary>
+        public float balance
+        {
+            get { return _balance; }
+            set { _balance = value; RaisePropertyChanged(); }
+        }
+        
 
     }
 }

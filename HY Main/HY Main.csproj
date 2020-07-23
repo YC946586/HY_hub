@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>48px.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
@@ -49,6 +52,9 @@
     <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.2.5.0.2\lib\net45\HandyControl.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -63,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -92,36 +99,57 @@
     <Compile Include="Common\CoreLib\Modules\ModuleAttribute.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleComponent.cs" />
     <Compile Include="Common\CoreLib\Modules\ModuleManager.cs" />
+    <Compile Include="Common\CoreLib\Msg.cs" />
     <Compile Include="Common\ToObjectConverter.cs" />
     <Compile Include="Common\Unity\BootStrapper.cs" />
     <Compile Include="Common\Unity\IUnityLocator.cs" />
     <Compile Include="Common\Unity\ServiceProvider.cs" />
     <Compile Include="Common\Unity\UnityServiceLocator.cs" />
+    <Compile Include="Common\UserControls\Coupon.xaml.cs">
+      <DependentUpon>Coupon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControls\EditPwd.xaml.cs">
+      <DependentUpon>EditPwd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\UserControls\MainHanderMenu.xaml.cs">
       <DependentUpon>MainHanderMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\UserControls\MainNotice.xaml.cs">
       <DependentUpon>MainNotice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\UserControls\MsgBox.xaml.cs">
+      <DependentUpon>MsgBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControls\Progress.xaml.cs">
+      <DependentUpon>Progress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\CoreLib\HanderMenuModel.cs" />
     <Compile Include="Model\CoreLib\ModuleGroup.cs" />
     <Compile Include="Model\HomePage\HomePageModel.cs" />
     <Compile Include="Model\Mine\MineModel.cs" />
-    <Compile Include="Model\ShopMall\ShopMallModel.cs" />
     <Compile Include="Model\Sign\loginModel.cs" />
     <Compile Include="ViewDialog\BaseView.cs" />
     <Compile Include="ViewDialog\BaseViewDialog.cs" />
     <Compile Include="ViewDialog\HomePage\HomePageView.cs" />
     <Compile Include="ViewDialog\MainViewDlg.cs" />
+    <Compile Include="ViewDialog\Mine\UserGamesDownShow.cs" />
     <Compile Include="ViewDialog\Mine\MineView.cs" />
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
+    <Compile Include="ViewDialog\Step\EditPwdDlg.cs" />
+    <Compile Include="ViewDialog\Step\MsgBoxViewDlg.cs" />
     <Compile Include="ViewModel\HomePage\HomePageViewModel.cs" />
     <Compile Include="ViewModel\HomePage\UserControls\Download.cs" />
+    <Compile Include="ViewModel\HomePage\UserControls\EditUserGamesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Mine\MineViewModel.cs" />
+    <Compile Include="ViewModel\Mine\UserControls\GameDwonloadViewModel.cs" />
+    <Compile Include="ViewModel\Mine\UserControls\UserGamesDownShowViewModel.cs" />
     <Compile Include="ViewModel\ShopMall\ShopMallViewModel.cs" />
     <Compile Include="ViewModel\Sign\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Step\CouponViewModel.cs" />
+    <Compile Include="ViewModel\Step\EditPwdViewModel.cs" />
+    <Compile Include="ViewModel\Step\MsgBoxViewModel.cs" />
     <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
     <Compile Include="View\HomePage\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
@@ -129,11 +157,20 @@
     <Compile Include="View\HomePage\UserControls\BottomContent.xaml.cs">
       <DependentUpon>BottomContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\HomePage\UserControls\EditUserGames.xaml.cs">
+      <DependentUpon>EditUserGames.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\HomePage\UserControls\Recommended.xaml.cs">
       <DependentUpon>Recommended.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Mine\MaineView.xaml.cs">
       <DependentUpon>MaineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Mine\UserControls\GameDwonload.xaml.cs">
+      <DependentUpon>GameDwonload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Mine\UserControls\UserGamesDownShow.xaml.cs">
+      <DependentUpon>UserGamesDownShow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ShopMall\ShopMallView.xaml.cs">
       <DependentUpon>ShopMallView.xaml</DependentUpon>
@@ -141,11 +178,27 @@
     <Compile Include="View\Sign\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Page Include="Common\UserControls\Coupon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\EditPwd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\UserControls\MainHanderMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\UserControls\MainNotice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\MsgBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\Progress.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,11 +222,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\HomePage\UserControls\EditUserGames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\HomePage\UserControls\Recommended.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Mine\MaineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Mine\UserControls\GameDwonload.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Mine\UserControls\UserGamesDownShow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -237,6 +302,28 @@
       <Project>{0f230bfe-22b4-420c-82bb-77e3fbfb56c2}</Project>
       <Name>HY.RequestConver</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\ShopMall\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="头像.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="48px.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

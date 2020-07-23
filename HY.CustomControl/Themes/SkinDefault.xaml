@@ -2,36 +2,16 @@
     xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  >
+    xmlns:converters="clr-namespace:HY.CustomControl.Converters">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/IconButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/LoginDataTemplate.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/ImagesSrc.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HY.CustomControl;component/Styles/Swiper.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <FontFamily x:Key="IconFont">pack://application:,,,/HY.CustomControl;component/Resources/#iconfont</FontFamily>
-
-    <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Foreground" Value="#D7D7D7"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border    Width="20" Height="18" BorderThickness="1" BorderBrush="Transparent" >
-                        <TextBlock Text="{TemplateBinding Tag}" FontFamily="{DynamicResource IconFont}"  HorizontalAlignment="Center"  VerticalAlignment="Center"   
-                                   FontSize="14" Foreground="{TemplateBinding Foreground}"  />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.8" />
-                        </Trigger>
-                        <!--<Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Foreground" Value="{Binding MousePressedForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="Txt"/>
-                                    </Trigger>-->
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <converters:FlagConverter x:Key="Flag"/>
+    <converters:BooleanToNameConverter x:Key="Tname"/>
+    
 </ResourceDictionary>
