@@ -151,7 +151,7 @@ namespace HY_Main.ViewModel.HomePage
                 //{
                 //    userGamesEntities = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genratorGames.result.ToString());
                 //}
-
+                DisplayMetro = Visibility.Visible;
                 IHome home = BridgeFactory.BridgeManager.GetHomeManager();
                 var genrator = await home.GetHomeGames();
                 if (genrator.code.Equals("000"))
@@ -192,7 +192,11 @@ namespace HY_Main.ViewModel.HomePage
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
 
@@ -214,17 +218,17 @@ namespace HY_Main.ViewModel.HomePage
                     else
                     {
                         CommonsCall.DeleteSubKeyTree(GameRoute.Key);
-                        Message.Info("游戏损坏,请重新安装游戏");
+                        Msg.Info("游戏损坏,请重新安装游戏");
                     }
                 }
                 else
                 {
-                    Message.Info("请您先安装游戏");
+                    Msg.Info("请您先安装游戏");
                 }
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
 
@@ -265,7 +269,7 @@ namespace HY_Main.ViewModel.HomePage
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
 

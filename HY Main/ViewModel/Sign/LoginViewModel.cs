@@ -284,7 +284,7 @@ namespace HY_Main.ViewModel.Sign
                     Loginer.LoginerUser.UserName = Results.phone;
                     Loginer.LoginerUser.balance = Results.balance;
                     Loginer.LoginerUser.freeCount = Results.freeCount;
-                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo;
+                    Loginer.LoginerUser.vipInfo = Results.vipInfo;
                     Loginer.LoginerUser.vipType = Results.vipType;
                     string vipType = string.Empty;
                     if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
@@ -310,11 +310,11 @@ namespace HY_Main.ViewModel.Sign
                             }
                     }
                     CommonsCall.UserBalance = Loginer.LoginerUser.balance;
-                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipValidTo;
+                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipInfo;
                 }
                 else
                 {
-                    Message.Info("请输入用户名和密码");
+                    Msg.Info("请输入用户名和密码");
                     return;
                 }
                 SaveLoginInfo(phone, pwd);
@@ -328,7 +328,7 @@ namespace HY_Main.ViewModel.Sign
             catch (Exception ex)
             {
                 LoginCollection.Report = ExceptionLibrary.GetErrorMsgByExpId(ex);
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
             finally
             {
@@ -428,7 +428,7 @@ namespace HY_Main.ViewModel.Sign
             {
                 if (string.IsNullOrEmpty(RestCollection.UserName))
                 {
-                    MessageBox.Show("请填写手机号");
+                    Msg.Info("请填写手机号");
                     return;
                 }
                 _timerWtLogin.Start(); //验证码计时器开始 60s 过后重新执行
@@ -436,13 +436,13 @@ namespace HY_Main.ViewModel.Sign
                 var genrator =await user.SendSmsCode(RestCollection.UserName,t);
                 if (genrator.code!="000")
                 {
-                    MessageBox.Show(genrator.Message);
+                    Msg.Info(genrator.Message);
                     //{ "code":"000","result":null,"message":"发送成功"}
                 }
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
@@ -461,7 +461,7 @@ namespace HY_Main.ViewModel.Sign
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         #endregion

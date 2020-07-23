@@ -70,27 +70,27 @@ namespace HY_Main.ViewModel.Mine
             try
             {
                 //viptype类型 0：普通用户  1：月费用户  2：年费用户
-              //  string vipType = string.Empty;
-              //  switch (Loginer.LoginerUser.vipType)
-              //  {
-              //      case "0":
-              //          {
-              //              vipType = "普通用户";
-              //              break;
-              //          }
-              //      case "1":
-              //          {
-              //              vipType = "月费用户";
-              //              break;
-              //          }
-              //      case "2":
-              //          {
-              //              vipType = "年费用户";
-              //              break;
-              //          }
-              //  }
-              //CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
-
+                //  string vipType = string.Empty;
+                //  switch (Loginer.LoginerUser.vipType)
+                //  {
+                //      case "0":
+                //          {
+                //              vipType = "普通用户";
+                //              break;
+                //          }
+                //      case "1":
+                //          {
+                //              vipType = "月费用户";
+                //              break;
+                //          }
+                //      case "2":
+                //          {
+                //              vipType = "年费用户";
+                //              break;
+                //          }
+                //  }
+                //CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ":    " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+                DisplayMetro = Visibility.Visible;
                 GridModelList.Clear();
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
                 var genrator = await user.GetUserGames(SearchText, 1, 100000);
@@ -113,7 +113,11 @@ namespace HY_Main.ViewModel.Mine
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
 
@@ -122,6 +126,7 @@ namespace HY_Main.ViewModel.Mine
         {
             try
             {
+                DisplayMetro = Visibility.Visible;
                 GridModelList.Clear();
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
                 var genrator = await user.GetUserGames(SearchText,1,100000);
@@ -131,7 +136,7 @@ namespace HY_Main.ViewModel.Mine
                     if (Results.Count == 0)
                     {
                         PageCount = 0;
-                        Message.Info("暂未查询出数据,请您重新查询");
+                        Msg.Info("暂未查询出数据,请您重新查询");
                         return;
                     }
                     foreach (var item in Results)
@@ -150,7 +155,11 @@ namespace HY_Main.ViewModel.Mine
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
 
@@ -170,23 +179,36 @@ namespace HY_Main.ViewModel.Mine
             {
                 return;
             }
-            GridModelList = new System.Collections.ObjectModel.ObservableCollection<UserGamesEntity>();
-            IUser user = BridgeFactory.BridgeManager.GetUserManager();
-            var genrator = await user.GetUserGames(SearchText, info.Info, 4);
-            if (genrator.code.Equals("000"))
+            try
             {
-                var Results = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genrator.result.ToString());
-                foreach (var item in Results)
+                DisplayMetro = Visibility.Visible;
+                GridModelList = new System.Collections.ObjectModel.ObservableCollection<UserGamesEntity>();
+                IUser user = BridgeFactory.BridgeManager.GetUserManager();
+                var genrator = await user.GetUserGames(SearchText, info.Info, 4);
+                if (genrator.code.Equals("000"))
                 {
-                    var GameRoute = CommonsCall.ReadUserGameInfo(item.gameId.ToString());
-                    if (!string.IsNullOrEmpty(GameRoute.Key))
+                    var Results = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genrator.result.ToString());
+                    foreach (var item in Results)
                     {
-                        item.StrupPath = GameRoute.Key;
-                        item.gameName = GameRoute.remarks;
+                        var GameRoute = CommonsCall.ReadUserGameInfo(item.gameId.ToString());
+                        if (!string.IsNullOrEmpty(GameRoute.Key))
+                        {
+                            item.StrupPath = GameRoute.Key;
+                            item.gameName = GameRoute.remarks;
+                        }
                     }
+                    Results.OrderBy(s => s.id).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
-                Results.OrderBy(s => s.id).ToList().ForEach((ary) => GridModelList.Add(ary));
             }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
+            }
+
         }
         /// <summary>
         /// 下载游戏
@@ -197,23 +219,24 @@ namespace HY_Main.ViewModel.Mine
         {
             try
             {
+                DisplayMetro = Visibility.Visible;
                 var gamesEntity = model as UserGamesEntity;
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                 var genrator = await store.GetGameFiles(gamesEntity.gameId);
                 if (!genrator.code.Equals("000"))
                 {
-                    Message.Info(genrator.Message);
+                    Msg.Info(genrator.Message);
                     return;
                 }
                 var Results = JsonConvert.DeserializeObject<List<DwonloadEntity>>(genrator.result.ToString());
                 if (Results.Count==0)
                 {
-                    Message.Info("游戏获取失败,请重试");
+                    Msg.Info("游戏获取失败,请重试");
                     return;
                 }
                 if (CommonsCall.UserGames.Any(s => s.gameId.Equals(gamesEntity.gameId)))
                 {
-                    Message.Info(gamesEntity.title + "已经进入下载队列中");
+                    Msg.Info(gamesEntity.title + "已经进入下载队列中");
                     return;
                 }
                 GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
@@ -238,7 +261,11 @@ namespace HY_Main.ViewModel.Mine
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
  
@@ -257,7 +284,7 @@ namespace HY_Main.ViewModel.Mine
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
@@ -277,12 +304,12 @@ namespace HY_Main.ViewModel.Mine
                 else
                 {
                     CommonsCall.DeleteSubKeyTree(curModel.gameId.ToString());
-                    Message.Info("游戏损坏,请重新安装游戏");
+                    Msg.Info("游戏损坏,请重新安装游戏");
                 }
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
@@ -336,7 +363,7 @@ namespace HY_Main.ViewModel.Mine
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
 
         }

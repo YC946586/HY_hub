@@ -1,0 +1,114 @@
+﻿<Window x:Class="Hy.Setup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hy.Setup"
+        xmlns:converter="clr-namespace:Hy.Setup.Converter"
+        xmlns:viewModel="clr-namespace:Hy.Setup.ViewModel"
+        mc:Ignorable="d" Icon="/Hy.Setup;component/icon.ico"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" AllowsTransparency="True"
+         Title="黑鹰 Hub 安装程序" Height="420" Width="620">
+    <Window.Resources>
+        <ResourceDictionary  Source="Styles/TacitlyStyle.xaml"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Border BorderBrush="Black" BorderThickness="1"  Background="Transparent">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Opacity="0.9"/>
+            </Border.Effect>
+            <Grid  Background="White" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="290"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" >
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="#6FBCF2"/>
+                            <GradientStop Offset="1" Color="#4CABF7"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="黑鹰hub安装程序" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+                        <Viewbox Grid.Row="1" VerticalAlignment="Bottom"  >
+                            <StackPanel    >
+                                <Rectangle   Height="15" Stroke="White"  Width="15" HorizontalAlignment="Left"  >
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="43.811"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+
+                                <Rectangle    Height="20" Stroke="White" Fill="White"  Width="20" HorizontalAlignment="Left"   Margin="20 20 0 0" >
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="43.811"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Path   Data="M58.333333,35 L18.333665,75 28.333916,75 58.333665,45 88.333996,75 98.334381,75 z" Fill="#2190EA" 
+                                           Stretch="Fill" Width="180" Height="150" Opacity="0.5"   />
+                            </StackPanel>
+                        </Viewbox>
+
+                        <Path Data="M58.333333,35 L18.333665,75 28.333916,75 58.333665,45 88.333996,75 98.334381,75 z" Fill="#2190EA"  Width="60" Height="50"
+                                     Stretch="Fill" Grid.RowSpan="5" Grid.ColumnSpan="5" VerticalAlignment="Bottom"  HorizontalAlignment="Center">
+
+                        </Path>
+                    </Grid>
+                    <Button Style="{StaticResource CloseButton}"  Command="{Binding ExitCommand }" Visibility="{Binding PageCollection.GridHide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=CloseVisible}"  Width="20" Height="20" ></Button>
+
+                </Grid>
+
+                <Grid  Grid.Row="1" Margin="5 10" Visibility="{Binding PageCollection.GridHide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=IndeVisible}">
+                    <TextBlock Text="{Binding PageCollection.Winver,Mode=TwoWay}" VerticalAlignment="Bottom" />
+                    <Button Content="快速安装" Width="200" Height="60" Command="{Binding SetupCommand}" Style="{StaticResource CompaniesAidButton}"></Button>
+                    <TextBlock Text="自定义安装 >"  FontSize="14"  VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                        <TextBlock.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding CustomCommand}"></MouseBinding>
+                        </TextBlock.InputBindings>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="30 20 30 0" Visibility="{Binding PageCollection.GridHide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=isVisible}">
+                    <StackPanel  >
+                        <TextBlock Text="安装位置:"/>
+                        <StackPanel Orientation="Horizontal" Margin="0 10">
+                            <TextBox  Padding="0 5 0 0"  IsReadOnly="True"  Foreground="#AAAAAA" Text="{Binding PageCollection.StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="450" Height="30"/>
+                            <Button Content="浏览"  Command="{Binding BrowseCommand}" Style="{StaticResource ButtonStyleNo}" Margin="20 0 0 0" ></Button>
+                        </StackPanel>
+                        <Button Content="立即安装" Width="110" Height="35" FontSize="18" HorizontalAlignment="Right" Command="{Binding SetupCommand}" Style="{StaticResource CompaniesAidButton}"></Button>
+
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="30 20 30 0"  Height="100" Visibility="{Binding PageCollection.GridHide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=GridVisible}">
+                    <TextBlock Text="{Binding PageCollection.Message,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, StringFormat={}正在安装:{0}}" VerticalAlignment="Top"  Margin="0 10 0 10"/>
+                    <ProgressBar Maximum="{Binding PageCollection.Maximum,Mode=TwoWay}" Height="25" Width="500" HorizontalAlignment="Left" Value="{Binding PageCollection.Schedule,Mode=TwoWay}"   Foreground="#FF61CAF3"  BorderBrush="{x:Null}"/>
+                    <TextBlock  Text="{Binding PageCollection.Plah,StringFormat={}{0}%}" Foreground="#FF035FCD" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14"/>
+                </Grid>
+
+
+                <Grid Grid.Row="1" Margin="30 20 30 0"  Height="100" Visibility="{Binding PageCollection.GridHide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=SigeVisible}">
+                    <Button Content="立即体验" Width="200" Height="60" Command="{Binding SigeCommand}" Style="{StaticResource CompaniesAidButton}"></Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

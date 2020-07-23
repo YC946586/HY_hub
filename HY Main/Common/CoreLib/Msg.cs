@@ -44,9 +44,9 @@ namespace HY_Main.Common.CoreLib
         /// 错误
         /// </summary>
         /// <param name="msg"></param>
-        public static async void Error(string ex, bool Host = true)
+        public static async void Error(Exception ex, bool Host = true)
         {
-            await Show(Notify.Error, ex, Host);
+            await Show(Notify.Error, ex.Message, Host);
         }
 
         /// <summary>
@@ -91,26 +91,23 @@ namespace HY_Main.Common.CoreLib
             switch (notify)
             {
                 case Notify.Error:
-                    Icon = "\xe66b";
+                    Icon = "\ue66b";
                     Color = "#FF4500";
                     break;
                 case Notify.Warning:
-                    Icon = "\xe6b6";
+                    Icon = "\ue6b6";
                     Color = "#FF8247";
                     break;
                 case Notify.Info:
-                    Icon = "\xe65a";
+                    Icon = "\ue65a";
                     Color = "#1C86EE";
                     break;
                 case Notify.Question:
-                    Icon = "\xe620";
+                    Icon = "\ue620";
                     Color = "#20B2AA";
                     Hide = false;
                     break;
             }
-
-
-            MsgBoxViewModel msgBox = new MsgBoxViewModel();
             var dialog = ServiceProvider.Instance.Get<IModelDialog>("MsgBoxViewDlg");
             dialog.BindViewModel(new MsgBoxViewModel() { Msg = msg, Icon = Icon, Color = Color, BtnHide = Hide });
             var TaskResult = await dialog.ShowDialog();

@@ -11,7 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid >
         <Grid.Background>
-            <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="{DynamicResource 中国风 }"   Stretch="None"/>
         </Grid.Background>
         <Grid >
             <Grid.RowDefinitions>
@@ -21,7 +21,7 @@
                 <RowDefinition Height="120"/>
             </Grid.RowDefinitions>
             <usercontrols:Progress />
-            <TextBlock Grid.Row="1"   Margin="20 0" FontSize="14" VerticalAlignment="Center" Text="{Binding Path=(com:CommonsCall.ShowUser),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }"/>
+            <TextBlock Grid.Row="1"   Margin="20 0" FontSize="17" Foreground="#333" VerticalAlignment="Center"  FontFamily="微软雅黑" Text="{Binding Path=(com:CommonsCall.ShowUser),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }"/>
             <Grid Grid.Row="2" Margin="20 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -30,13 +30,13 @@
                 </Grid.RowDefinitions>
                 <TextBlock  VerticalAlignment="Center">
                     <Run Text="我的游戏" FontSize="16" FontWeight="Black"/>
-                    <Run Text="   双击游戏图片即可启动游戏"  Foreground="#F59A23" />
+                    <Run Text="   双击游戏图片即可启动游戏"  FontSize="13" Foreground="#F59A23" />
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
-                    <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="搜索游戏" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
+                    <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" hc:BorderElement.CornerRadius="0"   hc:InfoElement.Placeholder="搜索游戏" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                         Width="300"   />
-                    <Button  Content="搜索游戏" 
-                        Command="{Binding  QueryCommand}" Height="40"   Style="{StaticResource ButtonPrimary}"
+                    <Button  Content="搜索游戏"  hc:BorderElement.CornerRadius="0"
+                        Command="{Binding  QueryCommand}"  Height="40"   Style="{StaticResource ButtonPrimary}"
                     />
                 </StackPanel>
                 <ItemsControl Grid.Row="2"  Margin="20" ItemsSource="{Binding GridModelList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
@@ -98,9 +98,11 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <hc:LoadingCircle Grid.Row="2" Width="50" Height="50" HorizontalAlignment="Center" VerticalContentAlignment="Center" Visibility="{Binding DisplayMetro,FallbackValue=Collapsed}"/>
             </Grid>
 
-            <hc:Pagination MaxPageCount="{Binding PageCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PageIndex="{Binding PageIndex}" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <hc:Pagination MaxPageCount="{Binding PageCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   PageIndex="{Binding PageIndex}" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="PageUpdated">
                         <hc:EventToCommand Command="{Binding PageUpdatedCmd}" PassEventArgsToCommand="True" />

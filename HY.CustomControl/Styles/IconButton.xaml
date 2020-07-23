@@ -242,6 +242,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ButtonLoginStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="#FEFFFF"/>
+        <Setter Property="Background" Value="#EBB737"/>
+        <Setter Property="FontSize" Value="17"/>
+        <!--<Setter Property="FontFamily" Value="微软雅黑"/>-->
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border    BorderThickness="0"  Background="{TemplateBinding Background}" CornerRadius="3">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="{TemplateBinding Tag}" FontFamily="{DynamicResource IconFont}"  HorizontalAlignment="Center"  VerticalAlignment="Center"   
+                                   FontSize="18" Foreground="{TemplateBinding Foreground}"  />
+                            <ContentPresenter Margin="15 0 0 0"  x:Name="ContentPresenter"   ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
+                                                   ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="Left"  RecognizesAccessKey="True" 
+                                                   SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                   
+                    </Border>
+                    
+                 
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Foreground" Value="{Binding MousePressedForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="Txt"/>
+                                    </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="ButtoHomeSelectSwiperStyle" TargetType="{x:Type Button}">
         <Setter Property="Foreground" Value="#E6E6E6"/>

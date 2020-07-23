@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HY_Main.ViewModel.ShopMall
 {
@@ -52,7 +53,8 @@ namespace HY_Main.ViewModel.ShopMall
         public async void InitHotRecomenAsync()
         {
             try
-            { 
+            {
+                DisplayMetro = Visibility.Visible;
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                 var genrator = await store.GetCates();
                 if (genrator.code.Equals("000"))
@@ -73,7 +75,11 @@ namespace HY_Main.ViewModel.ShopMall
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -92,35 +98,50 @@ namespace HY_Main.ViewModel.ShopMall
             {
                 return;
             }
-            GridModelList.Clear();
-            string cateId = string.Empty;
-            if (SelectCombox != null && SelectCombox.Values != null)
+            try
             {
-                cateId = SelectCombox.Values.id;
-            }
-            else
-            {
-                cateId = "1212121211";
-            }
-            IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-            var gamesGetGames = await store.GetGames(int.Parse(cateId), SearchText, info.Info, 8);
-            if (gamesGetGames.code.Equals("000"))
-            {
-                var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
-                if (Results.Count == 0)
+                DisplayMetro = Visibility.Visible; 
+                GridModelList.Clear();
+                string cateId = string.Empty;
+                if (SelectCombox != null && SelectCombox.Values != null)
                 {
-                    PageCount = 0;
-                    Message.Info("暂未查询出数据,请您重新查询");
-                    return;
+                    cateId = SelectCombox.Values.id;
                 }
-                Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
+                else
+                {
+                    cateId = "1212121211";
+                }
+                IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                var gamesGetGames = await store.GetGames(int.Parse(cateId), SearchText, info.Info, 8);
+                if (gamesGetGames.code.Equals("000"))
+                {
+                    var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
+                    if (Results.Count == 0)
+                    {
+                        PageCount = 0;
+                        Msg.Info("暂未查询出数据,请您重新查询");
+                        return;
+                    }
+                    Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
+                }
             }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
+            }
+           
+           
         }
 
         public override async void Query()
         {
             try
             {
+                DisplayMetro = Visibility.Visible;
                 GridModelList = new ObservableCollection<Recommendgame>();
                 string cateId = string.Empty;
                 if (SelectCombox!=null&& SelectCombox.Values!=null)
@@ -139,7 +160,7 @@ namespace HY_Main.ViewModel.ShopMall
                     if (Results.Count==0)
                     {
                         PageCount = 0;
-                        Message.Info("暂未查询出数据,请您重新查询");
+                        Msg.Info("暂未查询出数据,请您重新查询");
                         return;
                     }
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
@@ -149,7 +170,11 @@ namespace HY_Main.ViewModel.ShopMall
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = Visibility.Collapsed;
             }
         }
  

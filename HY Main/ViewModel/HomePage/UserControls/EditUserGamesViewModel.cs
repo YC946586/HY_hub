@@ -61,7 +61,7 @@ namespace HY_Main.ViewModel.HomePage.UserControls
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
@@ -71,6 +71,7 @@ namespace HY_Main.ViewModel.HomePage.UserControls
         {
             try
             {
+                DisplayMetro = System.Windows.Visibility.Visible;
                 base.InitViewModel();
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
                 var genrator = await user.GetUserGames(SearchText, 1, 100000);
@@ -84,7 +85,11 @@ namespace HY_Main.ViewModel.HomePage.UserControls
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = System.Windows.Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -96,6 +101,7 @@ namespace HY_Main.ViewModel.HomePage.UserControls
         {
             try
             {
+                DisplayMetro = System.Windows.Visibility.Visible;
                 var selectModel = GridModelList.Where(s => s.IsSelected).ToList();
                 if (selectModel.Any())
                 {
@@ -109,17 +115,21 @@ namespace HY_Main.ViewModel.HomePage.UserControls
                     }
                     else
                     {
-                        Message.Info(genrator.Message);
+                        Msg.Info(genrator.Message);
                     }
                 }
                 else
                 {
-                    Message.Info("请勾选您需要的游戏");
+                    Msg.Info("请勾选您需要的游戏");
                 }
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = System.Windows.Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -131,6 +141,7 @@ namespace HY_Main.ViewModel.HomePage.UserControls
         {
             try
             {
+                DisplayMetro = System.Windows.Visibility.Visible;
                 var selectModel = HotGames.Where(s => s.IsSelected).ToList();
                 if (selectModel.Any())
                 {
@@ -144,17 +155,21 @@ namespace HY_Main.ViewModel.HomePage.UserControls
                     }
                     else
                     {
-                        Message.Info(genrator.Message);
+                        Msg.Info(genrator.Message);
                     }
                 }
                 else
                 {
-                    Message.Info("请勾选您需要的游戏");
+                    Msg.Info("请勾选您需要的游戏");
                 }
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
+            }
+            finally
+            {
+                DisplayMetro = System.Windows.Visibility.Collapsed;
             }
         }
 

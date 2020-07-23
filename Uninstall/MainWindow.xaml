@@ -1,0 +1,93 @@
+﻿<Window x:Class="Uninstall.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Uninstall" Icon="/Uninstall;component/icon.ico"
+         WindowStartupLocation="CenterScreen"  Closed="MainWindow_OnClosed"  
+        WindowStyle="None" AllowsTransparency="True"
+         Title="黑鹰 Hub 卸载程序" Height="420" Width="620">
+    <Window.Resources>
+        <ResourceDictionary  Source="Styles/TacitlyStyle.xaml"/>
+    </Window.Resources>
+    <Grid>
+        <Border BorderBrush="Black" BorderThickness="1"  Background="Transparent">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Opacity="0.9"/>
+            </Border.Effect>
+            <Grid  Background="White" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="290"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" >
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="#6FBCF2"/>
+                            <GradientStop Offset="1" Color="#4CABF7"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="黑鹰hub卸载程序" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+                        <Viewbox Grid.Row="1" VerticalAlignment="Bottom"  >
+                            <StackPanel    >
+                                <Rectangle   Height="15" Stroke="White"  Width="15" HorizontalAlignment="Left"  >
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="43.811"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+
+                                <Rectangle    Height="20" Stroke="White" Fill="White"  Width="20" HorizontalAlignment="Left"   Margin="20 20 0 0" >
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="43.811"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Path   Data="M58.333333,35 L18.333665,75 28.333916,75 58.333665,45 88.333996,75 98.334381,75 z" Fill="#2190EA" 
+                                           Stretch="Fill" Width="180" Height="150" Opacity="0.5"   />
+                            </StackPanel>
+                        </Viewbox>
+
+                        <Path Data="M58.333333,35 L18.333665,75 28.333916,75 58.333665,45 88.333996,75 98.334381,75 z" Fill="#2190EA"  Width="60" Height="50"
+                                     Stretch="Fill" Grid.RowSpan="5" Grid.ColumnSpan="5" VerticalAlignment="Bottom"  HorizontalAlignment="Center">
+
+                        </Path>
+                    </Grid>
+                    <Button Style="{StaticResource CloseButton}"  Click="ButtonClose_Click"  Width="20" Height="20" ></Button>
+
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="30 0"  Height="100" x:Name="btnConfig">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button Content="继续使用"   Width="150" Height="50"  Click="ButtonBase_OnNoClick" Style="{StaticResource ButtonStyleNo}" ></Button>
+                        <Button Content="立即卸载" Width="150" Height="50" Margin="20 0 0 0" Click="Button_Click" Style="{StaticResource CompaniesAidButton}"></Button>
+
+                    </StackPanel>
+                </Grid>
+                <Button  x:Name="btnWc"  Visibility="Collapsed"  Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,50" VerticalAlignment="Bottom" Cursor="Hand" Width="130"  Height="45" Content="完成"  Style="{DynamicResource CompaniesAidButton}" Click="ButtonBase_OnNoClick"></Button>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 50 0 0" Grid.Row="1" HorizontalAlignment="Center">
+                    <ProgressBar Height="15"  Width="500" Visibility="Collapsed"  Minimum="0"  x:Name="pro" Background="CornflowerBlue">
+                        <ProgressBar.Value>
+                            <Binding Path="proData"  Mode="TwoWay" ></Binding>
+                        </ProgressBar.Value>
+                    </ProgressBar>
+                    <Label x:Name="leblJdt" Visibility="Collapsed" Content="{Binding Path=ProData,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></Label>
+                </StackPanel>
+                <CheckBox Margin="5,0,0,0" x:Name="IsRemember" Visibility="Collapsed"  Grid.ColumnSpan="10" Grid.RowSpan="10"  Content="是否保存用户登录信息" Height="20" VerticalAlignment="Bottom"></CheckBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

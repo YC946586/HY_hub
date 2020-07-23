@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid >
         <Grid.Background>
-            <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="None"/>
         </Grid.Background>
         <Grid>
             <Grid.RowDefinitions>
@@ -21,9 +21,9 @@
             <usercontrols:Progress />
             <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center"  Margin="20 0">
                 <ComboBox ItemsSource="{Binding CatesList,UpdateSourceTrigger=PropertyChanged}"  Height="40"  SelectedItem="{Binding SelectCombox,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" SelectedIndex="0" DisplayMemberPath="Key" SelectedValuePath="Values"/>
-                <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="搜索游戏" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
+                <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" hc:BorderElement.CornerRadius="0"  hc:InfoElement.Placeholder="搜索游戏" Height="40" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                         Width="300"   />
-                <Button  Content="搜索游戏" 
+                <Button  Content="搜索游戏"   hc:BorderElement.CornerRadius="0"
                         Command="{Binding  QueryCommand}" Height="40"   Style="{StaticResource ButtonPrimary}"
                     />
             </StackPanel>
@@ -62,6 +62,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <hc:LoadingCircle Grid.Row="1" Width="50" Height="50" HorizontalAlignment="Center" VerticalContentAlignment="Center"  Visibility="{Binding DisplayMetro,FallbackValue=Collapsed}"/>
             <hc:Pagination MaxPageCount="{Binding PageCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PageIndex="{Binding PageIndex}" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="PageUpdated">

@@ -70,6 +70,7 @@
     <Compile Include="Converters\BooleanToNameConverter.cs" />
     <Compile Include="Converters\FlagConverter.cs" />
     <Compile Include="Converters\NameToObjectConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="LoginPassworHelper.cs" />
     <Compile Include="PreviewMouseWheel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

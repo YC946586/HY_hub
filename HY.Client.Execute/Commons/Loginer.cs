@@ -25,7 +25,7 @@ namespace HY.Client.Execute.Commons
         //是免费下载次数
         public int freeCount { get; set; }
         //VIP有效期
-        public string vipValidTo { get; set; }
+        public string vipInfo { get; set; }
         /// <summary>
         /// 当前用户
         /// </summary>

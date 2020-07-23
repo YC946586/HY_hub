@@ -65,54 +65,7 @@ namespace HY.Client.Execute.Commons
             return random;
 
         }
-        /// <summary>
-        /// 点击获取游戏
-        /// </summary>
-        public static void GaemeDownload(GetCommonUseGamesEntity gamesEntity)
-        {
-            try
-            {
-                //判断是否为会员
-                if (Loginer.LoginerUser.IsAdmin)
-                {
-                    if (Loginer.LoginerUser.vipValidTo != null)
-                    {
-
-
-                    }
-                    else
-                    {
-                        if (Message.Question("会员已经到期,是否续费"))
-                        {
-                            Message.Info("跳到充值");
-                        }
-                    }
-
-                    //if (Loginer.LoginerUser.vipType.Equals("月费用户"))
-                    //{
-
-                    //}
-                }
-                else
-                {
-                    if (Loginer.LoginerUser.balance <= 0 || Loginer.LoginerUser.balance < gamesEntity.price)
-                    {
-                        if (Message.Question("黑鹰币不足，是否立即充值"))
-                        {
-                            Message.Info("跳到充值");
-                        }
-                    }
-                    else
-                    {
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Message.ErrorException(ex);
-            }
-        }
+        
 
 
         public static string ConvertByG(float fileSize)

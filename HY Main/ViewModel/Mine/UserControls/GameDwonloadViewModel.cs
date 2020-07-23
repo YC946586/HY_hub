@@ -82,12 +82,12 @@ namespace HY_Main.ViewModel.Mine.UserControls
                     DriveInfo d = new DriveInfo(drive);
                     if (d.TotalFreeSpace <= PageCollection.fileSize)
                     {
-                        HY.Client.Execute.Commons.Message.Info("磁盘大小不足,请您选择其他路径");
+                        Msg.Info("磁盘大小不足,请您选择其他路径");
                         return;
                     }
                     if (CommonsCall.WordsIScn(fbd.SelectedPath))
                     {
-                        HY.Client.Execute.Commons.Message.Info("当前路径包含中文,请重新选择");
+                       Msg.Info("当前路径包含中文,请重新选择");
                         return;
                     }
                     PageCollection.StrupPath = fbd.SelectedPath;
@@ -95,7 +95,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
             }
             catch (Exception ex)
             {
-                HY.Client.Execute.Commons.Message.ErrorException(ex);
+               Msg.Error(ex);
             }
         }
 
@@ -164,7 +164,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
             }
             catch (Exception ex)
             {
-                HY.Client.Execute.Commons.Message.ErrorException(ex);
+                Msg.Error(ex);
             }
             finally
             {
@@ -176,7 +176,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
             //var genrator = await store.GetGameFiles(PageCollection.id);
             //if (!genrator.code.Equals("000"))
             //{
-            //    HY.Client.Execute.Commons.Message.Info(genrator.Message);
+            //    HY.Client.Execute.Commons.Msg.Info(genrator.Msg);
             //}
             //else
             //{

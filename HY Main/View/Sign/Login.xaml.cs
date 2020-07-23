@@ -29,7 +29,7 @@ namespace HY_Main.View.Sign
             Messenger.Default.Register<object>(this, "ShowPassword", ShowPassword);
 
         }
-
+         
         private void ShowPassword(object obj)
         {
             //pass.Password = obj;

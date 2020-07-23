@@ -13,5 +13,5 @@
     <FontFamily x:Key="IconFont">pack://application:,,,/HY.CustomControl;component/Resources/#iconfont</FontFamily>
     <converters:FlagConverter x:Key="Flag"/>
     <converters:BooleanToNameConverter x:Key="Tname"/>
-    
+    <converters:VisibilityConverter x:Key="vis"/>
 </ResourceDictionary>

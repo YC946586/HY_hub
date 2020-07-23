@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HY_Main.Common.CoreLib
 {
@@ -28,9 +29,10 @@ namespace HY_Main.Common.CoreLib
         #region 基类属性  [搜索、功能按钮、数据表单]
 
         private string searchText = string.Empty;
-        private bool _DisplayGrid, _DisplayMetro = true;
+        private bool _DisplayGrid = true;
         private ObservableCollection<T> _GridModelList;
-       
+
+        private Visibility _DisplayMetro = Visibility.Collapsed;
 
         /// <summary>
         /// 搜索内容
@@ -47,7 +49,7 @@ namespace HY_Main.Common.CoreLib
             set { _DisplayGrid = value; RaisePropertyChanged(); }
         }
 
-        public bool DisplayMetro
+        public Visibility DisplayMetro
         {
             get { return _DisplayMetro; }
             set { _DisplayMetro = value; RaisePropertyChanged(); }
@@ -335,57 +337,60 @@ namespace HY_Main.Common.CoreLib
         {
             try
             {
-                IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-                var genrator = await store.BuyGame(gameId);
-                Message.Info(genrator.Message);
-                if (genrator.code.Equals("000"))
+                if (await Msg.Question("是否购买游戏"))
                 {
-                    if (genrator.result.Equals("888"))
+                    IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                    var genrator = await store.BuyGame(gameId);
+                    Msg.Info(genrator.Message);
+                    if (genrator.code.Equals("000"))
                     {
-                        return;
-                    }
-                    var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
-                    Loginer.LoginerUser.balance = Results.balance;
-                    Loginer.LoginerUser.freeCount = Results.freeCount;
-                    Loginer.LoginerUser.vipValidTo = Results.vipValidTo.ToString();
-                    Loginer.LoginerUser.vipType = Results.vipType.ToString();
-                    string vipType = string.Empty;
-                    if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
-                    {
-                        Loginer.LoginerUser.IsAdmin = true;
-                    }
-                    switch (Loginer.LoginerUser.vipType)
-                    {
-                        case "0":
-                            {
-                                vipType = "普通用户";
-                                break;
-                            }
-                        case "1":
-                            {
-                                vipType = "月费用户";
-                                break;
-                            }
-                        case "2":
-                            {
-                                vipType = "年费用户";
-                                break;
-                            }
-                    }
-                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
-                    if (vipType.Equals("普通用户"))
-                    {
-                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   ";
-                    }
-                    else
-                    {
-                        CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "余额:" + Loginer.LoginerUser.balance + "鹰币   " + vipType + ": " + "剩余下载次数" + Loginer.LoginerUser.freeCount + "次,会员有效期至" + Loginer.LoginerUser.vipValidTo;
+                        if (genrator.result.Equals("888"))
+                        {
+                            return;
+                        }
+                        var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
+                        Loginer.LoginerUser.balance = Results.balance;
+                        Loginer.LoginerUser.freeCount = Results.freeCount;
+                        Loginer.LoginerUser.vipInfo = Results.vipInfo;
+                        Loginer.LoginerUser.vipType = Results.vipType.ToString();
+                        string vipType = string.Empty;
+                        if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+                        {
+                            Loginer.LoginerUser.IsAdmin = true;
+                        }
+                        switch (Loginer.LoginerUser.vipType)
+                        {
+                            case "0":
+                                {
+                                    vipType = "普通用户";
+                                    break;
+                                }
+                            case "1":
+                                {
+                                    vipType = "月费用户";
+                                    break;
+                                }
+                            case "2":
+                                {
+                                    vipType = "年费用户";
+                                    break;
+                                }
+                        }
+                        CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                        if (vipType.Equals("普通用户"))
+                        {
+                            CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   ";
+                        }
+                        else
+                        {
+                            CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipInfo;
+                        }
 
                     }
-
                 }
+              
 
-                //if (Message.Question("是否使用黑鹰币获取游戏"))
+                //if (Msg.Question("是否使用黑鹰币获取游戏"))
                 //{
 
                 //}
@@ -393,7 +398,7 @@ namespace HY_Main.Common.CoreLib
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
@@ -432,7 +437,7 @@ namespace HY_Main.Common.CoreLib
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         #endregion

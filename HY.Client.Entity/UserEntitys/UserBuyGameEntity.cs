@@ -22,6 +22,8 @@ namespace HY.Client.Entity.UserEntitys
         public string loginMacAdd { get; set; }
         public int createTime { get; set; }
         public int updateTime { get; set; }
+
+        public string vipInfo { get; set; }
     }
 
   

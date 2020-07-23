@@ -28,7 +28,7 @@ namespace HY_Main.ViewModel.Step
             {
                 ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
                 var gamesGetGames = await common.UseCoupon(code);
-                Message.Info(gamesGetGames.Message);
+                Msg.Info(gamesGetGames.Message);
                 if (gamesGetGames.code.Equals("000"))
                 {
                     ClostEvent?.Invoke();
@@ -36,7 +36,7 @@ namespace HY_Main.ViewModel.Step
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
     }

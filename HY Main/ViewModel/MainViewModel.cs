@@ -166,7 +166,7 @@ namespace HY_Main.ViewModel
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
             finally
             {
@@ -185,7 +185,7 @@ namespace HY_Main.ViewModel
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
 
@@ -204,7 +204,7 @@ namespace HY_Main.ViewModel
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
 

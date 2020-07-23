@@ -708,14 +708,14 @@
                 </Border>
                 <Grid Visibility="{Binding Default,Converter={StaticResource conBoolAsVisiable}}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-100,0,0" HorizontalAlignment="Center">
-                        <Image Source="pack://application:,,,/Resources/BlackHawk.png" Width="60" Height="60"></Image>
+                        <Image Source="pack://application:,,,/Images/BlackHawk.png" Width="60" Height="60"></Image>
                         <TextBlock Margin="15,0,0,0" Text="黑 鹰 Hub" FontSize="30" Foreground="#FFFFFFFE" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </StackPanel>
                     <Button Name="btnInstall1" Click="btnInstall_Click" Content="立 即 安 装" Margin="0,60,0,0" FontSize="18" Width="200" Height="50"></Button>
                 </Grid>
                 <Grid Visibility="{Binding CustomPath,Converter={StaticResource conBoolAsVisiable}}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-100,0,0" HorizontalAlignment="Center">
-                        <Image Source="pack://application:,,,/Resources/BlackHawk.png" Width="60" Height="60"></Image>
+                        <Image Source="pack://application:,,,/Images/BlackHawk.png" Width="60" Height="60"></Image>
                         <TextBlock Margin="15,0,0,0" Text="黑 鹰 Hub" FontSize="25" Foreground="#FFFFFFFE" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </StackPanel>
                     <Button Name="btnInstall2" Click="btnInstall_Click" Content="立 即 安 装" Margin="0,60,0,0" FontSize="18" Width="200" Height="50"></Button>
@@ -1489,7 +1489,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Image Source="pack://application:,,,/Resources/BlackHawk.png" Width="100" Height="100"></Image>
+            <Image Source="pack://application:,,,/Images/BlackHawk.png" Width="100" Height="100"></Image>
             <TextBlock Margin="192,209,192,75.346" Foreground="#FFFAFBFF" FontSize="16" FontWeight="Light" VerticalAlignment="Center" HorizontalAlignment="Center" Text="即将开启全新的音乐教学模式"></TextBlock>
             <ProgressBar Height="10" Margin="80,274,80,22.346" Value="{Binding InstallProgress}" Minimum="0" Maximum="100"></ProgressBar>
             <animation:InstallAnimationUC Height="350" Width="460" Margin="66,-46,66,2.346"></animation:InstallAnimationUC>

@@ -7,6 +7,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            
             <converter:BoolAsVisiableConverter x:Key="conBoolAsVisiable"></converter:BoolAsVisiableConverter>
             <converter:BoolAsVisiable2Converter x:Key="conBoolAsVisiable2"></converter:BoolAsVisiable2Converter>
             <Style TargetType="TextBlock">
@@ -23,7 +24,6 @@
                       ShadowDepth="2"
                       Color="Gray" />
             <ResourceDictionary.MergedDictionaries>
-
                 <ResourceDictionary Source="pack://application:,,,/HY.InstallPackage;component/Themes/ButtonStyle.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/HY.InstallPackage;component/Themes/ProgressStyle.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/HY.InstallPackage;component/Themes/PathButtonStyle.xaml"></ResourceDictionary>

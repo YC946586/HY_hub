@@ -22,6 +22,7 @@ namespace HY_Main
     {
         //http://v.bidsneo.com/hub/index.html#id=sfmm4t&p=%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
         //http://118.31.16.221:8012/eagle/swagger-ui.html
+        //https://www.teambition.com/project/5f1652f562b591d38266aa07/tasks/scrum/5f1652f6911fa600218f9b7f
         //usercoupon，是使用激活码
         //buyGame是获取游戏
 
@@ -68,6 +69,7 @@ namespace HY_Main
             {
                 Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
             }
+             
             Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
             base.OnStartup(e);
             ////IOC接口注册

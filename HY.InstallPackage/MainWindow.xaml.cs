@@ -261,6 +261,7 @@ namespace HY.InstallPackage
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerAsync();
             }
+            MessageBox.Show("请勾选用户协议");
         }
         private int _installProgress;
 

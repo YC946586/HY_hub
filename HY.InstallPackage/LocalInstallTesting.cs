@@ -336,7 +336,6 @@ namespace InstallPackage
             {
                 Directory.CreateDirectory(targetPath + "/" + Path.GetDirectoryName(sourceFile));
             }
-
             try
             {
                 byte[] bytes = new byte[stream.Length];
@@ -366,7 +365,7 @@ namespace InstallPackage
             {
                 CopyFile(targetPath, file.Name); 
             }
-            //CopyFile(targetPath, "HY Main.exe");
+            //CopyFile(targetPath, "HY Main.exe"); 
             //CopyFile(targetPath, "HY.UpdateWindowProgram.exe");
             //progress(88);
             //CopyFile(targetPath, "HY.UninstallPackage.exe");

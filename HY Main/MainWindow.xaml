@@ -42,8 +42,8 @@
                             <Image Source="/HY Main;component/头像.png"/>
                         </hc:Gravatar>
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center"  >
-                            <TextBlock Text="{Binding UserName}"  Foreground="#999999" FontSize="22"  FontWeight="Black" />
-                            <Grid  Height="30" Width="120" HorizontalAlignment="Left">
+                            <TextBlock Text="黑鹰 Hub" x:Name="txt" Foreground="#999999" FontSize="22"  FontWeight="Black" />
+                            <Grid  Height="30"    Width="95" HorizontalAlignment="Left">
                                 <Grid.Background>
                                     <ImageBrush ImageSource="{DynamicResource 黑鹰币}"/>
                                 </Grid.Background>

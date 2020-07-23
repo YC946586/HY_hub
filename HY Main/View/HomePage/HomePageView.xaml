@@ -95,7 +95,7 @@
 
         <Grid Grid.Column="1" >
             <Grid.Background>
-                <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="{DynamicResource 中国风 }" Stretch="None"/>
             </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
@@ -105,7 +105,7 @@
             <usercontrols:Recommended/>
             <usercontrols:BottomContent Grid.Row="1"/>
         </Grid>
-
+        <hc:LoadingCircle Grid.Column="1" Width="50" Height="50" HorizontalAlignment="Center" VerticalContentAlignment="Center"  Visibility="{Binding DisplayMetro,FallbackValue=Collapsed}"/>
         <Grid hc:Growl.GrowlParent="True" VerticalAlignment="Top"  Grid.ColumnSpan="5" Grid.RowSpan="5"/>
     </Grid>
 </UserControl>

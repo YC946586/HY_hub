@@ -37,7 +37,7 @@ namespace HY_Main.ViewModel.Step
             {
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
                 var gamesGetGames = await user.ResetPwd(newPwd, oldPwd);
-                Message.Info(gamesGetGames.Message);
+                Msg.Info(gamesGetGames.Message);
                 if (gamesGetGames.code.Equals("000"))
                 {
                     Messenger.Default.Send("", "EditPwdClose");
@@ -45,7 +45,7 @@ namespace HY_Main.ViewModel.Step
             }
             catch (Exception ex)
             {
-                Message.ErrorException(ex);
+                Msg.Error(ex);
             }
         }
         /// <summary>
