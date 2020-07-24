@@ -71,7 +71,6 @@ namespace HY_Main.ViewModel.Sign
 
         #endregion
             
-
         #region  属性
         private string _Title = "登录";
         public string _TemplateType = "RegisteredDataTemplate";

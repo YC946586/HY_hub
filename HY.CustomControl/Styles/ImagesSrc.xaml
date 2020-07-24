@@ -5,6 +5,7 @@
     xmlns:local="clr-namespace:HY.CustomControl.Controls.Button"
   >
 
+    <BitmapImage x:Key="UpdateBack" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/update.png"></BitmapImage>
     <BitmapImage x:Key="黑鹰币" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/黑鹰币.png"></BitmapImage>
     <BitmapImage x:Key="底" UriSource ="pack://application:,,,/HY.CustomControl;component/Images/Main/底.png"></BitmapImage>
     <BitmapImage x:Key="矩形" UriSource="pack://application:,,,/HY.CustomControl;component/Images/Main/矩形 2(1).png"></BitmapImage>

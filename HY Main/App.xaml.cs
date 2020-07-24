@@ -1,8 +1,12 @@
 ﻿using HY.Application.Base;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Execute.Commons;
+using HY.RequestConver.Bridge;
+using HY.RequestConver.InterFace;
 using HY_Main.Common.Unity;
 using HY_Main.Common.UserControls;
 using HY_Main.ViewModel.Sign;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,7 +54,7 @@ namespace HY_Main
             };
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
 
             var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
@@ -60,27 +64,59 @@ namespace HY_Main
                 Current.Shutdown();
                 return;
             }
-            var MAC = CommonsCall.GetDeviceId();
-            if (!string.IsNullOrEmpty(MAC))
+            int curVersion = Convert.ToInt32(GetEdition().Replace(".", ""));
+            ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
+            var genrator = await common.GetVersion();
+            if (!genrator.code.Equals("000"))
             {
-                Loginer.LoginerUser.macAdd = MAC;
+                MessageBox.Show("网络连接失败,请您连接网络,稍后重新运行");
+                Current.Shutdown();
+                return;     
             }
             else
             {
-                Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
+                base.OnStartup(e);
+                ////IOC接口注册
+                BootStrapper.Initialize();
+                IModelDialog Dialog;
+                var MAC = CommonsCall.GetDeviceId();
+                if (!string.IsNullOrEmpty(MAC))
+                {
+                    Loginer.LoginerUser.macAdd = MAC;
+                }
+                else
+                {
+                    Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
+                }
+                var Results = JsonConvert.DeserializeObject<VersionEntity>(genrator.result.ToString());
+                var serverversion =Convert.ToInt32(Results.version.Replace(".", ""));
+                if (curVersion < serverversion)
+                {
+                    UpdateViewModel view = new UpdateViewModel();
+                    Dialog = ServiceProvider.Instance.Get<IModelDialog>("UpdateViewDlg");
+                    view.InitViewModel(Results);
+                    Dialog.BindViewModel(view);
+                    await Dialog.ShowDialog();
+                }
+                else
+                {
+                    LoginViewModel view = new LoginViewModel();
+                    Dialog = ServiceProvider.Instance.Get<IModelDialog>("LoginViewDlg");
+                    view.ReadConfigInfo(); //读写配置参数
+                    Dialog.BindViewModel(view);
+                    await Dialog.ShowDialog();
+                } 
             }
-             
-            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
-            base.OnStartup(e);
-            ////IOC接口注册
-            BootStrapper.Initialize();
-            LoginViewModel view = new LoginViewModel();
-            var Dialog = ServiceProvider.Instance.Get<IModelDialog>("LoginViewDlg");
-            view.ReadConfigInfo(); //读写配置参数
-            Dialog.BindViewModel(view);
-            Dialog.ShowDialog();
+ 
         }
-
+        /// 获取当前系统的版本号
+        /// </summary>
+        /// <returns></returns>
+        public static string GetEdition()
+        {
+            return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
         /// <summary>
         /// 日志记录
         /// </summary>

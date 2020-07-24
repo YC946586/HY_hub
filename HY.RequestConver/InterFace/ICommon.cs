@@ -14,5 +14,7 @@ namespace HY.RequestConver.InterFace
         Task<ServiceResponse> GetLoginFormBackGroundPics();
 
         Task<ServiceResponse> UseCoupon(string code);
+
+        Task<ServiceResponse> GetVersion();
     }
 }

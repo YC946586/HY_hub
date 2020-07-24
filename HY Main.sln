@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hy.Setup", "Hy.Setup\Hy.Set
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uninstall", "Uninstall\Uninstall.csproj", "{A7A9C81C-FDB5-45F2-A243-39B00A7942DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HY.Update", "HY.Update\HY.Update.csproj", "{EF22601F-6AA0-4FFC-98C2-61DD197763CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{A7A9C81C-FDB5-45F2-A243-39B00A7942DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7A9C81C-FDB5-45F2-A243-39B00A7942DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7A9C81C-FDB5-45F2-A243-39B00A7942DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF22601F-6AA0-4FFC-98C2-61DD197763CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF22601F-6AA0-4FFC-98C2-61DD197763CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF22601F-6AA0-4FFC-98C2-61DD197763CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF22601F-6AA0-4FFC-98C2-61DD197763CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,6 +38,8 @@ namespace HY.RequestConver.Manager
             }
         }
 
+       
+
         public Task<ServiceResponse> UseCoupon(string code)
         {
             try
@@ -47,6 +49,19 @@ namespace HY.RequestConver.Manager
                     { "code", code },
                 };
                 var genrator = Task.Run(() => Network.ApiPost("coupon", "useCoupon", dic));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public Task<ServiceResponse> GetVersion()
+        {
+            try
+            {
+                var genrator = Task.Run(() => Network.ApiGet("common", "getVersion"));
                 return genrator;
             }
             catch (Exception)
