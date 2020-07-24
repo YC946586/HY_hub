@@ -79,8 +79,8 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Button Content="{Binding Sort}" HorizontalAlignment="Left" Style="{StaticResource ButtonBackBkxStyle}"/>
                                                             <TextBlock FontFamily="Microsoft YaHei" FontSize="12"  TextTrimming="WordEllipsis" ToolTip="{Binding title}" Text="{Binding title}" VerticalAlignment="Center" Grid.Column="1"/>
-                                                            <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"      Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                        CommandParameter="{Binding id}"  HorizontalAlignment="Right"
+                                                            <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"      Command="{Binding DataContext.GainGamesHotgameCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding }"  HorizontalAlignment="Right"
                                                     Style="{DynamicResource StyleDownloadButton}" Grid.Column="2"/>
                                                         </Grid>
                                                     </ControlTemplate>

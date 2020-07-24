@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace HY_Main.ViewDialog.Step
 {
@@ -31,6 +32,7 @@ namespace HY_Main.ViewDialog.Step
 
         public override void RegisterDefaultEvent()
         {
+            GetDialogWindow().MouseDown += (sender, e) => { if (e.LeftButton == MouseButtonState.Pressed) { GetDialogWindow().DragMove(); } };
             Messenger.Default.Register<string>(GetDialogWindow(), "DialogClose", new Action<string>((msg) =>
             {
                 GetDialogWindow().Close();

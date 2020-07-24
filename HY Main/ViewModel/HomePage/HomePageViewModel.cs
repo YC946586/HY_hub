@@ -67,7 +67,22 @@ namespace HY_Main.ViewModel.HomePage
             }
             set { _openCommand = value; }
         }
-
+        private RelayCommand<Hotgame> _GainGamesHotgame;
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand<Hotgame> GainGamesHotgameCommand
+        {
+            get
+            {
+                if (_GainGamesHotgame == null)
+                {
+                    _GainGamesHotgame = new RelayCommand<Hotgame>(t => GainGamesHotgame(t));
+                }
+                return _GainGamesHotgame;
+            }
+            set { _GainGamesHotgame = value; }
+        }
         
 
 
@@ -144,13 +159,7 @@ namespace HY_Main.ViewModel.HomePage
             try
             {
                 //获取我的游戏
-                //List<UserGamesEntity> userGamesEntities = new List<UserGamesEntity>();
-                //IUser user = BridgeFactory.BridgeManager.GetUserManager();
-                //var genratorGames = await user.GetUserGames(SearchText, 1, 100000);
-                //if (genratorGames.code.Equals("000"))
-                //{
-                //    userGamesEntities = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genratorGames.result.ToString());
-                //}
+              
                 DisplayMetro = Visibility.Visible;
                 IHome home = BridgeFactory.BridgeManager.GetHomeManager();
                 var genrator = await home.GetHomeGames();
@@ -272,7 +281,66 @@ namespace HY_Main.ViewModel.HomePage
                 Msg.Error(ex);
             }
         }
+        /// <summary>
+        /// 推荐游戏购买
+        /// </summary>
+        /// <param name="gameId"></param>
+        public override async void GainGames(object gameId)
+        {
+            try
+            {
+                if (await Msg.Question("是否购买游戏"))
+                {
+                    var model = gameId as Recommendgame;
+                    IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                    var genrator = await store.BuyGame(model.id);
+                    model.isPurchased = true;
+                    Msg.Info(genrator.Message);
+                    if (genrator.code.Equals("000"))
+                    {
+                        if (genrator.result.Equals("888"))
+                        {
+                            return;
+                        }
+                        CommonsCall.BuyGame(genrator.result.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
 
-
+        /// <summary>
+        //常用游戏购买
+        /// </summary>
+        /// <param name="gameId"></param>
+        public  async void GainGamesHotgame(Hotgame model)
+        {
+            try
+            {
+                if (await Msg.Question("是否购买游戏"))
+                {
+                    IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                    var genrator = await store.BuyGame(model.id);
+                    model.isPurchased = true;
+                    Msg.Info(genrator.Message);
+                    if (genrator.code.Equals("000"))
+                    {
+                        if (genrator.result.Equals("888"))
+                        {
+                            return;
+                        }
+                      
+                        CommonsCall.BuyGame(genrator.result.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
     }
 }

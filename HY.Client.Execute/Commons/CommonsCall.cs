@@ -3,6 +3,7 @@ using HY.Client.Entity.HomeEntitys;
 using HY.Client.Entity.ToolEntitys;
 using HY.Client.Entity.UserEntitys;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,7 +67,46 @@ namespace HY.Client.Execute.Commons
 
         }
         
-
+         public static void BuyGame(string result)
+        {
+            var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(result);
+            Loginer.LoginerUser.balance = Results.balance;
+            Loginer.LoginerUser.freeCount = Results.freeCount;
+            Loginer.LoginerUser.vipInfo = Results.vipInfo;
+            Loginer.LoginerUser.vipType = Results.vipType.ToString();
+            string vipType = string.Empty;
+            if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
+            {
+                Loginer.LoginerUser.IsAdmin = true;
+            }
+            switch (Loginer.LoginerUser.vipType)
+            {
+                case "0":
+                    {
+                        vipType = "普通用户";
+                        break;
+                    }
+                case "1":
+                    {
+                        vipType = "月费用户";
+                        break;
+                    }
+                case "2":
+                    {
+                        vipType = "年费用户";
+                        break;
+                    }
+            }
+            CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+            if (vipType.Equals("普通用户"))
+            {
+                CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   ";
+            }
+            else
+            {
+                CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipInfo;
+            }
+        }
 
         public static string ConvertByG(float fileSize)
         {

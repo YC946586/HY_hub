@@ -231,12 +231,12 @@ namespace HY_Main.ViewModel.Sign
                         {
                             if (string.IsNullOrEmpty(RestCollection.Verification))
                             {
-                                MessageBox.Show("请输入验证码");
+                                Msg.Info("请输入验证码");
                                 return;
                             }
                             if (!RestCollection.Password.Equals(RestCollection.ConfirmPassword))
                             {
-                                MessageBox.Show("密码不一致,请重新输入");
+                                Msg.Info("密码不一致,请重新输入");
                                 return;
                             }
                             phone = RestCollection.UserName;
@@ -248,7 +248,7 @@ namespace HY_Main.ViewModel.Sign
                                 : await user.ResetPwdByCode(RestCollection.Password, RestCollection.UserName, RestCollection.Verification);
                             if (genrator.code != "000")
                             {
-                                MessageBox.Show(genrator.Message);
+                                Msg.Info(genrator.Message);
                                 return;
                             }
                             break;
@@ -264,7 +264,7 @@ namespace HY_Main.ViewModel.Sign
                         genratorlogin = await user.Login("123", pwd, phone);
                         if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genratorlogin.Message);
+                            Msg.Info(genratorlogin.Message);
                             return;
                         }
                     }
@@ -273,7 +273,7 @@ namespace HY_Main.ViewModel.Sign
                         genratorlogin = await user.Login(Loginer.LoginerUser.macAdd, pwd, phone);
                         if (genratorlogin.code != "000")
                         {
-                            MessageBox.Show(genratorlogin.Message);
+                            Msg.Info(genratorlogin.Message);
                             return;
                         }
                     }
@@ -397,8 +397,6 @@ namespace HY_Main.ViewModel.Sign
                 }
             }
         }
-
-       
         /// <summary>
         /// 保存登录信息
         /// </summary>

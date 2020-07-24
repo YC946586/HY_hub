@@ -52,7 +52,7 @@
                                 </StackPanel>
                                 <Button Content="{Binding isPurchased,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Tname},ConverterParameter=Purchased}"    HorizontalAlignment="Right"       Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
                                         Command="{Binding DataContext.GainGamesCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                        CommandParameter="{Binding id}"  />
+                                        CommandParameter="{Binding }"  />
                             </Grid>
                             <Border Background="{StaticResource 矩形2}"   VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="5" Grid.ColumnSpan="2" Margin="8" Width="60" Height="20">
                                 <TextBlock Text="{Binding price,StringFormat={}{0}黑鹰币}" FontFamily="Microsoft YaHei" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -62,7 +62,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <hc:LoadingCircle Grid.Row="1" Width="50" Height="50" HorizontalAlignment="Center" VerticalContentAlignment="Center"  Visibility="{Binding DisplayMetro,FallbackValue=Collapsed}"/>
+            <hc:LoadingCircle Grid.Row="2" Width="50" Height="50" HorizontalAlignment="Center" VerticalContentAlignment="Center"  Visibility="{Binding DisplayMetro,FallbackValue=Collapsed}"/>
             <hc:Pagination MaxPageCount="{Binding PageCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PageIndex="{Binding PageIndex}" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="PageUpdated">

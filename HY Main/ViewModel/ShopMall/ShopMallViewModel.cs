@@ -177,6 +177,37 @@ namespace HY_Main.ViewModel.ShopMall
                 DisplayMetro = Visibility.Collapsed;
             }
         }
- 
+
+        /// <summary>
+        /// 推荐游戏购买
+        /// </summary>
+        /// <param name="gameId"></param>
+        public override async void GainGames(object gameId)
+        {
+            try
+            {
+                if (await Msg.Question("是否购买游戏"))
+                {
+                    var model = gameId as Recommendgame;
+                    IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                    var genrator = await store.BuyGame(model.id);
+                    model.isPurchased = true;
+                    Msg.Info(genrator.Message);
+                    if (genrator.code.Equals("000"))
+                    {
+                        if (genrator.result.Equals("888"))
+                        {
+                            return;
+                        }
+                        CommonsCall.BuyGame(genrator.result.ToString());
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
     }
 }

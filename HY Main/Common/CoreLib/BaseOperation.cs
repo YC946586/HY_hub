@@ -90,20 +90,20 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand _QueryCommand;
         private RelayCommand _ResetCommand;
 
-        private RelayCommand<int> _GainGamesCommond;
+        private RelayCommand<object> _GainGamesCommond;
         //打开下载进度
         private RelayCommand _downShowCommand;
         
         /// <summary>
         /// 
         /// </summary>
-        public RelayCommand<int> GainGamesCommond
+        public RelayCommand<object> GainGamesCommond
         {
             get
             {
                 if (_GainGamesCommond == null)
                 {
-                    _GainGamesCommond = new RelayCommand<int>(t => GainGames(t));
+                    _GainGamesCommond = new RelayCommand<object>(t => GainGames(t));
                 }
                 return _GainGamesCommond;
             }
@@ -333,73 +333,9 @@ namespace HY_Main.Common.CoreLib
         /// </summary>
         public virtual void Add<TModel>(TModel model) { }
 
-        public virtual async void GainGames(int gameId)
+        public virtual async void GainGames(object gameId)
         {
-            try
-            {
-                if (await Msg.Question("是否购买游戏"))
-                {
-                    IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-                    var genrator = await store.BuyGame(gameId);
-                    Msg.Info(genrator.Message);
-                    if (genrator.code.Equals("000"))
-                    {
-                        if (genrator.result.Equals("888"))
-                        {
-                            return;
-                        }
-                        var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(genrator.result.ToString());
-                        Loginer.LoginerUser.balance = Results.balance;
-                        Loginer.LoginerUser.freeCount = Results.freeCount;
-                        Loginer.LoginerUser.vipInfo = Results.vipInfo;
-                        Loginer.LoginerUser.vipType = Results.vipType.ToString();
-                        string vipType = string.Empty;
-                        if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
-                        {
-                            Loginer.LoginerUser.IsAdmin = true;
-                        }
-                        switch (Loginer.LoginerUser.vipType)
-                        {
-                            case "0":
-                                {
-                                    vipType = "普通用户";
-                                    break;
-                                }
-                            case "1":
-                                {
-                                    vipType = "月费用户";
-                                    break;
-                                }
-                            case "2":
-                                {
-                                    vipType = "年费用户";
-                                    break;
-                                }
-                        }
-                        CommonsCall.UserBalance = Loginer.LoginerUser.balance;
-                        if (vipType.Equals("普通用户"))
-                        {
-                            CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   ";
-                        }
-                        else
-                        {
-                            CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipInfo;
-                        }
-
-                    }
-                }
-              
-
-                //if (Msg.Question("是否使用黑鹰币获取游戏"))
-                //{
-
-                //}
-
-            }
-            catch (Exception ex)
-            {
-                Msg.Error(ex);
-            }
+           
         }
         /// <summary>
         /// 编辑
