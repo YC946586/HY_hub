@@ -27,6 +27,19 @@ namespace HY.CustomControl.Converters
                                     return "开始游戏";
                             }
                         }
+                    case "StuepGames":
+                        {
+                            var dd = int.Parse(value.ToString());
+                            switch (dd)
+                            {
+                                case 1:
+                                    return "开始游戏";
+                                case 2:
+                                    return "安装游戏";
+                                default:
+                                    return "获取游戏";
+                            }
+                        }
                 }
             }
             return "";

@@ -86,6 +86,10 @@ namespace HY.RequestConver
             {
                 throw;
             }
+            finally
+            {
+                GC.Collect();
+            }
 
         }
 
@@ -130,6 +134,10 @@ namespace HY.RequestConver
             catch (Exception ex)
             {
                 throw;
+            }
+            finally
+            {
+                GC.Collect();
             }
 
         }
@@ -182,7 +190,7 @@ namespace HY.RequestConver
                 }
                 fs.Close();
                 responseStream.Close();
-                
+                GC.Collect();
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace HY_Main.View.Sign
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (await Msg.Question("是否退出黑鹰Hub"))
+            if (await Msg.Question("是否退出黑鹰Hub更新"))
             {
                 Application.Current.Shutdown();
             }

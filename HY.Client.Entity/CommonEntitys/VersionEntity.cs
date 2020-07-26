@@ -17,9 +17,6 @@ namespace HY.Client.Entity.CommonEntitys
         public string version { get; set; }
         public string comment { get; set; }
         public int createTime { get; set; }
-        public Attach[] attaches { get; set; }
+        public List<Attach> attaches { get; set; }
     }
-
-   
-
 }

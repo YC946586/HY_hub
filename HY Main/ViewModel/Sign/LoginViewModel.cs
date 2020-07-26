@@ -216,6 +216,7 @@ namespace HY_Main.ViewModel.Sign
         {
             try
             {
+   
                 string phone = string.Empty;
                 string pwd = string.Empty;
                 switch (hander)
@@ -285,6 +286,8 @@ namespace HY_Main.ViewModel.Sign
                     Loginer.LoginerUser.freeCount = Results.freeCount;
                     Loginer.LoginerUser.vipInfo = Results.vipInfo;
                     Loginer.LoginerUser.vipType = Results.vipType;
+                    Loginer.LoginerUser.ToolEntities = CommonsCall.ReadUserAllGame();
+
                     string vipType = string.Empty;
                     if (Loginer.LoginerUser.vipType.Equals("1") || Loginer.LoginerUser.vipType.Equals("2"))
                     {
@@ -389,9 +392,8 @@ namespace HY_Main.ViewModel.Sign
                     var imgName = Results[curNext].id + imgWebUrl.Substring(imgWebUrl.Length-4, 4);
                     if (!curPathName.Equals(imgName))
                     {
-                        SkinName = new BitmapImage(new Uri(imgWebUrl));
-                        GC.Collect();
                        await Task.Run(() => Network.HttpDownload(imgWebUrl, strPath, imgName));
+                       SkinName = new BitmapImage(new Uri(strPath+ imgName)); 
                     }    
                 }
             }

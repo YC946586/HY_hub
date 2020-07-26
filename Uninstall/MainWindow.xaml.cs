@@ -88,7 +88,7 @@ namespace Uninstall
             {
                 
                 IsRemember.Visibility = Visibility.Collapsed;
-                Process[] pOrange = Process.GetProcessesByName("Hy Main");
+                Process[] pOrange = Process.GetProcessesByName("HY.MAIN");
                 if (pOrange.Length > 0)
                 {
                     OrxMessageBox orx = null;

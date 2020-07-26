@@ -23,11 +23,11 @@
                 hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"  
                 Command="hc:ControlCommands.Close"/>
         </Grid>
-        <TextBox Height="35" Text="{Binding LoginCollection.UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入激活码"  Grid.Row="1" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
+        <TextBox Height="35" Text="{Binding code,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  hc:InfoElement.Placeholder="请输入激活码"  Grid.Row="1" FontSize="14" Style="{DynamicResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True" Margin="10 15"/>
         <StackPanel  Orientation="Horizontal"   HorizontalAlignment="Center"   Grid.Row="2" >
             <Button Content="取消" Width="80"   Command="hc:ControlCommands.Close" />
-            <Button Content="确定" Width="80" Margin="20 0 0 0" Command="{Binding SaveCommand}"  Style="{StaticResource ButtonPrimary}"/>
+            <Button Content="确定" Width="80" Margin="20 0 0 0" Command="{Binding SaveCommand}"  Style="{StaticResource ButtonWarning}"/>
 
         </StackPanel>
     </Grid>

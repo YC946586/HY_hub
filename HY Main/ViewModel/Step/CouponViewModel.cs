@@ -1,7 +1,9 @@
-﻿using HY.Client.Execute.Commons;
+﻿using HY.Client.Entity.CommonEntitys;
+using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +30,15 @@ namespace HY_Main.ViewModel.Step
             {
                 ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
                 var gamesGetGames = await common.UseCoupon(code);
-                Msg.Info(gamesGetGames.Message);
                 if (gamesGetGames.code.Equals("000"))
                 {
-                    ClostEvent?.Invoke();
+                    var Results = JsonConvert.DeserializeObject<CouponEntity>(gamesGetGames.result.ToString());
+                    Loginer.LoginerUser.balance = Results.balance;
+                    CommonsCall.UserBalance = Loginer.LoginerUser.balance;
+                    CommonsCall.ShowUser = Loginer.LoginerUser.UserName + "  余额：" + Loginer.LoginerUser.balance + "鹰币   " + Loginer.LoginerUser.vipInfo;
                 }
+                Msg.Info(gamesGetGames.Message);
+                ClostEvent?.Invoke();
             }
             catch (Exception ex)
             {

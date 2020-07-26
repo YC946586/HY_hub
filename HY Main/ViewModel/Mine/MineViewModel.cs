@@ -65,7 +65,7 @@ namespace HY_Main.ViewModel.Mine
             base.InitViewModel();
             InitHotRecomenAsync();
         }
-        public  async void InitHotRecomenAsync()
+        public async void InitHotRecomenAsync()
         {
             try
             {
@@ -99,13 +99,14 @@ namespace HY_Main.ViewModel.Mine
                     var Results = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genrator.result.ToString());
                     foreach (var item in Results)
                     {
-                       var GameRoute=CommonsCall.ReadUserGameInfo(item.gameId.ToString());
+                        var GameRoute = CommonsCall.ReadUserGameInfo(item.gameId.ToString());
                         if (!string.IsNullOrEmpty(GameRoute.Key))
                         {
                             item.StrupPath = GameRoute.Key;
                             item.gameName = GameRoute.remarks;
                         }
                     }
+                    Loginer.LoginerUser.UserGameList = Results;
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)4));
                     var curShowmodel = Results.Skip(0).Take(4);
                     curShowmodel.OrderBy(s => s.id).ToList().ForEach((ary) => GridModelList.Add(ary));
@@ -121,7 +122,7 @@ namespace HY_Main.ViewModel.Mine
             }
         }
 
-         
+
         public override async void Query()
         {
             try
@@ -129,7 +130,7 @@ namespace HY_Main.ViewModel.Mine
                 DisplayMetro = Visibility.Visible;
                 GridModelList.Clear();
                 IUser user = BridgeFactory.BridgeManager.GetUserManager();
-                var genrator = await user.GetUserGames(SearchText,1,100000);
+                var genrator = await user.GetUserGames(SearchText, 1, 100000);
                 if (genrator.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<UserGamesEntity>>(genrator.result.ToString());
@@ -149,7 +150,7 @@ namespace HY_Main.ViewModel.Mine
                         }
                     }
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)4));
-                    var curShowmodel= Results.Skip(0).Take(4);
+                    var curShowmodel = Results.Skip(0).Take(4);
                     curShowmodel.OrderBy(s => s.id).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
             }
@@ -229,7 +230,7 @@ namespace HY_Main.ViewModel.Mine
                     return;
                 }
                 var Results = JsonConvert.DeserializeObject<List<DwonloadEntity>>(genrator.result.ToString());
-                if (Results.Count==0)
+                if (Results.Count == 0)
                 {
                     Msg.Info("游戏获取失败,请重试");
                     return;
@@ -244,11 +245,11 @@ namespace HY_Main.ViewModel.Mine
                 viewModel.dwonloadEntities = Results;
                 viewModel.InitAsyncViewModel();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");
-                viewModel.stuepEnd +=(t,a) =>
-                {
-                    gamesEntity.StrupPath = t;
-                    gamesEntity.gameName = a;
-                };
+                viewModel.stuepEnd += (t, a) =>
+                 {
+                     gamesEntity.StrupPath = t;
+                     gamesEntity.gameName = a;
+                 };
                 dialog.BindViewModel(viewModel);
 
                 var d = Dialog.Show(dialog.GetDialog());
@@ -257,7 +258,7 @@ namespace HY_Main.ViewModel.Mine
                 {
                     d.Close();
                 });
-             
+
             }
             catch (Exception ex)
             {
@@ -268,7 +269,7 @@ namespace HY_Main.ViewModel.Mine
                 DisplayMetro = Visibility.Collapsed;
             }
         }
- 
+
 
         /// <summary>
         /// 打开目录
@@ -318,7 +319,7 @@ namespace HY_Main.ViewModel.Mine
         /// <param name="t"></param>
         private void GameGl(UserGamesEntity t)
         {
-            
+
         }
         #region 卸载游戏
         /// <summary>
@@ -331,7 +332,7 @@ namespace HY_Main.ViewModel.Mine
             try
             {
                 var curModel = model as UserGamesEntity;
-          
+
                 string path = curModel.StrupPath.Remove(curModel.StrupPath.Length - curModel.gameName.Length, curModel.gameName.Length);
                 CommonsCall.DeleteDir(path);
                 //获取AutoCAD软件快捷方式在桌面上的路径
@@ -368,7 +369,7 @@ namespace HY_Main.ViewModel.Mine
 
         }
 
-      
+
         #endregion
 
 

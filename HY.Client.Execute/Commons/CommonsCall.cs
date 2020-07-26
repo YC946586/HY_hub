@@ -231,6 +231,81 @@ namespace HY.Client.Execute.Commons
             }
         }
 
+
+        /// <summary>
+        ///记录版本号
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="route"></param>
+        public static void RecordVersion(string version)
+        {
+            try
+            {
+                RegistryKey CUKey = null;
+                RegistryKey CNCTKJPTKey = null;
+                CUKey = Registry.CurrentUser;
+                CNCTKJPTKey = CUKey.OpenSubKey(@"Software\Microsoft\HyVersion", true);
+                if (CNCTKJPTKey == null)
+                {
+                    //说明这个路径不存在，需要创建
+                    CUKey.CreateSubKey(@"Software\Microsoft\HyVersion");
+                    CNCTKJPTKey = CUKey.OpenSubKey(@"Software\Microsoft\HyVersion", true);
+                }
+                RegistryKey userInfo = CNCTKJPTKey.OpenSubKey("version", true);
+                if (userInfo == null)
+                {
+                    //说明这个路径不存在，需要创建
+                    CNCTKJPTKey.CreateSubKey("version");
+                    userInfo = CNCTKJPTKey.OpenSubKey("version", true);
+                }
+                //记录当前checkbox的状态为选中状态
+                userInfo.SetValue("version", version);
+                userInfo.SetValue("establishDate", DateTime.Now);
+                userInfo.Close();
+                CNCTKJPTKey.Close();
+                CUKey.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        /// <summary>
+        /// 读取游戏版本号
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public static string ReadVersion(string version)
+        {
+            try
+            {
+                string curVersion = "0";
+                RegistryKey cuKey = Registry.CurrentUser;
+                RegistryKey cnctkjptKey = cuKey.OpenSubKey(@"Software\Microsoft\HyVersion\version", true);
+                if (cnctkjptKey != null)
+                {
+                    object objDate = cnctkjptKey.GetValue("version");
+                    
+                    if (objDate != null)
+                    {
+                        curVersion = objDate.ToString();
+                    }
+                    cnctkjptKey.Close();
+                }
+                if (curVersion.Equals("0"))
+                {
+                    RecordVersion(version);
+                }
+                cuKey.Close();
+               
+                return curVersion;
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+        }
         /// <summary>
         /// 读取游戏注册表
         /// </summary>
@@ -253,7 +328,49 @@ namespace HY.Client.Execute.Commons
                         toolEntity.Key = objDate.ToString();
                         toolEntity.remarks = gameName.ToString();
                     }
+                    cnctkjptKey.Close();
                 }
+                cuKey.Close();
+          
+                return toolEntity;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }   /// <summary>
+            /// 读取游戏注册表
+            /// </summary>
+            /// <param name="gameId"></param>
+            /// <returns></returns>
+        public static List<ToolEntity> ReadUserAllGame()
+        {
+            try
+            {
+                List<ToolEntity> toolEntity = new List<ToolEntity>();
+                RegistryKey cuKey = Registry.CurrentUser;
+                RegistryKey cnctkjptKey = cuKey.OpenSubKey(@"Software\HyGameInstall", true);
+                if (cnctkjptKey != null)
+                {
+                    var valuenames = cnctkjptKey.GetSubKeyNames();
+                    foreach (string valuename in valuenames)
+                    {
+                        RegistryKey GameIdKey = cnctkjptKey.OpenSubKey(valuename);
+                        if (GameIdKey != null)
+                        {
+                            object objDate = GameIdKey.GetValue("route");
+                            object gameName = GameIdKey.GetValue("gameName");
+                            if (objDate != null)
+                            {
+                                ToolEntity tool = new ToolEntity() {Key= objDate.ToString(), remarks= gameName.ToString(),gamesId=Int32.Parse(valuename) };
+                                toolEntity.Add(tool);
+                            }
+                        }     
+                    }
+                    cnctkjptKey.Close();
+                }
+                cuKey.Close();
+             
                 return toolEntity;
             }
             catch (Exception ex)

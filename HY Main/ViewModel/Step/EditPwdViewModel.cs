@@ -27,7 +27,7 @@ namespace HY_Main.ViewModel.Step
             get { return _oldPwd; }
             set { _oldPwd = value; RaisePropertyChanged(); }
         }
-
+        public event Action ClostEvent;
         /// <summary>
         /// 确定
         /// </summary>
@@ -40,7 +40,7 @@ namespace HY_Main.ViewModel.Step
                 Msg.Info(gamesGetGames.Message);
                 if (gamesGetGames.code.Equals("000"))
                 {
-                    Messenger.Default.Send("", "EditPwdClose");
+                    ClostEvent?.Invoke();
                 }
             }
             catch (Exception ex)
@@ -48,12 +48,6 @@ namespace HY_Main.ViewModel.Step
                 Msg.Error(ex);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Cancel()
-        {
-            Messenger.Default.Send("", "EditPwdClose");
-        }
+       
     }
 }

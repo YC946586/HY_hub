@@ -102,6 +102,9 @@ namespace HY_Main.ViewModel.Mine.UserControls
         public  List<Task> ParallelTasks { get; set; }
 
         public static List<MeterInfo> takMeter = new List<MeterInfo>();
+        /// <summary>
+        /// 下载文件
+        /// </summary>
         public override void Query()
         {
             try
@@ -278,7 +281,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
         #endregion
 
         #region  下载
-
+     
         /// <summary>
         /// 以断点续传方式下载文件
         /// </summary>
@@ -313,38 +316,53 @@ namespace HY_Main.ViewModel.Mine.UserControls
             //打开网络连接
             try
             {
-                GC.Collect();
-                HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(strUrl);
-                if (SPosition > 0)
-                    myRequest.AddRange((int)SPosition);//设置Range值
-                long totalBytes = myRequest.ContentLength;
-                myRequest.Timeout = 20000;
-                //向服务器请求，获得服务器的回应数据流
-                if (dwonloadEntity.size == dwonloadEntity.SurplusSize)
+                WebClient webClient = new WebClient();
+                using (Stream read = webClient.OpenRead(strUrl))
                 {
-                    FStream.Close();
-                    return;
-                }
-                Stream myStream = myRequest.GetResponse().GetResponseStream();
-                byte[] btContent = new byte[1024 * 1024];
-                int intSize = 0;
-                long totalDownloadedByte = 0;
-                intSize = myStream.Read(btContent, 0, 1024 * 1024);
-                while (intSize > 0)
-                {
-                    totalDownloadedByte = intSize + totalDownloadedByte;
-                    FStream.Write(btContent, 0, intSize);
-                    intSize = myStream.Read(btContent, 0, 1024 * 1024);
-                    lock (_objLock)
+                    byte[] mbyte = new byte[1024 * 1024];
+                    int readL = read.Read(mbyte, 0, 1024 * 1024);
+                    using (Stream fs = FStream)
                     {
-                        dwonloadEntity.SurplusSize += intSize;
-                        Task.Run(() => AddSupSize(dwonloadEntity));  
-                    }
-                }
-                FStream.Close();
-                myStream.Close();
-                GC.Collect();
+                        //读取流 
+                        while (readL != 0)
+                        {
 
+                            fs.Write(mbyte, 0, readL);
+                            readL = read.Read(mbyte, 0, 1024 * 1024);
+                        }
+                    }
+                    HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+                    if (SPosition > 0)
+                        myRequest.AddRange((int)SPosition);//设置Range值
+                    long totalBytes = myRequest.ContentLength;
+                    myRequest.Timeout = 20000;
+                    //向服务器请求，获得服务器的回应数据流
+                    if (dwonloadEntity.size == dwonloadEntity.SurplusSize)
+                    {
+                        FStream.Close();
+                        return;
+                    }
+                    Stream myStream = myRequest.GetResponse().GetResponseStream();
+                    byte[] btContent = new byte[1024 * 1024];
+                    int intSize = 0;
+                    long totalDownloadedByte = 0;
+                    intSize = myStream.Read(btContent, 0, 1024 * 1024);
+                    while (intSize > 0)
+                    {
+                        totalDownloadedByte = intSize + totalDownloadedByte;
+                        FStream.Write(btContent, 0, intSize);
+                        intSize = myStream.Read(btContent, 0, 1024 * 1024);
+                        lock (_objLock)
+                        {
+                            dwonloadEntity.SurplusSize += intSize;
+                            Task.Run(() => AddSupSize(dwonloadEntity));
+                        }
+                    }
+                    FStream.Close();
+                    myStream.Close();
+                    GC.Collect();
+
+                }
             }
             catch (Exception ex)
             {

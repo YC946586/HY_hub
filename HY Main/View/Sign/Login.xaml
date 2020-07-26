@@ -8,12 +8,14 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
            xmlns:loca1="clr-namespace:HY.CustomControl;assembly=HY.CustomControl"
-        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" xmlns:converters1="clr-namespace:HY_Main.Common" xmlns:sign="clr-namespace:HY_Main.ViewModel.Sign"
+        xmlns:converters="clr-namespace:HY.CustomControl.Converters;assembly=HY.CustomControl" 
+        xmlns:converters1="clr-namespace:HY_Main.Common"
+        xmlns:sign="clr-namespace:HY_Main.ViewModel.Sign"
         mc:Ignorable="d" Name="mainLogin" Icon="/HY Main;component/48px.ico"
          Title="黑鹰hub登录"   Height="720" Width="1280"  
         WindowStartupLocation="CenterScreen"    WindowStyle="None" AllowsTransparency="True" >
-    
-    <Window.Template>
+
+    <!--<Window.Template>
         <ControlTemplate TargetType="Window">
             <Border Padding="1" Background="Transparent">
                 <Border CornerRadius="0" Background="White">
@@ -24,11 +26,11 @@
                 </Border>
             </Border>
         </ControlTemplate>
-    </Window.Template>
+    </Window.Template>-->
     <Window.Resources>
         <converters:NameToObjectConverter x:Key="Convrter"/>
         <converters:FlagConverter  x:Key="Flag"/>
-  
+
     </Window.Resources>
     <Window.DataContext>
         <sign:LoginViewModel/>
@@ -60,7 +62,7 @@
                            loca1:PasswordBoxHelper.Password="{Binding Path=LoginCollection.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
                         <loca1:PasswordBoxBehavior/>
-                    </i:Interaction.Behaviors>     
+                    </i:Interaction.Behaviors>
                 </PasswordBox>
                 <Grid   Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=StackPanel,AncestorLevel=1},Path=ActualWidth}">
                     <Button Content="注册"  Width="120"  Cursor="Hand" HorizontalAlignment="Left" FontSize="17" Command="{Binding RegistereCommand}" CommandParameter="注册" Height="40" />
@@ -69,7 +71,7 @@
                        Path=DataContext.SignCommand}" HorizontalAlignment="Right"  CommandParameter="登录"   Height="40"   Style="{DynamicResource ButtonLoginStyle}"/>
                 </Grid>
 
-                <TextBlock Text="忘记密码" FontSize="16" FontFamily="微软雅黑" HorizontalAlignment="Right" Foreground="#FFEDB3"  Margin="0 15 0 0">
+                <TextBlock Text="忘记密码" FontSize="16" FontFamily="微软雅黑" HorizontalAlignment="Right" Foreground="#FFF"  Margin="0 15 0 0">
                     <TextBlock.InputBindings>
                         <MouseBinding MouseAction="LeftClick"    Command="{Binding RegistereCommand}"  CommandParameter="重置密码"></MouseBinding>
                     </TextBlock.InputBindings>
@@ -83,5 +85,5 @@
             <hc:LoadingCircle  Visibility="Collapsed"  />
         </Grid>
     </Grid>
-   
+
 </Window>

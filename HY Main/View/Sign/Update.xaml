@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HY_Main.View.Sign" Background="Transparent"
-         WindowStyle="None" Width="320" Height="400"  ResizeMode="NoResize"   UseLayoutRounding="True" AllowsTransparency="True"
+        xmlns:local="clr-namespace:HY_Main.View.Sign" Background="Transparent"   WindowStartupLocation="CenterScreen"
+         WindowStyle="None" Height="600" Width="400"  ResizeMode="NoResize"   UseLayoutRounding="True" AllowsTransparency="True"
         Title="程序更新">
     <Window.Resources>
 
@@ -13,14 +13,36 @@
         <Grid.Background>
             <ImageBrush  ImageSource="{DynamicResource UpdateBack}" Stretch="Fill"/>
         </Grid.Background>
-        <Grid Margin="40 30 30 0">
+        <Grid Margin="50 30 30 30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="90"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="160"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
-            <Button  HorizontalAlignment="Right"  VerticalAlignment="Center" Tag="&#xe626;" Style="{DynamicResource ButtonTagImgStyle}" 
+            <Button  HorizontalAlignment="Right"  Margin="0 0 20 0" VerticalAlignment="Center" Tag="&#xe626;" Style="{DynamicResource ButtonTagImgStyle}" 
                      Foreground="White"  Click="Button_Click" />
             <TextBlock Grid.Row="1" Foreground="#FFF002" FontSize="26" HorizontalAlignment="Center" Text="发现新版本"/>
+            <StackPanel Margin="0,40,0,0" Grid.Row="2" Orientation="Horizontal">
+                <TextBlock FontSize="20" Text="最新版本："/>
+                <TextBlock FontSize="20" Text="{Binding Version.version,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,16,0" Grid.Row="3" Orientation="Vertical">
+                <TextBlock Foreground="#666666" FontSize="16" Text="更新内容："/>
+                <ScrollViewer  ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0 5" HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock  Text="{Binding Version.comment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="14" TextWrapping="Wrap" Foreground="#666666" ></TextBlock>
+                </ScrollViewer>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  Grid.Row="4" HorizontalAlignment="Center" >
+                <Button  Cursor="Hand"  Foreground="#FFF002" Background="#00BBF9"  FontSize="17" Command="{Binding SaveCommand}"  Width="110" Height="40" BorderThickness="0" Content="更新"   />
+                <Button    Cursor="Hand" Foreground="#FFF" FontSize="17" Background="#E30000" Click="Button_Click" Margin="50 0 0 0" BorderThickness="0"  Width="110" Height="40"   Content="取消" />
+            </StackPanel>
+            <StackPanel  Visibility="{Binding Progress,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,FallbackValue=Collapsed}" Grid.Row="5"  HorizontalAlignment="Center">
+                <ProgressBar Background="#efefef" Foreground="#00BBF9"  Height="15 " Value="{Binding ProData,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="270" />
+                <TextBlock Margin="5"  FontSize="21" Text="{Binding Speed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#00BBF9" TextAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            </StackPanel>
         </Grid>
      
     </Grid>

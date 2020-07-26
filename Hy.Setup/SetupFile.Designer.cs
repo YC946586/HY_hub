@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Hy.Setup {
+namespace HY.MAIN {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Hy.Setup {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hy.Setup.SetupFile", typeof(SetupFile).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HY.MAIN.SetupFile", typeof(SetupFile).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,16 +57,6 @@ namespace Hy.Setup {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] HY_Main {
-            get {
-                object obj = ResourceManager.GetObject("HY_Main", resourceCulture);
-                return ((byte[])(obj));
             }
         }
     }

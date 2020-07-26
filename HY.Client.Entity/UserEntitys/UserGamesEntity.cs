@@ -69,7 +69,7 @@ namespace HY.Client.Entity.UserEntitys
         }
      
         /// <summary>
-        ///  
+        ///  已经下载
         /// </summary>
         public string SurplusSize
         {

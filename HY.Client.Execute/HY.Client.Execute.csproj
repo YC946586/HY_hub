@@ -70,6 +70,7 @@
     <Compile Include="Commons\CommonsCall.cs" />
     <Compile Include="Commons\Configuration.cs" />
     <Compile Include="Commons\DownLoadHelp.cs" />
+    <Compile Include="Commons\Download\DownHelp.cs" />
     <Compile Include="Commons\ExceptionLibrary.cs" />
     <Compile Include="Commons\Files\IniFile.cs" />
     <Compile Include="Commons\Loginer.cs" />
@@ -87,5 +88,6 @@
       <Name>HY.Client.Entity</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

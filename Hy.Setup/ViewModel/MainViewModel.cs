@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight;
+using HY.MAIN.Properties;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -48,8 +49,6 @@ namespace Hy.Setup.ViewModel
                     }
                 }
             }
-            //操作系统
-            PageCollection.Winver = Tool.GetWindows();
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace Hy.Setup.ViewModel
             try
             {
                 //将软件解压到用户指定目录
-                var filesPath = SetupFile.HY_Main;
+                var filesPath = Resources.Release;
                 Extract(filesPath);
                 Adddesktop();
             }

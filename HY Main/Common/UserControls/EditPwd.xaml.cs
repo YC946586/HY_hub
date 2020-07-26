@@ -17,7 +17,7 @@ namespace HY_Main.Common.UserControls
     /// <summary>
     /// EditPwd.xaml 的交互逻辑
     /// </summary>
-    public partial class EditPwd : Window
+    public partial class EditPwd : UserControl
     {
         public EditPwd()
         {

@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
+using HY.Client.Entity.ToolEntitys;
+using HY.Client.Entity.UserEntitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +79,10 @@ namespace HY.Client.Execute.Commons
             get { return _balance; }
             set { _balance = value; RaisePropertyChanged(); }
         }
-        
 
+        public List<ToolEntity> ToolEntities { get; set; } = new List<ToolEntity>();
+
+
+        public List<UserGamesEntity> UserGameList { get; set; } = new List<UserGamesEntity>();
     }
 }

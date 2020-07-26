@@ -1,5 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using HandyControl.Controls;
 using HandyControl.Data;
+using HY.Application.Base;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Entity.HomeEntitys;
 using HY.Client.Entity.StoreEntitys;
 using HY.Client.Entity.ToolEntitys;
@@ -7,10 +10,14 @@ using HY.Client.Execute.Commons;
 using HY.RequestConver.Bridge;
 using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
+using HY_Main.Common.Unity;
+using HY_Main.ViewModel.Mine.UserControls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +75,24 @@ namespace HY_Main.ViewModel.ShopMall
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
+                    if (Loginer.LoginerUser.ToolEntities.Count != 0)
+                    {
+                        foreach (var item in Loginer.LoginerUser.ToolEntities)
+                        {
+                            foreach (var recommen in Results)
+                            {
+                                if (recommen.id.Equals(item.gamesId))
+                                {
+                                    recommen.Purchased = 1;
+                                }
+                                else if (recommen.isPurchased)
+                                {
+                                    recommen.Purchased = 2;
+                                }
+                            }
+                        }
+                    }
+                   
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
                     var curShowmodel = Results.Skip(0).Take(8);
                     curShowmodel.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
@@ -122,6 +147,23 @@ namespace HY_Main.ViewModel.ShopMall
                         Msg.Info("暂未查询出数据,请您重新查询");
                         return;
                     }
+                    if (Loginer.LoginerUser.ToolEntities.Count != 0)
+                    {
+                        foreach (var item in Loginer.LoginerUser.ToolEntities)
+                        {
+                            foreach (var recommen in Results)
+                            {
+                                if (recommen.id.Equals(item.gamesId))
+                                {
+                                    recommen.Purchased = 1;
+                                }
+                                else if (recommen.isPurchased)
+                                {
+                                    recommen.Purchased = 2;
+                                }
+                            }
+                        }
+                    }
                     Results.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
                 }
             }
@@ -163,6 +205,23 @@ namespace HY_Main.ViewModel.ShopMall
                         Msg.Info("暂未查询出数据,请您重新查询");
                         return;
                     }
+                    if (Loginer.LoginerUser.ToolEntities.Count != 0)
+                    {
+                        foreach (var item in Loginer.LoginerUser.ToolEntities)
+                        {
+                            foreach (var recommen in Results)
+                            {
+                                if (recommen.id.Equals(item.gamesId))
+                                {
+                                    recommen.Purchased = 1;
+                                }
+                                else if (recommen.isPurchased)
+                                {
+                                    recommen.Purchased = 2;
+                                }
+                            }
+                        }
+                    }
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
                     var curShowmodel = Results.Skip(0).Take(8);
                     curShowmodel.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
@@ -186,22 +245,73 @@ namespace HY_Main.ViewModel.ShopMall
         {
             try
             {
-                if (await Msg.Question("是否购买游戏"))
+                var model = gameId as Recommendgame;
+                if (model.Purchased == 2)
                 {
-                    var model = gameId as Recommendgame;
                     IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-                    var genrator = await store.BuyGame(model.id);
-                    model.isPurchased = true;
-                    Msg.Info(genrator.Message);
-                    if (genrator.code.Equals("000"))
+                    var genrator = await store.GetGameFiles(model.id);
+                    if (!genrator.code.Equals("000"))
                     {
-                        if (genrator.result.Equals("888"))
-                        {
-                            return;
-                        }
-                        CommonsCall.BuyGame(genrator.result.ToString());
+                        Msg.Info(genrator.Message);
+                        return;
                     }
+                    var Results = JsonConvert.DeserializeObject<List<DwonloadEntity>>(genrator.result.ToString());
+                    if (Results.Count == 0)
+                    {
+                        Msg.Info("游戏获取失败,请重试");
+                        return;
+                    }
+                    if (CommonsCall.UserGames.Any(s => s.gameId.Equals(model.id)))
+                    {
+                        Msg.Info(model.title + "已经进入下载队列中");
+                        return;
+                    }
+                    GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
+                    viewModel.PageCollection = Loginer.LoginerUser.UserGameList.Where(s => s.gameId.Equals(model.id)).First();
+                    viewModel.dwonloadEntities = Results;
+                    viewModel.InitAsyncViewModel();
+                    var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");
 
+                    dialog.BindViewModel(viewModel);
+
+                    var d = Dialog.Show(dialog.GetDialog());
+                    viewModel.ShowList += (async () =>
+                    {
+                        d.Close();
+                    });
+                    return;
+                }
+                var GameRoute = CommonsCall.ReadUserGameInfo(model.id.ToString());
+                if (!string.IsNullOrEmpty(GameRoute.Key))
+                {
+                    if (File.Exists(GameRoute.Key))//判断文件是否存在
+                    {
+                        Process.Start(GameRoute.Key);
+                    }
+                    else
+                    {
+                        model.Purchased = 2;
+                        CommonsCall.DeleteSubKeyTree(GameRoute.Key);
+                        Msg.Info("游戏损坏,请重新安装游戏");
+                    }
+                }
+                else
+                {
+                    if (await Msg.Question("是否购买游戏"))
+                    {
+                        IStore store = BridgeFactory.BridgeManager.GetStoreManager();
+                        var genrator = await store.BuyGame(model.id);
+                        model.Purchased =2;
+                        Msg.Info(genrator.Message);
+                        if (genrator.code.Equals("000"))
+                        {
+                            if (genrator.result.Equals("888"))
+                            {
+                                return;
+                            }
+                            CommonsCall.BuyGame(genrator.result.ToString());
+                        }
+                    }
                 }
             }
             catch (Exception ex)

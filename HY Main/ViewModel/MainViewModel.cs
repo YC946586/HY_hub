@@ -174,14 +174,18 @@ namespace HY_Main.ViewModel
             }
         }
 
-        private async void EditPwd()
+        private  void EditPwd()
         {
             try
             {
                 EditPwdViewModel model = new EditPwdViewModel();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EditPwdDlg");
                 dialog.BindViewModel(model);
-                bool taskResult = await dialog.ShowDialog();
+                var d = Dialog.Show(dialog.GetDialog());
+                model.ClostEvent += (async () =>
+                {
+                    d.Close();
+                });
             }
             catch (Exception ex)
             {

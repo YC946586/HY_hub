@@ -32,6 +32,12 @@ namespace HY.Client.Entity.HomeEntitys
             get { return _isPurchased; }
             set { _isPurchased = value; RaisePropertyChanged(); }
         }
+        private int _Purchased = 3;
+        public int Purchased
+        {
+            get { return _Purchased; }
+            set { _Purchased = value; RaisePropertyChanged(); }
+        }
         public string Content { get; set; } = "获取游戏";
     }
 
@@ -51,6 +57,13 @@ namespace HY.Client.Entity.HomeEntitys
         {
             get { return _isPurchased; }
             set { _isPurchased = value; RaisePropertyChanged(); }
+        }
+
+        private int _Purchased = 3;
+        public int Purchased
+        {
+            get { return _Purchased; }
+            set { _Purchased = value; RaisePropertyChanged(); }
         }
         public string Content { get; set; } = "获取游戏";
     }

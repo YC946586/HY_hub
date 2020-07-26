@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -27,13 +29,38 @@ namespace HY_Main
         //http://v.bidsneo.com/hub/index.html#id=sfmm4t&p=%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
         //http://118.31.16.221:8012/eagle/swagger-ui.html
         //https://www.teambition.com/project/5f1652f562b591d38266aa07/tasks/scrum/5f1652f6911fa600218f9b7f
-        //usercoupon，是使用激活码
-        //buyGame是获取游戏
 
 
         public App()
         {
-            this.DispatcherUnhandledException += (sender, args) =>
+            Process[] pOrange = Process.GetProcessesByName("HY.MAIN");
+            if (pOrange.Length > 1)
+            {
+                Current.Shutdown(0);
+            }
+            Task.Run(() => { 
+                while (true) {
+
+                    Process[] Fiddler = Process.GetProcessesByName("Fiddler");
+                    Process[] Wireshark = Process.GetProcessesByName("Wireshark");
+                    if (Fiddler.Length > 0|| Wireshark.Length>0)
+                    {
+                        Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            Current.Shutdown(0);
+                        }));
+                    }
+                    Thread.Sleep(3000);
+                }});
+            var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
+            if (string.IsNullOrEmpty(MacAddress))
+            {
+                MessageBox.Show("网络连接失败,请您连接网络,稍后重新运行");
+                Current.Shutdown();
+                return;
+            }
+
+            DispatcherUnhandledException += (sender, args) =>
             {
                 WriteErrorLog(args.Exception.Message);
             };
@@ -54,44 +81,45 @@ namespace HY_Main
             };
         }
 
+
+
         protected override async void OnStartup(StartupEventArgs e)
         {
-
-            var MacAddress = MacAddressHelper.GetMacByIpConfig() ?? MacAddressHelper.GetMacByWmi().FirstOrDefault() ?? "unknown";
-            if (string.IsNullOrEmpty(MacAddress))
+            var appURL = AppDomain.CurrentDomain.BaseDirectory + "程序更新.txt";
+            if (File.Exists(appURL))//判断文件是否存在
             {
-                MessageBox.Show("网络连接失败,请您连接网络,稍后重新运行");
-                Current.Shutdown();
-                return;
+                File.Delete(appURL);
             }
-            int curVersion = Convert.ToInt32(GetEdition().Replace(".", ""));
+            var MAC = CommonsCall.GetDeviceId();
+            if (!string.IsNullOrEmpty(MAC))
+            {
+                Loginer.LoginerUser.macAdd = MAC;
+            }
+            else
+            {
+                Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
+            }
+
             ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
             var genrator = await common.GetVersion();
             if (!genrator.code.Equals("000"))
             {
                 MessageBox.Show("网络连接失败,请您连接网络,稍后重新运行");
                 Current.Shutdown();
-                return;     
+                return;
             }
             else
             {
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\");
                 base.OnStartup(e);
-                ////IOC接口注册
+                //IOC接口注册
                 BootStrapper.Initialize();
                 IModelDialog Dialog;
-                var MAC = CommonsCall.GetDeviceId();
-                if (!string.IsNullOrEmpty(MAC))
-                {
-                    Loginer.LoginerUser.macAdd = MAC;
-                }
-                else
-                {
-                    Loginer.LoginerUser.macAdd = CommonsCall.SetDeviceId();
-                }
+
                 var Results = JsonConvert.DeserializeObject<VersionEntity>(genrator.result.ToString());
-                var serverversion =Convert.ToInt32(Results.version.Replace(".", ""));
-                if (curVersion < serverversion)
+                var curVersion = Convert.ToInt32(CommonsCall.ReadVersion(Results.version).Replace(".", ""));
+                var serverversion = Convert.ToInt32(Results.version.Replace(".", ""));
+                if (curVersion != 0 && curVersion < serverversion)
                 {
                     UpdateViewModel view = new UpdateViewModel();
                     Dialog = ServiceProvider.Instance.Get<IModelDialog>("UpdateViewDlg");
@@ -106,9 +134,9 @@ namespace HY_Main
                     view.ReadConfigInfo(); //读写配置参数
                     Dialog.BindViewModel(view);
                     await Dialog.ShowDialog();
-                } 
+                }
             }
- 
+
         }
         /// 获取当前系统的版本号
         /// </summary>
