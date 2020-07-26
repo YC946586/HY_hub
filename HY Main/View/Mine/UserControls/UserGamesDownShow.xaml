@@ -50,7 +50,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Width="2*" Binding="{Binding title}" IsReadOnly="True" Header="游戏名字"/>
                 <DataGridTextColumn Width="1*" Binding="{Binding  GameSize,StringFormat={}{0}G,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Header="游戏总大小"/>
-                <DataGridTextColumn Width="1*" Binding="{Binding SurplusSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Header="已下载"/>
+                <DataGridTextColumn Width="1*" Binding="{Binding SurplusSize,StringFormat={}{0}G,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Header="已下载"/>
                 <DataGridTemplateColumn Width="100" CanUserResize="False" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

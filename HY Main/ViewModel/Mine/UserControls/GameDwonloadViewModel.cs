@@ -311,6 +311,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
 
         //锁
         private readonly object _objLock = new object();
+
         private void Down(string strUrl, long SPosition, FileStream FStream, DwonloadEntity dwonloadEntity)
         {
             //打开网络连接
@@ -326,43 +327,16 @@ namespace HY_Main.ViewModel.Mine.UserControls
                         //读取流 
                         while (readL != 0)
                         {
-
                             fs.Write(mbyte, 0, readL);
-                            readL = read.Read(mbyte, 0, 1024 * 1024);
-                        }
-                    }
-                    HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(strUrl);
-                    if (SPosition > 0)
-                        myRequest.AddRange((int)SPosition);//设置Range值
-                    long totalBytes = myRequest.ContentLength;
-                    myRequest.Timeout = 20000;
-                    //向服务器请求，获得服务器的回应数据流
-                    if (dwonloadEntity.size == dwonloadEntity.SurplusSize)
-                    {
-                        FStream.Close();
-                        return;
-                    }
-                    Stream myStream = myRequest.GetResponse().GetResponseStream();
-                    byte[] btContent = new byte[1024 * 1024];
-                    int intSize = 0;
-                    long totalDownloadedByte = 0;
-                    intSize = myStream.Read(btContent, 0, 1024 * 1024);
-                    while (intSize > 0)
-                    {
-                        totalDownloadedByte = intSize + totalDownloadedByte;
-                        FStream.Write(btContent, 0, intSize);
-                        intSize = myStream.Read(btContent, 0, 1024 * 1024);
-                        lock (_objLock)
-                        {
-                            dwonloadEntity.SurplusSize += intSize;
+                            readL = read.Read(mbyte, 0, 1024 * 1024); 
+                            dwonloadEntity.SurplusSize += readL;
                             Task.Run(() => AddSupSize(dwonloadEntity));
                         }
                     }
-                    FStream.Close();
-                    myStream.Close();
                     GC.Collect();
-
                 }
+
+              
             }
             catch (Exception ex)
             {
@@ -374,8 +348,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
                 if (dwonloadEntity.size == dwonloadEntity.SurplusSize)
                 {
                     FStream.Close();
-
-
                 }
             }
         }
@@ -383,15 +355,25 @@ namespace HY_Main.ViewModel.Mine.UserControls
         {
             try
             {
-                CommonsCall.DownProgress = CommonsCall.ConvertByG(dwonloadEntity.size) + "G / " + CommonsCall.ConvertByG(dwonloadEntity.SurplusSize) + "G";
-                PageCollection.SurplusSize = CommonsCall.ConvertByG((dwonloadEntities.Sum(s => s.SurplusSize)))+"G";
+                PageCollection.SurplusSize = CommonsCall.ConvertByG((dwonloadEntities.Sum(s => s.SurplusSize)));
                 foreach (var item in CommonsCall.UserGames)
                 {
-                    if (PageCollection.gameId.Equals(item.gameId))
+                    if (dwonloadEntity.gameId.Equals(item.id))
                     {
-                        item.SurplusSize = PageCollection.SurplusSize;
+                        item.SurplusSize = CommonsCall.ConvertByG(dwonloadEntity.SurplusSize);
                     }
+                    
+                    //if (PageCollection.gameId.Equals(item.gameId))
+                    //{
+                    //    item.SurplusSize = PageCollection.SurplusSize;
+                    //}
                 }
+
+                //首页下载进度
+                var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
+ 
+                 CommonsCall.DownProgress =  CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize))+ "G / " +   SurplusSizeList+ "G";
+               
             }
             catch (Exception ex)
             {

@@ -121,7 +121,19 @@ namespace HY.Client.Execute.Commons
                 throw;
             }
         }
+        public static string ConvertByG(double fileSize)
+        {
+            try
+            {
+                var dd = fileSize / (1024 * 1024 * 1024);
+                return dd.ToString("F2");
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
         /// <summary>
         /// 判断句子中是否含有中文
         /// </summary>
