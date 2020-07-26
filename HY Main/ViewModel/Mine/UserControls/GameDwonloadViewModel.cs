@@ -379,10 +379,22 @@ namespace HY_Main.ViewModel.Mine.UserControls
             {
                  
             }
+        } /// <summary>
+          /// 获取文件下载速度
+          /// </summary>
+          /// <param name="fileSizeBytpeLength"></param>
+          /// <param name="elapsedMilliseconds"></param>
+          /// <returns></returns>
+        public static double GetDonwloadRate(long fileSizeBytpeLength, long elapsedMilliseconds)
+        {
+            if (fileSizeBytpeLength == 0) return 0;
+            if (elapsedMilliseconds == 0) return 0;
+            double fe = fileSizeBytpeLength / elapsedMilliseconds;
+            return Math.Round(fe * 1000 / 1024d, 2);
         }
         #endregion
 
-     
+
 
     }
     public class MeterInfo
