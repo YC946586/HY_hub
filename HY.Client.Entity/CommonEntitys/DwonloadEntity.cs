@@ -16,6 +16,8 @@ namespace HY.Client.Entity.CommonEntitys
         public int createTime { get; set; }
 
         public long SurplusSize { get; set; }
+        public long lastLength { get; set; }
+        
     }
 
   

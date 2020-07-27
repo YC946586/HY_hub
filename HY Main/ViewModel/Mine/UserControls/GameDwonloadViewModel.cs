@@ -103,133 +103,181 @@ namespace HY_Main.ViewModel.Mine.UserControls
         public List<Task> ParallelTasks { get; set; }
 
         public static List<MeterInfo> takMeter = new List<MeterInfo>();
+
+        public Dictionary<int, long> DicLastDic = new Dictionary<int, long>();
         /// <summary>
         /// 下载文件
         /// </summary>
-        public override async void Query()
+        public override  void Query()
         {
             try
             {
-              
-                //Task.Run(async () =>
-                //{
-                foreach (var item in dwonloadEntities)
-                {
-                    var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
-                    var file = new FileInfo(strFileName);
-                    var progress = new Progress<DownloadProgress>();
-                    DownloadProgress downloadProgress = null;
-                    var obj = new object();
-                    progress.ProgressChanged += (sender, p) =>
-                    {
-                        lock (obj)
-                        {
-                            downloadProgress = p;
-                        }
-                    };
-                    bool finished = false;
-                    long lastLength = 0;
-                    DateTime lastTime = DateTime.Now;
 
-                    _ = Task.Run(async () =>
-                    {
-                        while (!finished)
-                        {
-                            lock (obj)
-                            {
-                                if (downloadProgress == null)
-                                {
-                                    continue;
-                                }
-
-                       
-                                Console.WriteLine($"Download url = {item.url}");
-                                Console.WriteLine($"Output = {strFileName}");
-                                var ss= ($"{downloadProgress.DownloadedLength}/{downloadProgress.FileLength}");
-                                var ee= ( $"Process {downloadProgress.DownloadedLength * 100.0 / downloadProgress.FileLength:0.00}");
-                                var dd= ($"{(downloadProgress.DownloadedLength - lastLength) * 1000.0 / (DateTime.Now - lastTime).TotalMilliseconds / 1024 / 1024:0.00} MB/s");
-                                lastLength = downloadProgress.DownloadedLength;
-                                lastTime = DateTime.Now;
-
-                                foreach (var userGames in CommonsCall.UserGames)
-                                {
-                                    if (downloadProgress.DwonloadModel.gameId.Equals(userGames.gameId))
-                                    {
-                                        userGames.SurplusSize = CommonsCall.ConvertByG(downloadProgress.DownloadedLength);
-                                        userGames.Speed = dd;
-                                    }
-                                }
-                                //首页下载进度
-                                var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
-
-                                CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
-                                //foreach (var downloadSegment in downloadProgress.GetCurrentDownloadSegmentList())
-                                //{
-                                //    Console.WriteLine(downloadSegment);
-                                //}
-                            }
-                            await Task.Delay(500);
-                        }
-                    });
-
-                    var segmentFileDownloader = new SegmentFileDownloader(item, file, progress);
-                    CommonsCall.UserGames.Add(PageCollection);
-                    await segmentFileDownloader.DownloadFile(PageCollection);
-                    finished = true;
-                    Compress(PageCollection.StrupPath, strFileName);
-                    CommonsCall.DeleteDir(strFileName);
-                }
-
-                //ParallelTasks = new List<Task>();
-                //var MeterInfo = new MeterInfo();
-                //CancellationTokenSource tokenSource = new CancellationTokenSource();
-                //CancellationToken token = tokenSource.Token;
-                //ManualResetEvent resetEvent = new ManualResetEvent(true);
-                //MeterInfo.gamesId = PageCollection.gameId;
-                //MeterInfo.manualReset = resetEvent;
-                //takMeter.Add(MeterInfo);
+                CommonsCall.UserGames.Add(PageCollection);
 
                 //foreach (var item in dwonloadEntities)
                 //{
-                //    Task task = new Task( () =>
-                //    {
-                //        while (true)
-                //        {
-                //            if (token.IsCancellationRequested)
-                //            {
-                //                return;
-                //            }
-                //            resetEvent.WaitOne();
-                //            DownloadFile(item);
-                //            GC.Collect();
-                //            var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
-                //            Compress(PageCollection.StrupPath, strFileName);
-                //            CommonsCall.DeleteDir(strFileName);
-                //            return;
-                //        }
 
-                //    }, token);
-                //    task.Start();
-                //    ParallelTasks.Add(task);
+                //    var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
+                //    var file = new FileInfo(strFileName);
+                //    var progress = new Progress<DownloadProgress>();
+                //    DownloadProgress downloadProgress = null;
+                //    var obj = new object();
+                //    progress.ProgressChanged += (sender, p) =>
+                //    {
+                //        lock (obj)
+                //        {
+                //            downloadProgress = p;
+                //        }
+                //    };
+                //    bool finished = false;
+                //    long lastLength = 0;
+                //    DateTime lastTime = DateTime.Now;
+
+                //    _ = Task.Run(async () =>
+                //    {
+                //        while (!finished)
+                //        {
+                //            lock (obj)
+                //            {
+                //                if (downloadProgress == null)
+                //                {
+                //                    continue;
+                //                }
+
+
+                //                Console.WriteLine($"Download url = {item.url}");
+                //                Console.WriteLine($"Output = {strFileName}");
+                //                var ss = ($"{downloadProgress.DownloadedLength}/{downloadProgress.FileLength}");
+                //                var ee = ($"Process {downloadProgress.DownloadedLength * 100.0 / downloadProgress.FileLength:0.00}");
+                //                var dd = ($"{(downloadProgress.DownloadedLength - lastLength) * 1000.0 / (DateTime.Now - lastTime).TotalMilliseconds / 1024 / 1024:0.00} MB/s");
+                //                lastLength = downloadProgress.DownloadedLength;
+                //                lastTime = DateTime.Now;
+
+                //                foreach (var userGames in CommonsCall.UserGames)
+                //                {
+                //                    if (downloadProgress.DwonloadModel.gameId.Equals(userGames.gameId))
+                //                    {
+                //                        userGames.SurplusSize = CommonsCall.ConvertByG(downloadProgress.DownloadedLength);
+                //                        userGames.Speed = dd;
+                //                    }
+                //                }
+                //                //首页下载进度
+                //                var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
+
+                //                CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
+                //                //foreach (var downloadSegment in downloadProgress.GetCurrentDownloadSegmentList())
+                //                //{
+                //                //    Console.WriteLine(downloadSegment);
+                //                //}
+                //            }
+                //            await Task.Delay(500);
+                //        }
+                //    });
+
+                //    var segmentFileDownloader = new SegmentFileDownloader(item, file, progress);
+
+
+                //    await segmentFileDownloader.DownloadFile();
+                //    finished = true;
+                //    Compress(PageCollection.StrupPath, strFileName);
+                //    CommonsCall.DeleteDir(strFileName);
+
                 //}
-                //Task.WaitAll(ParallelTasks.ToArray());
-                //resetEvent.Close();
-                //GC.Collect();
-                ////strFileName
-                //System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                //{
-                //    CommonsCall.UserGames.Remove(PageCollection);
-                //}));
-                //var pathName = dwonloadEntities.First().name;
-                //pathName = pathName.Substring(0, pathName.Length - 4);
-                //var path = PageCollection.StrupPath +"\\" + pathName;
-                //if (PageCollection.IsSelected)
-                //{
-                //    CreateShortcut(PageCollection.title+".lnk", path, PageCollection.title);
-                //}
-                //stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
-                //CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
-                //});
+                var obj = new object();
+                ParallelTasks = new List<Task>();
+                var MeterInfo = new MeterInfo();
+                CancellationTokenSource tokenSource = new CancellationTokenSource();
+                CancellationToken token = tokenSource.Token;
+                ManualResetEvent resetEvent = new ManualResetEvent(true);
+                MeterInfo.gamesId = PageCollection.gameId;
+                MeterInfo.manualReset = resetEvent;
+                takMeter.Add(MeterInfo);
+
+                Task.Run(() =>
+                {
+                    foreach (var item in dwonloadEntities)
+                    {
+                        Task task = new Task(() =>
+                        {
+                            while (true)
+                            {
+                                if (token.IsCancellationRequested)
+                                {
+                                    return;
+                                }
+                                var progress = new Progress<DownloadProgress>();
+                                resetEvent.WaitOne();
+                             
+                                DateTime lastTime = DateTime.Now;
+                               
+                                progress.ProgressChanged += (sender, p) =>
+                                {
+                                    lock (obj)
+                                    {
+                                        var proModel = p.DwonloadModel;
+                                        long lastLength = 0;
+                                        if (DicLastDic.ContainsKey(proModel.gameId))
+                                        {
+                                            lastLength = DicLastDic[proModel.gameId];
+                                        }
+                                    
+                                
+                                        lastTime = DateTime.Now;
+                                        var sumLoads = dwonloadEntities.Sum(s => s.SurplusSize);
+                                        PageCollection.SurplusSize = CommonsCall.ConvertByG(sumLoads);
+                                        foreach (var temo in CommonsCall.UserGames)
+                                        {
+                                            if (PageCollection.gameId.Equals(temo.gameId))
+                                            {
+                                                temo.SurplusSize = PageCollection.SurplusSize;
+                                            }
+                                            if (proModel.gameId.Equals(temo.gameId))
+                                            {
+                                                var dd = ($"{(sumLoads - lastLength) * 1000.0 / (DateTime.Now - lastTime).TotalMilliseconds / 1024 / 1024:0.00} MB/s");
+                                                temo.Speed = dd;
+                                                DicLastDic[proModel.gameId] = sumLoads;
+                                            }
+                                        }
+
+                                        //首页下载进度
+                                        var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
+                                        CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
+                                        Thread.Sleep(1500);
+                                    }
+                                };
+                                DownloadFile(item, progress);
+                                GC.Collect();
+                                var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
+                                Compress(PageCollection.StrupPath, strFileName);
+                                CommonsCall.DeleteDir(strFileName);
+                                return;
+                            }
+
+                        }, token);
+                        task.Start();
+                        ParallelTasks.Add(task);
+                    }
+                    Task.WaitAll(ParallelTasks.ToArray());
+                    resetEvent.Close();
+                    GC.Collect();
+                    //strFileName
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        CommonsCall.UserGames.Remove(PageCollection);
+                    }));
+                    var pathName = dwonloadEntities.First().name;
+                    pathName = pathName.Substring(0, pathName.Length - 4);
+                    var path = PageCollection.StrupPath + "\\" + pathName;
+                    if (PageCollection.IsSelected)
+                    {
+                        CreateShortcut(PageCollection.title + ".lnk", path, PageCollection.title);
+                    }
+                    stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
+                    CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
+                });
+              
+
 
 
             }
@@ -241,21 +289,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
             {
                 ShowList?.Invoke();
             }
-
-
-            //IStore store = BridgeFactory.BridgeManager.GetStoreManager();
-            //var genrator = await store.GetGameFiles(PageCollection.id);
-            //if (!genrator.code.Equals("000"))
-            //{
-            //    HY.Client.Execute.Commons.Msg.Info(genrator.Msg);
-            //}
-            //else
-            //{
-            //    var Results = JsonConvert.DeserializeObject<List<string>>(genrator.result.ToString());
-            //    var gramPath = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + PageCollection.fileDir+"\\";
-
-            //}
-
         }
 
         public static void ResetTask(int gamesId, string content)
@@ -275,8 +308,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
 
                 }
             }
-
-
         }
 
         #region  解压
@@ -349,14 +380,15 @@ namespace HY_Main.ViewModel.Mine.UserControls
         #endregion
 
         #region  下载
-
+        private  IProgress<DownloadProgress> _progress;
         /// <summary>
         /// 以断点续传方式下载文件
         /// </summary>
         /// <param name="strFileName">下载文件的保存路径</param>
         /// <param name="strUrl">文件下载地址</param>
-        public void DownloadFile(DwonloadEntity dwonloadEntity)
+        public void DownloadFile(DwonloadEntity dwonloadEntity, IProgress<DownloadProgress> progress)
         {
+            _progress = progress ?? throw new ArgumentNullException(nameof(progress));
             string strUrl = dwonloadEntity.url;
             var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + dwonloadEntity.name;
             //打开上次下载的文件或新建文件
@@ -388,17 +420,19 @@ namespace HY_Main.ViewModel.Mine.UserControls
                 WebClient webClient = new WebClient();
                 using (Stream read = webClient.OpenRead(strUrl))
                 {
-                    byte[] mbyte = new byte[1024 * 1024];
-                    int readL = read.Read(mbyte, 0, 1024 * 1024);
+                    byte[] mbyte = new byte[1024 * 2];
+                    int readL = read.Read(mbyte, 0, 1024 * 2);
                     using (Stream fs = FStream)
                     {
                         //读取流 
                         while (readL != 0)
                         {
                             fs.Write(mbyte, 0, readL);
-                            readL = read.Read(mbyte, 0, 1024 * 1024);
+                            readL = read.Read(mbyte, 0, 1024 * 2);
+                            //dwonloadEntity.lastLength = dwonloadEntity.SurplusSize;
                             dwonloadEntity.SurplusSize += readL;
-                            Task.Run(() => AddSupSize(dwonloadEntity));
+                            _progress.Report(new DownloadProgress(dwonloadEntity));
+                            //Task.Run(() => AddSupSize(dwonloadEntity));
                         }
                     }
                     GC.Collect();
@@ -430,11 +464,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
                     {
                         item.SurplusSize = CommonsCall.ConvertByG(dwonloadEntity.SurplusSize);
                     }
-
-                    //if (PageCollection.gameId.Equals(item.gameId))
-                    //{
-                    //    item.SurplusSize = PageCollection.SurplusSize;
-                    //}
                 }
 
                 //首页下载进度
@@ -448,18 +477,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
 
             }
         } /// <summary>
-          /// 获取文件下载速度
-          /// </summary>
-          /// <param name="fileSizeBytpeLength"></param>
-          /// <param name="elapsedMilliseconds"></param>
-          /// <returns></returns>
-        public static double GetDonwloadRate(long fileSizeBytpeLength, long elapsedMilliseconds)
-        {
-            if (fileSizeBytpeLength == 0) return 0;
-            if (elapsedMilliseconds == 0) return 0;
-            double fe = fileSizeBytpeLength / elapsedMilliseconds;
-            return Math.Round(fe * 1000 / 1024d, 2);
-        }
+     
         #endregion
 
 

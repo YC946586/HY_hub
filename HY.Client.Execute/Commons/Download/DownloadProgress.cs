@@ -14,6 +14,10 @@ namespace HY.Client.Execute.Commons.Download
             SegmentManager = segmentManager;
             DwonloadModel = dwonload;
         }
+        public DownloadProgress( DwonloadEntity dwonload)
+        {
+            DwonloadModel = dwonload;
+        }
 
         public DownloadProgress(string message, SegmentManager segmentManager)
         {

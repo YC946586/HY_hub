@@ -241,7 +241,7 @@ namespace HY_Main.ViewModel.Mine
                     return;
                 }
                 GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
-                viewModel.PageCollection = gamesEntity;
+                viewModel.PageCollection =CommonsCall.CopyOjbect(gamesEntity);
                 viewModel.dwonloadEntities = Results;
                 viewModel.InitAsyncViewModel();
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");

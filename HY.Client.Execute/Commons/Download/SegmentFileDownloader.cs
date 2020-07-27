@@ -38,7 +38,7 @@ namespace HY.Client.Execute.Commons.Download
         /// 开始下载文件
         /// </summary>
         /// <returns></returns>
-        public async Task DownloadFile(UserGamesEntity PageCollection)
+        public async Task DownloadFile()
         {
           
             var (response, contentLength) = await GetContentLength();
@@ -64,7 +64,7 @@ namespace HY.Client.Execute.Commons.Download
             if (supportSegment)
             {
                 // 多创建几个线程下载
-                threadCount = 50;
+                threadCount = 10;
 
                 for (var i = 0; i < threadCount; i++)
                 {
