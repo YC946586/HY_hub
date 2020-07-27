@@ -126,6 +126,9 @@
     <Compile Include="Common\UserControls\EditPwd.xaml.cs">
       <DependentUpon>EditPwd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\UserControls\GrameTool.xaml.cs">
+      <DependentUpon>GrameTool.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\UserControls\MainHanderMenu.xaml.cs">
       <DependentUpon>MainHanderMenu.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,7 @@
     <Compile Include="ViewDialog\Mine\UserGamesDownShow.cs" />
     <Compile Include="ViewDialog\Mine\MineView.cs" />
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
+    <Compile Include="ViewDialog\Step\GrameToolDlg.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
     <Compile Include="ViewDialog\Sign\UpdateViewDlg.cs" />
     <Compile Include="ViewDialog\Step\EditPwdDlg.cs" />
@@ -166,6 +170,7 @@
     <Compile Include="ViewModel\Sign\UpdateViewModel.cs" />
     <Compile Include="ViewModel\Step\CouponViewModel.cs" />
     <Compile Include="ViewModel\Step\EditPwdViewModel.cs" />
+    <Compile Include="ViewModel\Step\GrameToolViewModel.cs" />
     <Compile Include="ViewModel\Step\MsgBoxViewModel.cs" />
     <Compile Include="ViewModel\Step\NoticeViewModel.cs" />
     <Compile Include="View\HomePage\HomePageView.xaml.cs">
@@ -203,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\UserControls\EditPwd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\GrameTool.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -51,7 +51,7 @@ namespace HY.Client.Entity.UserEntitys
         }
         public string GameSize { get; set; }
 
-        private string _SurplusSize = string.Empty;
+     
 
         private string _content = "暂停";
 
@@ -67,7 +67,7 @@ namespace HY.Client.Entity.UserEntitys
                 RaisePropertyChanged();
             }
         }
-     
+        private string _SurplusSize = string.Empty;
         /// <summary>
         ///  已经下载
         /// </summary>
@@ -80,7 +80,19 @@ namespace HY.Client.Entity.UserEntitys
                 RaisePropertyChanged();
             }
         }
-        
+        private string _Speed = string.Empty;
+        /// <summary>
+        ///  下载速度
+        /// </summary>
+        public string Speed
+        {
+            get { return _Speed; }
+            set
+            {
+                _Speed = value;
+                RaisePropertyChanged();
+            }
+        }
         public string gameName { get; set; }
 
     }
