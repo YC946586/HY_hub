@@ -42,14 +42,14 @@ namespace HY_Main.ViewDialog
                 {
                     if (await Msg.Question("当前有正在下载/安装的游戏,是否继续退出"))
                     {
-                        this.Close();
+                        Application.Current.Shutdown();
                     }
                 }
                 else
                 {
                     if (await Msg.Question("是否退出黑鹰Hub"))
                     {
-                        this.Close();
+                        Application.Current.Shutdown();
                     }
                 }
             }));
