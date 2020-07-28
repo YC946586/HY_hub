@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HY_Main.Common.UserControls"
+                xmlns:com="clr-namespace:HY.Client.Execute.Commons;assembly=HY.Client.Execute"
                xmlns:hc="https://handyorg.github.io/handycontrol" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Margin="10 0" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -23,6 +24,39 @@
                 hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"  
                 Command="hc:ControlCommands.Close"/>
         </Grid>
- 
+        <TextBlock Margin="10 0" Text="安装游戏必备运行库，可解决99%游戏无法进入的问题" Grid.Row="1" FontWeight="Black" VerticalAlignment="Center" FontSize="18"/>
+
+        <ItemsControl Grid.Row="2"  Margin="20" ItemsSource="{Binding Path=(com:CommonsCall.GamesToolEntities),UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" Rows="1"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="15  15 15 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="{Binding pict}" Stretch="Fill"/>
+                        <Grid Background="White" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical" Margin="10 10 0 10">
+                                <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666"/>
+                                <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>
+                            </StackPanel>
+                            <Button Content="获取"   Command="{Binding DataContext.EditCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding }"        Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
+                                     />
+                        </Grid>
+                      
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

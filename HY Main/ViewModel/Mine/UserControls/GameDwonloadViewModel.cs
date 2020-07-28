@@ -19,6 +19,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace HY_Main.ViewModel.Mine.UserControls
@@ -65,8 +66,6 @@ namespace HY_Main.ViewModel.Mine.UserControls
             }
             PageCollection.IsSelected = false;
             PageCollection.GameSize = CommonsCall.ConvertByG(PageCollection.fileSize);
-
-
         }
         /// <summary>
         /// 选择安装路径
@@ -105,181 +104,87 @@ namespace HY_Main.ViewModel.Mine.UserControls
         public static List<MeterInfo> takMeter = new List<MeterInfo>();
 
         public Dictionary<int, long> DicLastDic = new Dictionary<int, long>();
+
+        private System.Timers.Timer aTimer;
+        private int threadCount = 0;
+
+        private Thread thread;
+        private AutoResetEvent autoViewEvent;
         /// <summary>
         /// 下载文件
         /// </summary>
-        public override  void Query()
+        public override void Query()
         {
             try
             {
-
-                CommonsCall.UserGames.Add(PageCollection);
-
-                //foreach (var item in dwonloadEntities)
-                //{
-
-                //    var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
-                //    var file = new FileInfo(strFileName);
-                //    var progress = new Progress<DownloadProgress>();
-                //    DownloadProgress downloadProgress = null;
-                //    var obj = new object();
-                //    progress.ProgressChanged += (sender, p) =>
-                //    {
-                //        lock (obj)
-                //        {
-                //            downloadProgress = p;
-                //        }
-                //    };
-                //    bool finished = false;
-                //    long lastLength = 0;
-                //    DateTime lastTime = DateTime.Now;
-
-                //    _ = Task.Run(async () =>
-                //    {
-                //        while (!finished)
-                //        {
-                //            lock (obj)
-                //            {
-                //                if (downloadProgress == null)
-                //                {
-                //                    continue;
-                //                }
+                //计时器  
+                System.Windows.Forms.Timer tm = new System.Windows.Forms.Timer();
+                tm.Interval = 1;
+                tm.Tick += new EventHandler(tm_Tick);
+                autoViewEvent = new AutoResetEvent(false);
+                MeterInfo meterInfo = new MeterInfo() { gamesId = PageCollection.gameId, manualReset = tm };
+                takMeter.Add(meterInfo);
+                tm.Start();
 
 
-                //                Console.WriteLine($"Download url = {item.url}");
-                //                Console.WriteLine($"Output = {strFileName}");
-                //                var ss = ($"{downloadProgress.DownloadedLength}/{downloadProgress.FileLength}");
-                //                var ee = ($"Process {downloadProgress.DownloadedLength * 100.0 / downloadProgress.FileLength:0.00}");
-                //                var dd = ($"{(downloadProgress.DownloadedLength - lastLength) * 1000.0 / (DateTime.Now - lastTime).TotalMilliseconds / 1024 / 1024:0.00} MB/s");
-                //                lastLength = downloadProgress.DownloadedLength;
-                //                lastTime = DateTime.Now;
-
-                //                foreach (var userGames in CommonsCall.UserGames)
-                //                {
-                //                    if (downloadProgress.DwonloadModel.gameId.Equals(userGames.gameId))
-                //                    {
-                //                        userGames.SurplusSize = CommonsCall.ConvertByG(downloadProgress.DownloadedLength);
-                //                        userGames.Speed = dd;
-                //                    }
-                //                }
-                //                //首页下载进度
-                //                var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
-
-                //                CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
-                //                //foreach (var downloadSegment in downloadProgress.GetCurrentDownloadSegmentList())
-                //                //{
-                //                //    Console.WriteLine(downloadSegment);
-                //                //}
-                //            }
-                //            await Task.Delay(500);
-                //        }
-                //    });
-
-                //    var segmentFileDownloader = new SegmentFileDownloader(item, file, progress);
-
-
-                //    await segmentFileDownloader.DownloadFile();
-                //    finished = true;
-                //    Compress(PageCollection.StrupPath, strFileName);
-                //    CommonsCall.DeleteDir(strFileName);
-
-                //}
-                var obj = new object();
-                ParallelTasks = new List<Task>();
-                var MeterInfo = new MeterInfo();
-                CancellationTokenSource tokenSource = new CancellationTokenSource();
-                CancellationToken token = tokenSource.Token;
-                ManualResetEvent resetEvent = new ManualResetEvent(true);
-                MeterInfo.gamesId = PageCollection.gameId;
-                MeterInfo.manualReset = resetEvent;
-                takMeter.Add(MeterInfo);
-
-                Task.Run(() =>
+                #region  下载方法
+                List<dynamic> dynamics = new List<dynamic>();
+                dwonloadEntities.ForEach((ary) =>
                 {
-                    foreach (var item in dwonloadEntities)
+                    ary.downStuep = PageCollection.StrupPath;
+                    dynamics.Add(ary);
+                });
+                PageCollection.dwonloadAllEntities = dynamics;
+                CommonsCall.UserGames.Add(PageCollection);
+                thread = new Thread(() =>
+                {
+                    autoViewEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
+                    threadCount = 0;
+                    dwonloadEntities.ForEach(d =>
                     {
-                        Task task = new Task(() =>
+                        autoViewEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
+                        d.Down_tm = new System.Windows.Forms.Timer();
+                        d.Down_tm.Interval = 1;
+                        d.autoEvent.Set(); //通知阻塞的线程继续执行  
+                        d.Down_tm.Tick += new EventHandler(d.tm_Tick);
+                        d.Down_tm.Start();
+                        threadCount++;
+
+                        d.td = new Thread(() =>
                         {
-                            while (true)
-                            {
-                                if (token.IsCancellationRequested)
-                                {
-                                    return;
-                                }
-                                var progress = new Progress<DownloadProgress>();
-                                resetEvent.WaitOne();
-                             
-                                DateTime lastTime = DateTime.Now;
-                               
-                                progress.ProgressChanged += (sender, p) =>
-                                {
-                                    lock (obj)
-                                    {
-                                        var proModel = p.DwonloadModel;
-                                        long lastLength = 0;
-                                        if (DicLastDic.ContainsKey(proModel.gameId))
-                                        {
-                                            lastLength = DicLastDic[proModel.gameId];
-                                        }
-                                    
-                                
-                                        lastTime = DateTime.Now;
-                                        var sumLoads = dwonloadEntities.Sum(s => s.SurplusSize);
-                                        PageCollection.SurplusSize = CommonsCall.ConvertByG(sumLoads);
-                                        foreach (var temo in CommonsCall.UserGames)
-                                        {
-                                            if (PageCollection.gameId.Equals(temo.gameId))
-                                            {
-                                                temo.SurplusSize = PageCollection.SurplusSize;
-                                            }
-                                            if (proModel.gameId.Equals(temo.gameId))
-                                            {
-                                                var dd = ($"{(sumLoads - lastLength) * 1000.0 / (DateTime.Now - lastTime).TotalMilliseconds / 1024 / 1024:0.00} MB/s");
-                                                temo.Speed = dd;
-                                                DicLastDic[proModel.gameId] = sumLoads;
-                                            }
-                                        }
-
-                                        //首页下载进度
-                                        var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
-                                        CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
-                                        Thread.Sleep(1500);
-                                    }
-                                };
-                                DownloadFile(item, progress);
-                                GC.Collect();
-                                var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + item.name;
-                                Compress(PageCollection.StrupPath, strFileName);
-                                CommonsCall.DeleteDir(strFileName);
-                                return;
-                            }
-
-                        }, token);
-                        task.Start();
-                        ParallelTasks.Add(task);
-                    }
-                    Task.WaitAll(ParallelTasks.ToArray());
-                    resetEvent.Close();
+                            d.DownFile(d.url, threadCount);
+                        });
+                        d.td.IsBackground = false;
+                        d.td.Start();
+                        while (threadCount > 0)
+                        {
+                            Thread.Sleep(2);
+                        }
+                        GC.Collect();
+                    });
                     GC.Collect();
-                    //strFileName
+                    //創建快捷方式
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
                         CommonsCall.UserGames.Remove(PageCollection);
                     }));
-                    var pathName = dwonloadEntities.First().name;
-                    pathName = pathName.Substring(0, pathName.Length - 4);
-                    var path = PageCollection.StrupPath + "\\" + pathName;
+                    var path = PageCollection.StrupPath + "\\" + PageCollection.cateName;
                     if (PageCollection.IsSelected)
                     {
-                        CreateShortcut(PageCollection.title + ".lnk", path, PageCollection.title);
+                        //CreateShortcut(PageCollection.title + ".lnk", path, PageCollection.title);
                     }
-                    stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
-                    CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
+                    //    stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
+                    //    CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
                 });
-              
+                thread.IsBackground = false;
+                thread.Start();
 
-
-
+                aTimer = new System.Timers.Timer();
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                aTimer.Interval = 2000;
+                aTimer.Enabled = true;
+                aTimer.Start();
+                #endregion
             }
             catch (Exception ex)
             {
@@ -291,197 +196,359 @@ namespace HY_Main.ViewModel.Mine.UserControls
             }
         }
 
-        public static void ResetTask(int gamesId, string content)
+        private void tm_Tick(object sender, EventArgs e)
         {
-            foreach (var item in takMeter)
+            try
             {
-                if (item.gamesId.Equals(gamesId))
+                autoViewEvent.Set(); //通知阻塞的线程继续执行  
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private string DownPath { get; set; } = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\";
+        /// <summary>
+        /// 检查速度和进度还有剩余时间
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            try
+            {
+                autoViewEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
+                //总大小
+                long allSize = 0;
+                //在2秒钟下载了多少次
+                int downCount = 0;
+                //已经下载的字节数
+                long allReadyDownsize = 0;
+                var curGuid = dwonloadEntities.First().gameId;
+                dwonloadEntities.ForEach(d =>
                 {
-                    if (content.Equals("暂停"))
+                    allSize += d.size;
+                    downCount += d.downCount;
+                    string StrFileName = DownPath + d.name; //根据实际情况设置 
+                    if (System.IO.File.Exists(StrFileName))
                     {
-                        item.manualReset.Reset();
+                        allReadyDownsize += new FileInfo(StrFileName).Length;
+                    }
+                    d.downCount = 0;
+                });
+                //每秒下载的字节数
+                long BytesOneSecondDownload = downCount * 512 / 2;
+
+                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    #region 计算速度
+                    double speed = downCount * 512 / 2048;
+                    string Speed = string.Empty;
+                    if (speed > 1024)
+                    {
+                        Speed = (speed / 1024).ToString("0.00") + " MB/S";
                     }
                     else
                     {
-                        item.manualReset.Set();
+                        Speed = speed.ToString() + " KB/S";
                     }
+                    #endregion
+                    //计算已经下载了多少字节
+                    var Progress = ConvertFileSize(allReadyDownsize);
+                    long rt = 0;
+                    if (BytesOneSecondDownload != 0)
+                    {
+                        rt = (allSize - allReadyDownsize) / BytesOneSecondDownload;
+                        //lbRemainingTime.Content = "剩余时间" + rt + "秒";
+                    }
+                    foreach (var temo in CommonsCall.UserGames)
+                    {
+                        if (curGuid.Equals(temo.gameId))
+                        {
+                            temo.downCont = allReadyDownsize;
+                            temo.SurplusSize = Progress;
+                            temo.Speed = Speed;
+                            temo.RemainingTime = rt.ToString();
+                        }
+                    }
+                    var dlastList = ConvertFileSize(CommonsCall.UserGames.Sum(s => s.downCont));
+                    CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + dlastList + "   下载速度为:" + Speed;
+                }));
 
-                }
-            }
-        }
-
-        #region  解压
-        /// <summary>
-        /// 解压Zip
-        /// </summary>
-        /// <param name="DirPath">解压后存放路径</param>
-        /// <param name="ZipPath">Zip的存放路径</param>
-        /// <param name="ZipPWD">解压密码（null代表无密码）</param>
-        /// <returns></returns>
-        public static string Compress(string DirPath, string ZipPath)
-        {
-            FastZip fz = new FastZip();
-            string state = "Fail...";
-            try
-            {
-                fz.ExtractZip(ZipPath, DirPath, null);
-
-                state = "Success !";
+                downCount = 0;
             }
             catch (Exception ex)
             {
-                state += "," + ex.Message;
+
             }
-            return state;
+        }  /// <summary>
+           /// 将文件大小(字节)转换为最适合的显示方式
+           /// </summary>
+           /// <param name="size"></param>
+           /// <returns></returns>
+        private string ConvertFileSize(long size)
+        {
+            string result = "0KB";
+            int filelength = size.ToString().Length;
+            if (filelength < 4)
+                result = size + "byte";
+            else if (filelength < 7)
+                result = Math.Round(Convert.ToDouble(size / 1024d), 2) + "KB";
+            else if (filelength < 10)
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024), 2) + "MB";
+            else if (filelength < 13)
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024), 2) + "GB";
+            else
+                result = Math.Round(Convert.ToDouble(size / 1024d / 1024 / 1024 / 1024), 2) + "TB";
+            return result;
         }
 
-        /// <summary>
-        /// 创建快捷方式
-        /// </summary>
-        /// <param name="shortcutPath"></param>
-        /// <param name="path">快捷方式的保存路径</param>
-        public void CreateShortcut(string shortcutPath, string path, string fileName)
+
+        public void ResetTask(string content, UserGamesEntity userGames)
         {
-            try
+            foreach (var item in takMeter)
             {
-                RegistryKey hkeyCurrentUser =
-                Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders");
-                if (hkeyCurrentUser != null)
+                if (item.gamesId.Equals(userGames.gameId))
                 {
-                    string desktopPath = hkeyCurrentUser.GetValue("Desktop").ToString(); //获取桌面文件夹路径
-                                                                                         //实例化WshShell对象 
-                    WshShell shell = new WshShell();
+                    switch (content)
+                    {
+                        case "暂停":
+                            {
+                                item.manualReset.Stop();
+                                userGames.dwonloadAllEntities.ForEach((d) =>
+                                {
+                                    d.StopDown();
+                                });
+                                Thread.Sleep(1000);
 
-                    //通过该对象的 CreateShortcut 方法来创建 IWshShortcut 接口的实例对象 
-                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(desktopPath + @"\" + shortcutPath);
+                                break;
+                            }
+                        case "继续":
+                            {
+                                item.manualReset.Start();
+                                userGames.dwonloadAllEntities.ForEach((d) =>
+                                {
+                                    d.StartDown();
+                                });
+                                Thread.Sleep(1000);
 
-                    //设置快捷方式的目标所在的位置(源程序完整路径) 
-                    var dd = path + @"\" + PageCollection.startFileName;
-                    shortcut.TargetPath = dd;
-                    shortcut.WindowStyle = 1;//设置运行方式，默认为常规窗口
-                    shortcut.Description = "洋葱";//设置备注
-                                                //快捷方式的描述 
-                    shortcut.Description = PageCollection.title;
-                    shortcut.IconLocation = path + @"\" + "Icon.ico";  //快捷方式图标
 
-                    //保存快捷方式 
-                    shortcut.Save();
-
-                    Process.Start(path + @"\" + PageCollection.startFileName);
+                                break;
+                            }
+                        case "取消":
+                            {
+                                item.manualReset.Stop();
+                                userGames.dwonloadAllEntities.ForEach((d) =>
+                                {
+                                    d.CloseDown();
+                                });
+                                Thread.Sleep(1000);
+                                var curRemove = CommonsCall.UserGames.Where(s => s.gameId.Equals(userGames.gameId));
+                                if (curRemove.Any())
+                                {
+                                    CommonsCall.UserGames.Remove(curRemove.First());
+                                }
+                                break;
+                            }
+                        default:
+                            break;
+                    }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
+    }
+
+    public class DwonloadEntity
+    {
+
+        public int id { get; set; }
+        public int gameId { get; set; }
+        public string url { get; set; }
+        public string name { get; set; }
+        public long size { get; set; }
+        public int createTime { get; set; }
+        public long SurplusSize { get; set; }
+        public long lastLength { get; set; }
+        /// <summary>
+        /// 安裝地址
+        /// </summary>
+        public string downStuep { get; set; } = string.Empty;
+        #region 下载文件相关
+        /// <summary>
+        /// 字节下载次数计数
+        /// </summary>
+        public int downCount = 0;
+
+        /// <summary>
+        /// 已经下载的字节数
+        /// </summary>
+        public long allReadyDownSize = 0;
+
+        /// <summary>
+        /// 文件下载文件流
+        /// </summary>
+        public System.IO.FileStream fs { get; set; }
+
+        public System.IO.Stream ns { get; set; }
+
+        /// <summary>
+        /// 文件云端地址
+        /// </summary>
+        public string fileCloudUrl { get; set; }
+
+        /// <summary>
+        /// 文件下载到本地地址
+        /// </summary>
+        public string fileLocalPath { get; set; }
+
+        /// <summary>
+        /// 文件下载线程
+        /// </summary>
+        public Thread td { get; set; }
+
+        private string DownPath { get; set; } = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\";
+        #endregion
+
+        #region  线程管理
+        //计时器  
+        public System.Windows.Forms.Timer Down_tm = new System.Windows.Forms.Timer();
+
+        public AutoResetEvent autoEvent = new AutoResetEvent(false);
+
 
         #endregion
 
-        #region  下载
-        private  IProgress<DownloadProgress> _progress;
         /// <summary>
-        /// 以断点续传方式下载文件
+        /// 下载文件
         /// </summary>
-        /// <param name="strFileName">下载文件的保存路径</param>
-        /// <param name="strUrl">文件下载地址</param>
-        public void DownloadFile(DwonloadEntity dwonloadEntity, IProgress<DownloadProgress> progress)
+        /// <param name="localFilePath"></param>
+        /// <param name="url"></param>
+        public void DownFile(string url, int threadCount)
         {
-            _progress = progress ?? throw new ArgumentNullException(nameof(progress));
-            string strUrl = dwonloadEntity.url;
-            var strFileName = AppDomain.CurrentDomain.BaseDirectory + @"DownloadGeam\" + dwonloadEntity.name;
-            //打开上次下载的文件或新建文件
-            long SPosition = 0;
-            FileStream FStream;
-            if (System.IO.File.Exists(strFileName))
+            autoEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
+            string StrFileName = DownPath + name; //根据实际情况设置 
+            string StrUrl = url; //根据实际情况设置
+            //打开上次下载的文件或新建文件 
+            long lStartPos = 0;
+            if (System.IO.File.Exists(StrFileName))//另外如果文件已经下载完毕，就不需要再断点续传了，不然请求的range 会不合法会抛出异常。
             {
-                FStream = System.IO.File.OpenWrite(strFileName);
-                SPosition = FStream.Length;
-                FStream.Seek(SPosition, SeekOrigin.Current);//移动文件流中的当前指针
-                dwonloadEntity.SurplusSize = SPosition;
+                fs = System.IO.File.OpenWrite(StrFileName);
+                lStartPos = fs.Length;
+                fs.Seek(lStartPos, System.IO.SeekOrigin.Current); //移动文件流中的当前指针 
             }
             else
             {
-                FStream = new FileStream(strFileName, FileMode.Create);
-                SPosition = 0;
+                fs = new FileStream(StrFileName, System.IO.FileMode.Create);
+                lStartPos = 0;
             }
-            Down(strUrl, SPosition, FStream, dwonloadEntity);
-        }
-
-        //锁
-        private readonly object _objLock = new object();
-
-        private void Down(string strUrl, long SPosition, FileStream FStream, DwonloadEntity dwonloadEntity)
-        {
-            //打开网络连接
+            //打开网络连接 
             try
             {
-                WebClient webClient = new WebClient();
-                using (Stream read = webClient.OpenRead(strUrl))
+                System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(StrUrl);
+                if (lStartPos > 0)
                 {
-                    byte[] mbyte = new byte[1024 * 2];
-                    int readL = read.Read(mbyte, 0, 1024 * 2);
-                    using (Stream fs = FStream)
-                    {
-                        //读取流 
-                        while (readL != 0)
-                        {
-                            fs.Write(mbyte, 0, readL);
-                            readL = read.Read(mbyte, 0, 1024 * 2);
-                            //dwonloadEntity.lastLength = dwonloadEntity.SurplusSize;
-                            dwonloadEntity.SurplusSize += readL;
-                            _progress.Report(new DownloadProgress(dwonloadEntity));
-                            //Task.Run(() => AddSupSize(dwonloadEntity));
-                        }
-                    }
-                    GC.Collect();
+                    request.AddRange((int)lStartPos); //设置Range值
                 }
-
-
+                request.Timeout = 20000;
+                System.Net.WebResponse response = request.GetResponse();
+                //向服务器请求，获得服务器回应数据流 
+                ns = response.GetResponseStream();
+                long totalSize = response.ContentLength;
+                long hasDownSize = 0;
+                byte[] nbytes = new byte[512];//521,2048 etc
+                int nReadSize = 0;
+                nReadSize = ns.Read(nbytes, 0, nbytes.Length);
+                while (nReadSize > 0)
+                {
+                    fs.Write(nbytes, 0, nReadSize);
+                    downCount++;
+                    nReadSize = ns.Read(nbytes, 0, 512);
+                    hasDownSize += nReadSize;
+                }
+                CommonsCall.Compress(downStuep, StrFileName);
+                CommonsCall.DeleteDir(StrFileName);
+                fs.Close();
+                ns.Close();
+                response.Dispose();
+                GC.Collect();
+            }
+            catch (ThreadAbortException e)
+            {
+                Thread.Sleep(10000);
+                DownFile(url, threadCount);
             }
             catch (Exception ex)
             {
-                //FStream.Close();
-                Down(strUrl, SPosition, FStream, dwonloadEntity);
+                fs.Close();
+                MessageBox.Show("下载过程中出现错误,请重试！");
             }
             finally
             {
-                if (dwonloadEntity.size == dwonloadEntity.SurplusSize)
-                {
-                    FStream.Close();
-                }
+                threadCount--;
             }
         }
-        private void AddSupSize(DwonloadEntity dwonloadEntity)
+
+        //计时器 事件  
+        public void tm_Tick(object sender, EventArgs e)
         {
-            try
+            autoEvent.Set(); //通知阻塞的线程继续执行  
+        }
+        /// <summary>
+        /// 暂停下载
+        /// </summary>
+        public void StopDown()
+        {
+            Down_tm.Stop();
+            //if (td != null)
+            //{
+            //    td.Abort();
+            //}
+            //if (fs != null)
+            //{
+            //    fs.Close();
+            //}
+            //if (ns != null)
+            //{
+            //    ns.Close();
+            //}
+        }
+        /// <summary>
+        /// 继续下载
+        /// </summary>
+        public void StartDown()
+        {
+            Down_tm.Start();
+            //if (td != null)
+            //{
+            //    td.Start();
+            //}
+        }
+        /// <summary>
+        /// 取消下载
+        /// </summary>
+        public void CloseDown()
+        {
+            if (td != null)
             {
-                PageCollection.SurplusSize = CommonsCall.ConvertByG((dwonloadEntities.Sum(s => s.SurplusSize)));
-                foreach (var item in CommonsCall.UserGames)
-                {
-                    if (dwonloadEntity.gameId.Equals(item.id))
-                    {
-                        item.SurplusSize = CommonsCall.ConvertByG(dwonloadEntity.SurplusSize);
-                    }
-                }
-
-                //首页下载进度
-                var SurplusSizeList = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.SurplusSize));
-
-                CommonsCall.DownProgress = CommonsCall.UserGames.Sum(s => Convert.ToDouble(s.GameSize)) + "G / " + SurplusSizeList + "G";
-
+                td.Abort();
             }
-            catch (Exception ex)
+            if (fs != null)
             {
-
+                fs.Close();
             }
-        } /// <summary>
-     
-        #endregion
+            if (ns != null)
+            {
+                ns.Close();
+            }
+            Down_tm = new System.Windows.Forms.Timer();
+            autoEvent = new AutoResetEvent(false);
+            string StrFileName = DownPath + name; //根据实际情况设置 
+            CommonsCall.DeleteDir(StrFileName);
 
-
-
+        }
     }
     public class MeterInfo
     {
@@ -489,7 +556,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
         {
 
         }
-        public ManualResetEvent manualReset { get; set; }
+        public System.Windows.Forms.Timer manualReset { get; set; }
         public int gamesId { get; set; }
 
     }

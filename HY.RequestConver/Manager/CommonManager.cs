@@ -70,5 +70,19 @@ namespace HY.RequestConver.Manager
                 throw;
             }
         }
+
+        public Task<ServiceResponse> GetTools()
+        {
+            try
+            {
+                var genrator = Task.Run(() => Network.ApiGet("common", "getTools"));
+                return genrator;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

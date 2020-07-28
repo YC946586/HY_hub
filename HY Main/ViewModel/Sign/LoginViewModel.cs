@@ -319,6 +319,7 @@ namespace HY_Main.ViewModel.Sign
                     Msg.Info("请输入用户名和密码");
                     return;
                 }
+              
                 SaveLoginInfo(phone, pwd);
                 MainViewModel model = new MainViewModel();
                 model.InitDefaultView();

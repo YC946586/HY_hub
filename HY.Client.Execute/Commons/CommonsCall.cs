@@ -1,7 +1,10 @@
 ﻿using HandyControl.Controls;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Entity.HomeEntitys;
 using HY.Client.Entity.ToolEntitys;
 using HY.Client.Entity.UserEntitys;
+using ICSharpCode.SharpZipLib.Zip;
+using IWshRuntimeLibrary;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -137,8 +140,8 @@ namespace HY.Client.Execute.Commons
             return random;
 
         }
-        
-         public static void BuyGame(string result)
+
+        public static void BuyGame(string result)
         {
             var Results = JsonConvert.DeserializeObject<UserBuyGameEntity>(result);
             Loginer.LoginerUser.balance = Results.balance;
@@ -226,6 +229,75 @@ namespace HY.Client.Execute.Commons
             return false;
 
         }
+
+        #region  解压
+        /// <summary>
+        /// 解压Zip
+        /// </summary>
+        /// <param name="DirPath">解压后存放路径</param>
+        /// <param name="ZipPath">Zip的存放路径</param>
+        /// <param name="ZipPWD">解压密码（null代表无密码）</param>
+        /// <returns></returns>
+        public static string Compress(string DirPath, string ZipPath)
+        {
+            FastZip fz = new FastZip();
+            string state = "Fail...";
+            try
+            {
+                fz.ExtractZip(ZipPath, DirPath, null);
+
+                state = "Success !";
+            }
+            catch (Exception ex)
+            {
+                state += "," + ex.Message;
+            }
+            return state;
+        }
+
+        /// <summary>
+        /// 创建快捷方式
+        /// </summary>
+        /// <param name="shortcutPath"></param>
+        /// <param name="path">快捷方式的保存路径</param>
+        public static void CreateShortcut(string shortcutPath, string path, string fileName)
+        {
+            try
+            {
+                RegistryKey hkeyCurrentUser =
+                Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders");
+                //if (hkeyCurrentUser != null)
+                //{
+                //    string desktopPath = hkeyCurrentUser.GetValue("Desktop").ToString(); //获取桌面文件夹路径
+                //                                                                         //实例化WshShell对象 
+                //    WshShell shell = new WshShell();
+
+                //    //通过该对象的 CreateShortcut 方法来创建 IWshShortcut 接口的实例对象 
+                //    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(desktopPath + @"\" + shortcutPath);
+
+                //    //设置快捷方式的目标所在的位置(源程序完整路径) 
+                //    var dd = path + @"\" + PageCollection.startFileName;
+                //    shortcut.TargetPath = dd;
+                //    shortcut.WindowStyle = 1;//设置运行方式，默认为常规窗口
+                //    shortcut.Description = "洋葱";//设置备注
+                //                                //快捷方式的描述 
+                //    shortcut.Description = PageCollection.title;
+                //    shortcut.IconLocation = path + @"\" + "Icon.ico";  //快捷方式图标
+
+                //    //保存快捷方式 
+                //    shortcut.Save();
+
+                //    Process.Start(path + @"\" + PageCollection.startFileName);
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
         /// <summary>
         /// 删除文件
         /// </summary>
@@ -246,10 +318,10 @@ namespace HY.Client.Execute.Commons
                 {
                     foreach (string f in Directory.GetFileSystemEntries(file))
                     {
-                        if (File.Exists(f))
+                        if (System.IO.File.Exists(f))
                         {
                             //如果有子文件删除文件
-                            File.Delete(f);
+                            System.IO.File.Delete(f);
                             Console.WriteLine(f);
                         }
                         else
@@ -277,7 +349,7 @@ namespace HY.Client.Execute.Commons
         /// </summary>
         /// <param name="gameId"></param>
         /// <param name="route"></param>
-        public static void HyGameInstall(string gameId, string route,string gameName)
+        public static void HyGameInstall(string gameId, string route, string gameName)
         {
             try
             {
@@ -369,7 +441,7 @@ namespace HY.Client.Execute.Commons
                 if (cnctkjptKey != null)
                 {
                     object objDate = cnctkjptKey.GetValue("version");
-                    
+
                     if (objDate != null)
                     {
                         curVersion = objDate.ToString();
@@ -381,7 +453,7 @@ namespace HY.Client.Execute.Commons
                     RecordVersion(version);
                 }
                 cuKey.Close();
-               
+
                 return curVersion;
             }
             catch (Exception ex)
@@ -405,8 +477,8 @@ namespace HY.Client.Execute.Commons
                 {
                     object objDate = cnctkjptKey.GetValue("route");
                     object gameName = cnctkjptKey.GetValue("gameName");
-                    
-                    if (objDate!=null)
+
+                    if (objDate != null)
                     {
                         toolEntity.Key = objDate.ToString();
                         toolEntity.remarks = gameName.ToString();
@@ -414,7 +486,7 @@ namespace HY.Client.Execute.Commons
                     cnctkjptKey.Close();
                 }
                 cuKey.Close();
-          
+
                 return toolEntity;
             }
             catch (Exception ex)
@@ -445,15 +517,15 @@ namespace HY.Client.Execute.Commons
                             object gameName = GameIdKey.GetValue("gameName");
                             if (objDate != null)
                             {
-                                ToolEntity tool = new ToolEntity() {Key= objDate.ToString(), remarks= gameName.ToString(),gamesId=Int32.Parse(valuename) };
+                                ToolEntity tool = new ToolEntity() { Key = objDate.ToString(), remarks = gameName.ToString(), gamesId = Int32.Parse(valuename) };
                                 toolEntity.Add(tool);
                             }
-                        }     
+                        }
                     }
                     cnctkjptKey.Close();
                 }
                 cuKey.Close();
-             
+
                 return toolEntity;
             }
             catch (Exception ex)
@@ -582,7 +654,9 @@ namespace HY.Client.Execute.Commons
         public static string ShowUser
         {
             get { return _showUser; }
-            set { _showUser = value; 
+            set
+            {
+                _showUser = value;
                 if (StaticPropertyChanged != null)
                 {
                     StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("ShowUser"));
@@ -598,12 +672,34 @@ namespace HY.Client.Execute.Commons
             set
             {
                 userGamesEntities = value;
+                if (value.Count==0)
+                {
+                   DownProgress = string.Empty;
+                }
                 if (StaticPropertyChanged != null)
                 {
                     StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("UserGames"));
                 }
             }
         }
+        private static ObservableCollection<ToolsEntity> _gamesToolEntities = new ObservableCollection<ToolsEntity>();
+        /// <summary>
+        /// 游戏工具对象
+        /// </summary>
+        public static ObservableCollection<ToolsEntity> GamesToolEntities
+        {
+            get { return _gamesToolEntities; }
+            set
+            {
+                _gamesToolEntities = value;
+                if (StaticPropertyChanged != null)
+                {
+                    StaticPropertyChanged.Invoke(null, new PropertyChangedEventArgs("GamesToolEntities"));
+                }
+            }
+        }
+
+
         #endregion
 
 

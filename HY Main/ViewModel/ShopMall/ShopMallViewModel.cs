@@ -25,7 +25,7 @@ using System.Windows;
 
 namespace HY_Main.ViewModel.ShopMall
 {
-     public class ShopMallViewModel : BaseOperation<Recommendgame>
+    public class ShopMallViewModel : BaseOperation<Recommendgame>
     {
         public override void InitViewModel()
         {
@@ -36,7 +36,7 @@ namespace HY_Main.ViewModel.ShopMall
 
         #region 属性
 
-       
+
 
         private ToolEntity _SelectCombox;
 
@@ -71,7 +71,7 @@ namespace HY_Main.ViewModel.ShopMall
                     Results.ForEach((ary) => { CatesList.Add(new ToolEntity() { Key = ary.name, Values = ary }); });
                     SelectCombox = CatesList.First();
                 }
-                var gamesGetGames = await store.GetGames(1212121211,"",1,100000);
+                var gamesGetGames = await store.GetGames(1212121211, "", 1, 100000);
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
@@ -92,7 +92,7 @@ namespace HY_Main.ViewModel.ShopMall
                             }
                         }
                     }
-                   
+
                     PageCount = Convert.ToInt32(Math.Ceiling(Results.Count / (double)8));
                     var curShowmodel = Results.Skip(0).Take(8);
                     curShowmodel.OrderBy(s => s.displayOrder).ToList().ForEach((ary) => GridModelList.Add(ary));
@@ -119,13 +119,13 @@ namespace HY_Main.ViewModel.ShopMall
         /// </summary>
         private async void PageUpdated(FunctionEventArgs<int> info)
         {
-            if (PageCount<1)
+            if (PageCount < 1)
             {
                 return;
             }
             try
             {
-                DisplayMetro = Visibility.Visible; 
+                DisplayMetro = Visibility.Visible;
                 GridModelList.Clear();
                 string cateId = string.Empty;
                 if (SelectCombox != null && SelectCombox.Values != null)
@@ -175,8 +175,8 @@ namespace HY_Main.ViewModel.ShopMall
             {
                 DisplayMetro = Visibility.Collapsed;
             }
-           
-           
+
+
         }
 
         public override async void Query()
@@ -186,7 +186,7 @@ namespace HY_Main.ViewModel.ShopMall
                 DisplayMetro = Visibility.Visible;
                 GridModelList = new ObservableCollection<Recommendgame>();
                 string cateId = string.Empty;
-                if (SelectCombox!=null&& SelectCombox.Values!=null)
+                if (SelectCombox != null && SelectCombox.Values != null)
                 {
                     cateId = SelectCombox.Values.id;
                 }
@@ -199,7 +199,7 @@ namespace HY_Main.ViewModel.ShopMall
                 if (gamesGetGames.code.Equals("000"))
                 {
                     var Results = JsonConvert.DeserializeObject<List<Recommendgame>>(gamesGetGames.result.ToString());
-                    if (Results.Count==0)
+                    if (Results.Count == 0)
                     {
                         PageCount = 0;
                         Msg.Info("暂未查询出数据,请您重新查询");
@@ -301,7 +301,7 @@ namespace HY_Main.ViewModel.ShopMall
                     {
                         IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                         var genrator = await store.BuyGame(model.id);
-                        model.Purchased =2;
+                        model.Purchased = 2;
                         Msg.Info(genrator.Message);
                         if (genrator.code.Equals("000"))
                         {

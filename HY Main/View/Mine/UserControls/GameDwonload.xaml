@@ -36,7 +36,7 @@
         </StackPanel>
         <StackPanel  Orientation="Horizontal"   HorizontalAlignment="Center"   Grid.Row="2" >
             <Button Content="取消" Width="80"   Command="hc:ControlCommands.Close" />
-            <Button Content="开始下载" Width="80" Margin="20 0 0 0" Command="{Binding QueryCommand}"  Style="{StaticResource ButtonPrimary}"/>
+            <Button Content="开始下载" Width="80" Margin="20 0 0 0" Command="{Binding QueryCommand}"  Style="{StaticResource ButtonWarning}"/>
 
         </StackPanel>
     </Grid>

@@ -2,13 +2,17 @@
 using GalaSoft.MvvmLight.Messaging;
 using HandyControl.Controls;
 using HY.Application.Base;
+using HY.Client.Entity.CommonEntitys;
 using HY.Client.Execute.Commons;
+using HY.RequestConver.Bridge;
+using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.CoreLib.Modules;
 using HY_Main.Common.Unity;
 using HY_Main.Model.CoreLib;
 using HY_Main.ViewModel.Mine.UserControls;
 using HY_Main.ViewModel.Step;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,9 +90,10 @@ namespace HY_Main.ViewModel
             set { _CurrentPage = value; RaisePropertyChanged(); }
         }
         private RelayCommand<HanderMenuModel> _ExcuteCommand;
-        public RelayCommand updatePwd;
-        public RelayCommand _useCouponCommand;
-        public RelayCommand _downShowCommand;
+        private RelayCommand updatePwd;
+        private RelayCommand _useCouponCommand;
+        private RelayCommand _grameToolCommand;
+        private RelayCommand _downShowCommand;
         /// <summary>
         /// 打开页
         /// </summary>
@@ -131,10 +136,21 @@ namespace HY_Main.ViewModel
             set { _useCouponCommand = value; RaisePropertyChanged(); }
         }
 
+        public RelayCommand GrameToolCommand
+        {
+            get
+            {
+                if (_grameToolCommand == null)
+                {
+                    _grameToolCommand = new RelayCommand(GrameTool);
+                }
+                return _grameToolCommand;
+            }
+            set { _grameToolCommand = value; RaisePropertyChanged(); }
+        }
 
-       
+        
 
-     
 
         #endregion
 
@@ -153,6 +169,17 @@ namespace HY_Main.ViewModel
             ////加载窗体模块
             _ModuleManager = new ModuleManager();
             CurrentPage = await _ModuleManager.LoadModulesAsync();
+
+            ICommon common = BridgeFactory.BridgeManager.GetCommonManager();
+            var genrator = await common.GetTools();
+            if (genrator.code.Equals("000"))
+            {
+                var Results = JsonConvert.DeserializeObject<List<ToolsEntity>>(genrator.result.ToString());
+                if (Results.Count!=0&& Results.First().title!="")
+                {
+                    Results.ForEach((ary) => CommonsCall.GamesToolEntities.Add(ary)); 
+                }
+            }
         }
         /// <summary>
         /// 切换页面
@@ -212,7 +239,27 @@ namespace HY_Main.ViewModel
             }
         }
 
-       
+        private void GrameTool()
+        {
+            try
+            {
+                GrameToolViewModel viewModel = new GrameToolViewModel();
+                var dialog = ServiceProvider.Instance.Get<IModelDialog>("GrameToolDlg");
+                dialog.BindViewModel(viewModel);
+                var d = Dialog.Show(dialog.GetDialog());
+                viewModel.ClostEvent += (async () =>
+                {
+                    d.Close();
+                });
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
+
+
+        
         #endregion
 
     }

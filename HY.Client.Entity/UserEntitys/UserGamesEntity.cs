@@ -93,8 +93,26 @@ namespace HY.Client.Entity.UserEntitys
                 RaisePropertyChanged();
             }
         }
+        private string _RemainingTime = string.Empty;
+        /// <summary>
+        ///  剩余时间
+        /// </summary>
+        public string RemainingTime
+        {
+            get { return _RemainingTime; }
+            set
+            {
+                _RemainingTime = value;
+                RaisePropertyChanged();
+            }
+        }
+        /// <summary>
+        /// 下载了好多
+        /// </summary>
+        public long downCont { get; set; }
         public string gameName { get; set; }
 
+        public List<dynamic> dwonloadAllEntities { get; set; }
     }
 
      

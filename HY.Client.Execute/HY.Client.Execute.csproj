@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-	<LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +46,13 @@
     </Reference>
     <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.2.5.0.2\lib\net45\HandyControl.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.IWshRuntimeLibrary">
+      <HintPath>..\HY Main\obj\Debug\Interop.IWshRuntimeLibrary.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -88,11 +95,7 @@
     <Compile Include="Commons\Configuration.cs" />
     <Compile Include="Commons\DownLoadHelp.cs" />
     <Compile Include="Commons\Download\DownHelp.cs" />
-    <Compile Include="Commons\Download\DownloadProgress.cs" />
-    <Compile Include="Commons\Download\DownloadSegment.cs" />
     <Compile Include="Commons\Download\RandomFileWriter.cs" />
-    <Compile Include="Commons\Download\SegmentFileDownloader.cs" />
-    <Compile Include="Commons\Download\SegmentManager.cs" />
     <Compile Include="Commons\Download\Threading\AsyncQueue.cs" />
     <Compile Include="Commons\ExceptionLibrary.cs" />
     <Compile Include="Commons\Files\IniFile.cs" />

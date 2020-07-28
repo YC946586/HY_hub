@@ -17,16 +17,13 @@ namespace HY_Main.View.Mine.UserControls
     /// <summary>
     /// UserGamesDownShow.xaml 的交互逻辑
     /// </summary>
-    public partial class UserGamesDownShow : Window
+    public partial class UserGamesDownShow : UserControl
     {
         public UserGamesDownShow()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+       
     }
 }

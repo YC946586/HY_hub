@@ -59,7 +59,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
-                            <Button Content="游戏工具"  Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
+                            <Button Content="游戏工具"  Command="{Binding GrameToolCommand}" Style="{StaticResource StyleIconMainHanderButton}"  Tag="&#xe6cb;"/>
                             <Button Content="修改密码"  Command="{Binding UpdatePwdCommand}" Margin="10 0" Style="{StaticResource StyleIconMainHanderButton}" Tag="&#xe6ae;"/>
                             <UserControls:MainNotice/>
                         </StackPanel>

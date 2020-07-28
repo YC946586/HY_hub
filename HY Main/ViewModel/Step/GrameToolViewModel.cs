@@ -8,6 +8,6 @@ namespace HY_Main.ViewModel.Step
 {
    public  class GrameToolViewModel
     {
-
+        public event Action ClostEvent;
     }
 }
