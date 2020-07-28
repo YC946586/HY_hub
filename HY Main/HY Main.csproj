@@ -123,6 +123,9 @@
     <Compile Include="Common\UserControls\Coupon.xaml.cs">
       <DependentUpon>Coupon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\UserControls\DetailsGames.xaml.cs">
+      <DependentUpon>DetailsGames.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\UserControls\EditPwd.xaml.cs">
       <DependentUpon>EditPwd.xaml</DependentUpon>
     </Compile>
@@ -153,6 +156,7 @@
     <Compile Include="ViewDialog\Mine\UserGamesDownShow.cs" />
     <Compile Include="ViewDialog\Mine\MineView.cs" />
     <Compile Include="ViewDialog\ShopMall\ShopMallView.cs" />
+    <Compile Include="ViewDialog\Step\DetailsGamesDlg.cs" />
     <Compile Include="ViewDialog\Step\GrameToolDlg.cs" />
     <Compile Include="ViewDialog\Sign\LoginViewDlg.cs" />
     <Compile Include="ViewDialog\Sign\UpdateViewDlg.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="ViewModel\Sign\LoginViewModel.cs" />
     <Compile Include="ViewModel\Sign\UpdateViewModel.cs" />
     <Compile Include="ViewModel\Step\CouponViewModel.cs" />
+    <Compile Include="ViewModel\Step\DetailsGamesViewModel.cs" />
     <Compile Include="ViewModel\Step\EditPwdViewModel.cs" />
     <Compile Include="ViewModel\Step\GrameToolViewModel.cs" />
     <Compile Include="ViewModel\Step\MsgBoxViewModel.cs" />
@@ -204,6 +209,10 @@
       <DependentUpon>Update.xaml</DependentUpon>
     </Compile>
     <Page Include="Common\UserControls\Coupon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\UserControls\DetailsGames.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

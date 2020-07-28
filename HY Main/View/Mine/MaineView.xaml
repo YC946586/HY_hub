@@ -62,7 +62,7 @@
                                         <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666"/>
                                         <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>
                                     </StackPanel>
-                                    <Button Content="安装游戏"   x:Name="gridStuep" Visibility="{Binding StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Flag},ConverterParameter=MaineView}"   HorizontalAlignment="Right"     Command="{Binding DataContext.EditCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    <Button Content="{Binding MineContent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   x:Name="gridStuep" Visibility="{Binding StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Flag},ConverterParameter=MaineView}"   HorizontalAlignment="Right"     Command="{Binding DataContext.EditCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                         CommandParameter="{Binding }"        Style="{DynamicResource StyleDownloadButton}" Grid.Column="1"
                                      />
                                     <ToggleButton Content="操作菜单"  Visibility="{Binding StrupPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Flag},ConverterParameter=MaineView1,FallbackValue=Collapsed}"  Grid.Column="1"  x:Name="menu"/>

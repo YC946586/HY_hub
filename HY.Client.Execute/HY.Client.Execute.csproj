@@ -47,8 +47,8 @@
     <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.2.5.0.2\lib\net45\HandyControl.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Interop.IWshRuntimeLibrary">
       <HintPath>..\HY Main\obj\Debug\Interop.IWshRuntimeLibrary.dll</HintPath>
@@ -95,7 +95,11 @@
     <Compile Include="Commons\CommonsCall.cs" />
     <Compile Include="Commons\Configuration.cs" />
     <Compile Include="Commons\DownLoadHelp.cs" />
+    <Compile Include="Commons\Download\DownloadProgress.cs" />
+    <Compile Include="Commons\Download\DownloadSegment.cs" />
     <Compile Include="Commons\Download\RandomFileWriter.cs" />
+    <Compile Include="Commons\Download\SegmentFileDownloader.cs" />
+    <Compile Include="Commons\Download\SegmentManager.cs" />
     <Compile Include="Commons\Download\Threading\AsyncQueue.cs" />
     <Compile Include="Commons\DwonloadEntity.cs" />
     <Compile Include="Commons\ExceptionLibrary.cs" />

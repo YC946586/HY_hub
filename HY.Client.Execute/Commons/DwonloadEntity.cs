@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HY.Client.Execute.Commons.Download;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -73,9 +74,12 @@ namespace HY.Client.Execute.Commons
         /// </summary>
         /// <param name="localFilePath"></param>
         /// <param name="url"></param>
-        public void DownFile(string url, int threadCount)
+        public  int DownFile(string url, int threadCount)
         {
             autoEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
+            //await LoadAsync(url,threadCount);
+
+
             string StrFileName = DownPath + name; //根据实际情况设置 
             string StrUrl = url; //根据实际情况设置
             //打开上次下载的文件或新建文件 
@@ -115,11 +119,11 @@ namespace HY.Client.Execute.Commons
                     nReadSize = ns.Read(nbytes, 0, 1024 * 2);
                     hasDownSize += nReadSize;
                 }
-                CommonsCall.Compress(downStuep, StrFileName);
-                CommonsCall.DeleteDir(StrFileName);
                 fs.Close();
                 ns.Close();
                 response.Dispose();
+                //CommonsCall.Compress(downStuep, StrFileName);
+                CommonsCall.DeletePath(StrFileName);
                 GC.Collect();
             }
             catch (ThreadAbortException e)
@@ -137,6 +141,38 @@ namespace HY.Client.Execute.Commons
             {
                 threadCount--;
             }
+            return threadCount;
+        }
+        private object obj = new object();
+        public async Task LoadAsync(string url,int threadCount)
+        {
+            try
+            {
+
+                string StrFileName = DownPath + name; //根据实际情况设置 
+                var file = new FileInfo(StrFileName);
+                var progress = new Progress<DownloadProgress>();
+                progress.ProgressChanged += (sender, p) =>
+                {
+                    lock (obj)
+                    {
+                       var downloadProgress = p;
+                        downCount++;
+                    }
+                };
+                var segmentFileDownloader = new SegmentFileDownloader(url, file, progress);
+                await segmentFileDownloader.DownloadFile();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                threadCount--;
+            }
+    
         }
 
         //计时器 事件  
@@ -180,7 +216,7 @@ namespace HY.Client.Execute.Commons
             Down_tm = new System.Windows.Forms.Timer();
             autoEvent = new AutoResetEvent(false);
             string StrFileName = DownPath + name; //根据实际情况设置 
-            CommonsCall.DeleteDir(StrFileName);
+            CommonsCall.DeletePath(StrFileName);
 
         }
     }

@@ -28,6 +28,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
     {
 
         public event Action ShowList;
+        public event Action stuepGo;
 
         public event Action<string, string> stuepEnd;
         private UserGamesEntity _pageCollection = new UserGamesEntity();
@@ -117,6 +118,7 @@ namespace HY_Main.ViewModel.Mine.UserControls
         {
             try
             {
+                stuepGo?.Invoke();
                 //计时器  
                 System.Windows.Forms.Timer tm = new System.Windows.Forms.Timer();
                 tm.Interval = 1;
@@ -140,6 +142,10 @@ namespace HY_Main.ViewModel.Mine.UserControls
                 {
                     autoViewEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
                     threadCount = 0;
+                    if (dwonloadEntities.Count==1)
+                    {
+                        threadCount = 1;
+                    }
                     dwonloadEntities.ForEach(d =>
                     {
                         autoViewEvent.WaitOne();  //阻塞当前线程，等待通知以继续执行  
@@ -152,11 +158,11 @@ namespace HY_Main.ViewModel.Mine.UserControls
 
                         d.td = new Thread(() =>
                         {
-                            d.DownFile(d.url, threadCount);
+                            threadCount= d.DownFile(d.url, threadCount);
                         });
                         d.td.IsBackground = false;
                         d.td.Start();
-                        while (threadCount > 0)
+                        while (threadCount > 1)
                         {
                             Thread.Sleep(2);
                         }
@@ -164,17 +170,24 @@ namespace HY_Main.ViewModel.Mine.UserControls
                     });
                     GC.Collect();
                     //創建快捷方式
+
+                    var curGameId = dwonloadEntities.First().gameId;
+
+                    var curModel = CommonsCall.UserGames.Where(s => s.gameId.Equals(curGameId)).First();
+                    
+                    var pathName = curModel.dwonloadAllEntities.First().name.Substring(0, curModel.dwonloadAllEntities.First().name.Length - 4);
+                    var path = curModel.StrupPath + "\\" + pathName+"\\"+ curModel.startFileName;
+                    if (curModel.IsSelected)
+                    {
+                        CommonsCall.CreateShortcut(curModel);
+                    }
+                     stuepEnd?.Invoke(path, curModel.startFileName);
+                     CommonsCall.HyGameInstall(curGameId.ToString(), path, curModel.startFileName);
+
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        CommonsCall.UserGames.Remove(PageCollection);
+                        CommonsCall.UserGames.Remove(curModel);
                     }));
-                    var path = PageCollection.StrupPath + "\\" + PageCollection.cateName;
-                    if (PageCollection.IsSelected)
-                    {
-                        //CreateShortcut(PageCollection.title + ".lnk", path, PageCollection.title);
-                    }
-                    //    stuepEnd?.Invoke(path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
-                    //    CommonsCall.HyGameInstall(PageCollection.gameId.ToString(), path + @"\" + PageCollection.startFileName, PageCollection.startFileName);
                 });
                 thread.IsBackground = false;
                 thread.Start();
@@ -350,6 +363,11 @@ namespace HY_Main.ViewModel.Mine.UserControls
                                 if (curRemove.Any())
                                 {
                                     CommonsCall.UserGames.Remove(curRemove.First());
+                                }
+                                if (CommonsCall.UserGames.Count==0)
+                                {
+                                    CommonsCall.DownProgress = "";
+
                                 }
                                 break;
                             }

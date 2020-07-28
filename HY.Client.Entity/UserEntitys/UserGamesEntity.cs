@@ -51,7 +51,20 @@ namespace HY.Client.Entity.UserEntitys
         }
         public string GameSize { get; set; }
 
-     
+        private string _mineContent = "安装游戏";
+        /// <summary>
+        /// 
+        /// </summary>
+        public string MineContent
+        {
+            get { return _mineContent; }
+            set
+            {
+                _mineContent = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         private string _content = "暂停";
 

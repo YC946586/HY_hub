@@ -58,7 +58,14 @@ namespace HY.Client.Entity.HomeEntitys
             get { return _isPurchased; }
             set { _isPurchased = value; RaisePropertyChanged(); }
         }
-
+        /// <summary>
+        /// 视频
+        /// </summary>
+        public string videoUrl { get; set; }
+        /// <summary>
+        /// 游戏描述
+        /// </summary>
+        public string description { get; set; }
         private int _Purchased = 3;
         public int Purchased
         {

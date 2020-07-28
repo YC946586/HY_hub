@@ -12,6 +12,7 @@ using HY.RequestConver.InterFace;
 using HY_Main.Common.CoreLib;
 using HY_Main.Common.Unity;
 using HY_Main.ViewModel.Mine.UserControls;
+using HY_Main.ViewModel.Step;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -312,6 +313,28 @@ namespace HY_Main.ViewModel.ShopMall
                             CommonsCall.BuyGame(genrator.result.ToString());
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
+
+
+        public override async void Details<TModel>(TModel model)
+        {
+            try
+            {
+                var showModel = model as Recommendgame;
+                if (!string.IsNullOrEmpty(showModel.description) && !string.IsNullOrEmpty(showModel.videoUrl))
+                {
+                    DetailsGamesViewModel viewModel = new DetailsGamesViewModel();
+                    var dialog = ServiceProvider.Instance.Get<IModelDialog>("DetailsGamesDlg");
+                    dialog.BindViewModel(viewModel);
+                    viewModel.InitViewModel(showModel);
+                    var d = Dialog.Show(dialog.GetDialog());
+             
                 }
             }
             catch (Exception ex)

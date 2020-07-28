@@ -87,6 +87,8 @@ namespace HY_Main.Common.CoreLib
         private RelayCommand<T> _AddCommand;
         private RelayCommand<T> _EditCommand;
         private RelayCommand<T> _DelCommand;
+        private RelayCommand<T> _DetailsCommond;
+        
         private RelayCommand _QueryCommand;
         private RelayCommand _ResetCommand;
 
@@ -160,6 +162,22 @@ namespace HY_Main.Common.CoreLib
             set { _DelCommand = value; }
         }
 
+        /// <summary>
+        /// 详情
+        /// </summary>
+        public RelayCommand<T> DetailsCommond
+        {
+            get
+            {
+                if (_DetailsCommond == null)
+                {
+                    _DetailsCommond = new RelayCommand<T>(t => Details(t));
+                }
+                return _DetailsCommond;
+            }
+            set { _DetailsCommond = value; }
+        }
+        
         /// <summary>
         /// 查询
         /// </summary>
@@ -347,6 +365,11 @@ namespace HY_Main.Common.CoreLib
         /// </summary>
         public virtual void Del<TModel>(TModel model) { }
 
+        /// <summary>
+        /// 删除
+        /// </summary>
+        public virtual void Details<TModel>(TModel model) { }
+        
         /// <summary>
         /// 查询
         /// </summary>

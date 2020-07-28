@@ -244,6 +244,10 @@ namespace HY_Main.ViewModel.Mine
                 viewModel.PageCollection =CommonsCall.CopyOjbect(gamesEntity);
                 viewModel.dwonloadEntities = Results;
                 viewModel.InitAsyncViewModel();
+                viewModel.stuepGo += (() =>
+                {
+                    gamesEntity.MineContent = "安装中";
+                });
                 var dialog = ServiceProvider.Instance.Get<IModelDialog>("EGameDwonloadDlg");
                 viewModel.stuepEnd += (t, a) =>
                  {

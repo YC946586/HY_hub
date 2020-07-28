@@ -29,6 +29,7 @@ using System.IO;
 using System.Diagnostics;
 using HY.Client.Entity.CommonEntitys;
 using HY_Main.ViewModel.Mine.UserControls;
+using HY_Main.ViewModel.Step;
 
 namespace HY_Main.ViewModel.HomePage
 {
@@ -85,7 +86,22 @@ namespace HY_Main.ViewModel.HomePage
             }
             set { _GainGamesHotgame = value; }
         }
-        
+        private new RelayCommand<Recommendgame> _DetailsCommond;
+        /// <summary>
+        /// 详情
+        /// </summary>
+        public new RelayCommand<Recommendgame> DetailsCommond
+        {
+            get
+            {
+                if (_DetailsCommond == null)
+                {
+                    _DetailsCommond = new RelayCommand<Recommendgame>(t => Details(t));
+                }
+                return _DetailsCommond;
+            }
+            set { _DetailsCommond = value; }
+        }
 
 
         #endregion
@@ -471,6 +487,28 @@ namespace HY_Main.ViewModel.HomePage
                     }
                 }
                
+            }
+            catch (Exception ex)
+            {
+                Msg.Error(ex);
+            }
+        }
+
+        public new  async void Details<TModel>(TModel model)
+        {
+            try
+            {
+                var showModel = model as Recommendgame;
+                if (!string.IsNullOrEmpty(showModel.description) &&!string.IsNullOrEmpty(showModel.videoUrl))
+                {
+                    DetailsGamesViewModel viewModel = new DetailsGamesViewModel();
+                    var dialog = ServiceProvider.Instance.Get<IModelDialog>("DetailsGamesDlg");
+                    dialog.BindViewModel(viewModel);
+                    viewModel.InitViewModel(showModel);
+                    var d = Dialog.Show(dialog.GetDialog());
+                    
+                }
+             
             }
             catch (Exception ex)
             {

@@ -42,7 +42,8 @@
                             </Grid.RowDefinitions>
                             <Image Source="{Binding pict}" Stretch="Fill" Cursor="Hand">
                                 <Image.InputBindings>
-                                    <MouseBinding  MouseAction="LeftClick"/>
+                                    <MouseBinding  MouseAction="LeftClick"   Command="{Binding DataContext.DetailsCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding }" />
                                 </Image.InputBindings>
                             </Image>
                             <Grid Background="White" Grid.Row="1">
@@ -53,7 +54,8 @@
                                 <StackPanel Orientation="Vertical" Margin="10 10 0 10">
                                     <TextBlock Text="{Binding cateName}" FontFamily="Microsoft YaHei"   Foreground="#666666" Cursor="Hand">
                                         <TextBlock.InputBindings>
-                                      <MouseBinding  MouseAction="LeftClick"/>
+                                            <MouseBinding  MouseAction="LeftClick"   Command="{Binding DataContext.DetailsCommond,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                        CommandParameter="{Binding }" />
                                 </TextBlock.InputBindings>
                                     </TextBlock>
                                     <TextBlock Text="{Binding title}" FontFamily="Microsoft YaHei"  FontWeight="Bold" Margin="0 5 0 0"  FontSize="14" Foreground="#333333"/>

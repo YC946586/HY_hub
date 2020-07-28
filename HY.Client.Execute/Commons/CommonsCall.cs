@@ -260,35 +260,50 @@ namespace HY.Client.Execute.Commons
         /// </summary>
         /// <param name="shortcutPath"></param>
         /// <param name="path">快捷方式的保存路径</param>
-        public static void CreateShortcut(string shortcutPath, string path, string fileName)
+        public static void CreateShortcut(UserGamesEntity userGamesEntity)
         {
             try
             {
+                var pathName = userGamesEntity.dwonloadAllEntities.First().name.Substring(0, userGamesEntity.dwonloadAllEntities.First().name.Length - 4);
+                var path = userGamesEntity.StrupPath + "\\" + pathName;
                 RegistryKey hkeyCurrentUser =
                 Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders");
-                //if (hkeyCurrentUser != null)
-                //{
-                //    string desktopPath = hkeyCurrentUser.GetValue("Desktop").ToString(); //获取桌面文件夹路径
-                //                                                                         //实例化WshShell对象 
-                //    WshShell shell = new WshShell();
+                if (hkeyCurrentUser != null)
+                {
+                    string desktopPath = hkeyCurrentUser.GetValue("Desktop").ToString(); //获取桌面文件夹路径
 
-                //    //通过该对象的 CreateShortcut 方法来创建 IWshShortcut 接口的实例对象 
-                //    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(desktopPath + @"\" + shortcutPath);
+                    string shortcutPath = Path.Combine(desktopPath, string.Format("{0}.lnk", userGamesEntity.title));
+                    WshShell shell = new WshShell();
 
-                //    //设置快捷方式的目标所在的位置(源程序完整路径) 
-                //    var dd = path + @"\" + PageCollection.startFileName;
-                //    shortcut.TargetPath = dd;
-                //    shortcut.WindowStyle = 1;//设置运行方式，默认为常规窗口
-                //    shortcut.Description = "洋葱";//设置备注
-                //                                //快捷方式的描述 
-                //    shortcut.Description = PageCollection.title;
-                //    shortcut.IconLocation = path + @"\" + "Icon.ico";  //快捷方式图标
+                    //通过该对象的 CreateShortcut 方法来创建 IWshShortcut 接口的实例对象 
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
 
-                //    //保存快捷方式 
-                //    shortcut.Save();
+                    //设置快捷方式的目标所在的位置(源程序完整路径) 
+                    shortcut.TargetPath = path + @"\" + userGamesEntity.startFileName;
+                    shortcut.Description = "洋葱";
+                    shortcut.Save();
 
-                //    Process.Start(path + @"\" + PageCollection.startFileName);
-                //}
+                    ////实例化WshShell对象 
+                    //WshShell shell = new WshShell();
+
+                   
+                    ////通过该对象的 CreateShortcut 方法来创建 IWshShortcut 接口的实例对象 
+                    //IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(desktopPath + @"\" + shortcutPath);
+
+                    ////设置快捷方式的目标所在的位置(源程序完整路径) 
+                    //var dd = path +  @"\"+  userGamesEntity.startFileName;
+                    //shortcut.TargetPath = dd;
+                    //shortcut.WindowStyle = 1;//设置运行方式，默认为常规窗口
+                    //shortcut.Description = "洋葱";//设置备注
+                    //                            //快捷方式的描述 
+                    ////shortcut.Description = userGamesEntity.title;
+                    //shortcut.IconLocation = path + @"\"+"Icon.ico";  //快捷方式图标
+
+                    ////保存快捷方式 
+                    //shortcut.Save();
+
+                    Process.Start(path + @"\" + userGamesEntity.startFileName);
+                }
 
             }
             catch (Exception ex)
@@ -299,7 +314,7 @@ namespace HY.Client.Execute.Commons
 
         #endregion
         /// <summary>
-        /// 删除文件
+        /// 删除文件夹下的所有文件
         /// </summary>
         /// <param name="file"></param>
         public static void DeleteDir(string file)
@@ -336,6 +351,26 @@ namespace HY.Client.Execute.Commons
                     Console.WriteLine(file);
                 }
 
+            }
+            catch (Exception ex) // 异常处理
+            {
+                Console.WriteLine(ex.Message.ToString());// 异常信息
+            }
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="file"></param>
+        public static void DeletePath(string file)
+        {
+            try
+            {
+                if (System.IO.File.Exists(file))
+                {
+                    //如果有子文件删除文件
+                    System.IO.File.Delete(file);
+                }
             }
             catch (Exception ex) // 异常处理
             {
