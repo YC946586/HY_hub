@@ -176,12 +176,13 @@ namespace HY_Main.ViewModel.Mine.UserControls
                     var curModel = CommonsCall.UserGames.Where(s => s.gameId.Equals(curGameId)).First();
                     
                     var pathName = curModel.dwonloadAllEntities.First().name.Substring(0, curModel.dwonloadAllEntities.First().name.Length - 4);
-                    var path = curModel.StrupPath + "\\" + pathName+"\\"+ curModel.startFileName;
+                    var path = curModel.StrupPath + @"\" + pathName+@"\"+ curModel.startFileName;
                     if (curModel.IsSelected)
                     {
                         CommonsCall.CreateShortcut(curModel);
                     }
-                     stuepEnd?.Invoke(path, curModel.startFileName);
+                    Process.Start(path );
+                    stuepEnd?.Invoke(path, curModel.startFileName);
                      CommonsCall.HyGameInstall(curGameId.ToString(), path, curModel.startFileName);
 
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>

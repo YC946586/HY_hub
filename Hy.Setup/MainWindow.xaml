@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Hy.Setup"
         xmlns:converter="clr-namespace:Hy.Setup.Converter"
         xmlns:viewModel="clr-namespace:Hy.Setup.ViewModel"
-        mc:Ignorable="d" Icon="/HY.MAIN;component/icon.ico"
+        mc:Ignorable="d" Icon="/HY.Main;component/icon.ico"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" AllowsTransparency="True"
          Title="黑鹰 Hub 安装程序" Height="420" Width="620">

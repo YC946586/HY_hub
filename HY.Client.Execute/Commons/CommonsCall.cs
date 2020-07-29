@@ -302,7 +302,7 @@ namespace HY.Client.Execute.Commons
                     ////保存快捷方式 
                     //shortcut.Save();
 
-                    Process.Start(path + @"\" + userGamesEntity.startFileName);
+                 
                 }
 
             }

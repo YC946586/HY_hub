@@ -6,6 +6,7 @@ using HY.RequestConver.InterFace;
 using HY_Main.Common.Unity;
 using HY_Main.Common.UserControls;
 using HY_Main.ViewModel.Sign;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace HY_Main
 
         public App()
         {
-            Process[] pOrange = Process.GetProcessesByName("HY.MAIN");
+            Process[] pOrange = Process.GetProcessesByName("HY.Main");
             if (pOrange.Length > 1)
             {
                 Current.Shutdown(0);
@@ -59,7 +60,7 @@ namespace HY_Main
                 Current.Shutdown();
                 return;
             }
-
+            CheckLicence();
             DispatcherUnhandledException += (sender, args) =>
             {
                 WriteErrorLog(args.Exception.Message);
@@ -177,6 +178,31 @@ namespace HY_Main
             {
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+        private void CheckLicence()
+        {
+            RegistryKey mainkey = Registry.CurrentUser;
+            RegistryKey subkey = mainkey.OpenSubKey("SOFTWARE\\PosRegister\\time", true);
+            if (subkey == null)
+            {
+                object usetime = System.DateTime.Now.AddDays(2).ToLongDateString();
+                subkey = mainkey.CreateSubKey("SOFTWARE\\PosRegister\\time");
+                subkey.SetValue("Position", usetime);
+            }
+            try
+            {
+                DateTime usetime = Convert.ToDateTime(subkey.GetValue("Position"));
+                DateTime daytime = DateTime.Parse(System.DateTime.Now.ToLongDateString());
+                TimeSpan ts = usetime - daytime;
+                int day = ts.Days;
+                if (day <= 0)
+                {
+                    Current.Shutdown();
+                }
+            }
+            catch { }
+            subkey.Close();
         }
     }
 }

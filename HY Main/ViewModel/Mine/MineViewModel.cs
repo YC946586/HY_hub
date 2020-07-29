@@ -222,6 +222,16 @@ namespace HY_Main.ViewModel.Mine
             {
                 DisplayMetro = Visibility.Visible;
                 var gamesEntity = model as UserGamesEntity;
+                if (CommonsCall.UserGames.Any(s => s.gameId.Equals(gamesEntity.gameId)))
+                {
+                    Msg.Info(gamesEntity.title + "已经进入下载队列中");
+                    return;
+                }
+                if (CommonsCall.UserGames.Count>1)
+                {
+                    Msg.Info("下载队列已满,请等待下载完毕再进行下载");
+                    return;
+                }
                 IStore store = BridgeFactory.BridgeManager.GetStoreManager();
                 var genrator = await store.GetGameFiles(gamesEntity.gameId);
                 if (!genrator.code.Equals("000"))
@@ -235,11 +245,8 @@ namespace HY_Main.ViewModel.Mine
                     Msg.Info("游戏获取失败,请重试");
                     return;
                 }
-                if (CommonsCall.UserGames.Any(s => s.gameId.Equals(gamesEntity.gameId)))
-                {
-                    Msg.Info(gamesEntity.title + "已经进入下载队列中");
-                    return;
-                }
+             
+                 
                 GameDwonloadViewModel viewModel = new GameDwonloadViewModel();
                 viewModel.PageCollection =CommonsCall.CopyOjbect(gamesEntity);
                 viewModel.dwonloadEntities = Results;
